@@ -11,9 +11,12 @@ export class ShareService {
   }
 
   //User
-  private user = new BehaviorSubject({});
+  private user = new BehaviorSubject({id:0});
+  
   public User = this.user.asObservable();
   setUser(user) {
+    console.log("user in share serrv:",user);
+    
     this.user.next(user);
   }
   //End User

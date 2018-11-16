@@ -1,9 +1,7 @@
-/* .danger{
-    background:red;
+.filler{
+    width: 50%;
 }
-.warning{
-    background: yellow;
-} */
-.navbar-top{
-   background-color: gold;
+
+.comp-container{
+    margin-top: 100px;
 }

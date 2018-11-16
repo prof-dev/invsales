@@ -14,9 +14,9 @@ export class HttpService {
   }
   doenv() {
     if (environment.production) {
-      this.APISERVER = 'http://localhost:83/projectAngularShangap/';
+      this.APISERVER = 'http://localhost:83/invsales/';
     }else{
-      this.APISERVER = 'http://localhost:83/projectAngularShangap/';
+      this.APISERVER = 'http://localhost:83/invsales/';
     }
     this.HOST=this.APISERVER+'api.php/';
   }
