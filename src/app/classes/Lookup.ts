@@ -10,6 +10,7 @@ export class Banks{
     id:number;
     parent:number;
     isleaf:number;
+    data:AccountsData;
 
 }
 
@@ -20,5 +21,6 @@ export class Tresuries{
     id:number;
     parent:number;
     isleaf:number;
+    data:AccountsData;
 
 }
