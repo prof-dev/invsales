@@ -1,0 +1,32 @@
+<div *ngIf=true>
+
+
+
+  <div id="wrapper row" dir="rtl">
+    <nav class="navbar-top col-lg-12" role="navigation">
+      <app-navigation></app-navigation>
+    </nav>
+
+    <div class="row">
+      <div class="col-lg-2">
+        <nav class="navbar-side" role="navigation">
+
+          <app-mainmenu></app-mainmenu>
+        </nav>
+      </div>
+
+      <div id="page-wrapper" class="col-lg-10">
+
+        <div class="page-content" dir="rtl">
+
+          <router-outlet></router-outlet>
+
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

@@ -1,0 +1,25 @@
+<div dir="rtl">
+
+    <h1> SuppCus Component</h1>
+    <br>
+    <br>
+    <table class="table" *ngIf="suppcus.length>0">
+        <thead>
+            <tr>
+                <th>الرقم</th>
+                <th *ngFor="let key of keys"> {{key}} </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of suppcus; index as i">
+                <td>
+                    {{i+1}}
+                </td>
+                <td *ngFor="let key of keys">
+                    {{row[key]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
