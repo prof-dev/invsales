@@ -4,10 +4,10 @@
 <button mat-raised-button color="primary" *ngFor="let row of lookups" (click)="setGroup(row)">{{row.titlear}}</button>
 <br>
 <br>
-    <button mat-raised-button color="primary" (click)="addnew()" *ngIf="group != null">Add new {{group.titlear}}</button>
-    <br>
+<button mat-raised-button color="primary" (click)="addnew()" *ngIf="group != null">Add new {{group.titlear}}</button>
+<br>
 <div *ngIf="lookupitems.length>0 && visible" id="datatable">
-    
+
 
     <table class="responsive">
         <tr>
@@ -34,11 +34,12 @@
 <div *ngIf="group != null">
 
 
-    <div  *ngIf="form">
-        <mat-card >
+    <div *ngIf="form">
+        <mat-card>
             <mat-tab-group>
                 <div class="AddLookup">
-                    <mat-tab label=":العملية">{{operation}}<hr>{{group.titlear}}
+                    <mat-tab label=":العملية">{{operation}}
+                        <hr>{{group.titlear}}
                         <br>
                         <br>
                         <div class="the-container">
@@ -50,9 +51,14 @@
                             <mat-form-field>
                                 <input matInput placeholder="العنوان" name="pwd" [(ngModel)]="data.address">
                             </mat-form-field>
-                            <mat-form-field  *ngIf="group.group=='banks'  || group.group=='tresuries'">
-                                    <input matInput placeholder="الرصيد" name="pwd" [(ngModel)]="data.balance">
-                                </mat-form-field>
+                            <mat-form-field *ngIf="group.group=='banks'  || group.group=='tresuries'">
+                                <input matInput placeholder="الرصيد" name="pwd" [(ngModel)]="data.balance">
+                            </mat-form-field>
+                            <select matNativeControl required class="primary" [(ngModel)]="bank.isleaf">
+                                <option *ngFor="let ch of leaf" [(value)]="ch.value">{{ch.viewValue}} </option>
+                               
+
+                            </select>
                             <br>
                             <br>
                         </div>
