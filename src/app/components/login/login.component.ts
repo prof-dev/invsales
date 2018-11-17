@@ -11,13 +11,14 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   public user={
-    username:"Les",
+    username:"Troy",
     pwd:"123",
   }
   
   
   constructor(private _ss: ShareService, private _hs: HttpService, private _router:Router) { }
   ngOnInit() {
+    this.login();
   }
 
   login() {

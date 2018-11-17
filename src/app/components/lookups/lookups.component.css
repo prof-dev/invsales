@@ -1,3 +1,16 @@
 .mat-raised-button{
     margin-right: 10px;
 }
+
+.responsive{
+    border: 1mm;
+    border-bottom-style: dashed;
+    border-top-style: dashed;
+    background-origin: border-box;
+}
+#addNew{
+    visibility:hidden;
+}
+.filler{
+    width: 5%;
+}
