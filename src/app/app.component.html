@@ -6,12 +6,16 @@
   <span class="filler">
 
 </span>
-  <span>
-
-    <a mat-menu-item routerLink="/lookups">
-      Settings
-    </a>
-  </span>
+  <div>
+      <button mat-raised-button color="Accent" routerLink="/lookups"> ضبط النظام</button>
+      <mat-menu #appMenu="matMenu">
+          <button mat-menu-item>Settings</button>
+          <button mat-menu-item>Help</button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="appMenu" class="Accent">
+            <mat-icon>القائمة</mat-icon>
+          </button>
+  </div>
 </mat-toolbar>
 <router-outlet></router-outlet>
 

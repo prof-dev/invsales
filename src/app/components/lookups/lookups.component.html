@@ -1,17 +1,13 @@
 <tree-root [nodes]="nodes" [options]="options"></tree-root>
 
-<h1>We are in the lookups</h1>
-
-
-
-<h1>Welcome :{{user.fullname}}</h1>
 
 <button mat-raised-button color="primary" *ngFor="let row of lookups" (click)="setGroup(row)">{{row.titlear}}</button>
 <br>
+<br>
+    <button mat-raised-button color="primary" (click)="addnew()" *ngIf="group != null">Add new {{group.titlear}}</button>
+    <br>
 <div *ngIf="lookupitems.length>0 && visible" id="datatable">
-    <br>
-    <button mat-raised-button color="primary" (click)="addnew()">Add new</button>
-    <br>
+    
 
     <table class="responsive">
         <tr>
@@ -38,11 +34,11 @@
 <div *ngIf="group != null">
 
 
-    <div id="addNew">
+    <div  *ngIf="form">
         <mat-card >
             <mat-tab-group>
                 <div class="AddLookup">
-                    <mat-tab label="إضافة حقل جديد">{{group.titlear}}
+                    <mat-tab label=":العملية">{{operation}}<hr>{{group.titlear}}
                         <br>
                         <br>
                         <div class="the-container">
@@ -54,7 +50,7 @@
                             <mat-form-field>
                                 <input matInput placeholder="العنوان" name="pwd" [(ngModel)]="data.address">
                             </mat-form-field>
-                            <mat-form-field>
+                            <mat-form-field  *ngIf="group.group=='banks'  || group.group=='tresuries'">
                                     <input matInput placeholder="الرصيد" name="pwd" [(ngModel)]="data.balance">
                                 </mat-form-field>
                             <br>
