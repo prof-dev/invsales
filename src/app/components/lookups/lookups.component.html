@@ -44,19 +44,24 @@
                         <br>
                         <div class="the-container">
                             <mat-form-field>
-                                <input matInput placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.titlear">
+                                <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.titlear">
                             </mat-form-field>
-
-                            <span class="filler"></span>
                             <mat-form-field>
-                                <input matInput placeholder="العنوان" name="pwd" [(ngModel)]="data.address">
+                                <input matInput required placeholder="المجموعة" name="group" [(ngModel)]="bank.group">
                             </mat-form-field>
-                            <mat-form-field *ngIf="group.group=='banks'  || group.group=='tresuries'">
-                                <input matInput placeholder="الرصيد" name="pwd" [(ngModel)]="data.balance">
+                            <span class="filler"></span>
+                            <mat-form-field *ngIf="bank.parent!=0">
+                                <input matInput  placeholder="العنوان" name="add" [(ngModel)]="data.address">
+                            </mat-form-field>
+                            <mat-form-field required *ngIf="bank.group=='banks'  || bank.group=='tresuries'">
+                                <input matInput placeholder="الرصيد" name="balance" [(ngModel)]="data.balance" value="group.group">
+                            </mat-form-field>
+                            <mat-form-field *ngIf="bank.group=='item'">
+                                <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="data.price">
                             </mat-form-field>
                             <select matNativeControl required class="primary" [(ngModel)]="bank.isleaf">
                                 <option *ngFor="let ch of leaf" [(value)]="ch.value">{{ch.viewValue}} </option>
-                               
+
 
                             </select>
                             <br>

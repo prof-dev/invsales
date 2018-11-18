@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
-import { Banks, Tresuries } from 'src/app/classes/Lookup';
+
 import { ifStmt } from '@angular/compiler/src/output/output_ast';
 
 @Component({
@@ -21,20 +21,10 @@ export class LookupsComponent implements OnInit {
   public form: boolean = false;
 
 
-  public bank = {
-    group: "",
-    id: null,
-    parent: 0,
-    isleaf: 0,
-    titleen: "",
-    titlear: "",
-    data: null
-  };
+  public bank :any;
 
-  public data = {
-    address: "", balance: 0, price: null
-  }
-  public tresury: Tresuries;
+  public data :any;
+
   filterby: any;
 
 
@@ -63,6 +53,18 @@ export class LookupsComponent implements OnInit {
 
   }
   setGroup(group) {
+    this.bank = {
+      group: group.group,
+      id: null,
+      parent: 0,
+      isleaf: 0,
+      titleen: "",
+      titlear: "",
+      data: null
+    };
+    this.data = {
+      address: "", balance: 0, price: 0
+    };
     this.form = false;
     this.group = group;
     if (group.group == "new") {
@@ -82,15 +84,21 @@ export class LookupsComponent implements OnInit {
   }
 
   modify(item) {
+    this.visible=false; 
+    this.operation = "تعديل";
     this.form = true;
-    item.data = JSON.parse(item.data);
+    this.data = JSON.parse(item.data);
+    console.log(JSON.parse(item.data));
+    
     this.bank.titlear = item.titlear;
-    this.data = item.data;
     this.bank.id = item.id;
     this.bank.group = item.group;
     this.bank.isleaf = item.isleaf;
     this.bank.parent = item.parent;
-    this.operation = "تعديل";
+    this.bank.data=this.data;
+  
+    
+    this.bank.titleen = item.group;
     this.visible = false;
 
   }
@@ -106,19 +114,18 @@ export class LookupsComponent implements OnInit {
   }
 
   addnew() {
+    this.bank.id=null;
     this.form = true;
     this.operation = "إدخال جديد";
-    this.bank.titlear = "fs";
+    this.bank.titlear = "";
     this.data.address = "";
     this.data.balance = 0;
+    this.data.price=0;
+    this.bank.titleen = this.bank.group;
     this.visible = false;
-    if (this.group.group == 'banks') {
-      this.bank.group = 'bank';
-      this.bank.parent = this.group.id;
-
-
-
-    }
+  
+    
+    this.bank.parent = this.group.id;
   }
 
   save(item) {
@@ -129,7 +136,7 @@ export class LookupsComponent implements OnInit {
 
       }
 
-      item.data = JSON.stringify(this.data);
+      item.data = JSON.stringify(item.data);
       console.log(item.data);
 
       this._hs.post('lookups', item).subscribe(res => {
@@ -160,12 +167,12 @@ export class LookupsComponent implements OnInit {
 
       })
     }
-    if (this.group.group != 'new') {
-      // this._router.navigateByUrl('/lookups'); 
-      this.ngOnInit();
-      this.form = false;
 
-    }
+    // this._router.navigateByUrl('/lookups'); 
+    this.ngOnInit();
+    this.form = false;
+
+
   }
 
 
