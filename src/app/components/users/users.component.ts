@@ -51,6 +51,17 @@ export class UsersComponent implements OnInit {
 
     });
   }
+  addUser(){
+    this.actionUser={
+      fullname:'',
+      username:'',
+      pwd:'',
+      balance:0,
+      roles:'',
+      locked:1,
+      phone:''
+    };
+  }
   deleteSB(one) {
     if (this.action == "editbranches") {
       this.actionUserBranches.splice(this.actionUserBranches.indexOf(one.id), 1);
