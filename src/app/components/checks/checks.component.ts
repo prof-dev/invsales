@@ -16,7 +16,9 @@ export class ChecksComponent implements OnInit {
   options: string[] = [];
   public filteredOptions: Observable<string[]>;
   public user: any;
-  public checks:any[]=[]; 
+  public checks: any[] = [];
+  public recordStatus: string;
+
 
 
   constructor(private _hs: HttpService,
@@ -42,17 +44,59 @@ export class ChecksComponent implements OnInit {
       } else {
         this._hs.get('checks')
           .subscribe(res => {
-            console.log( res.json());
-            
+            console.log(res.json());
+
             this.checks = res.json().checks;
             console.log(this.checks);
+            this.checks.forEach(ch => {
+              this.statuses.forEach(element => {
+                if (ch.status==element.value){
+                  ch.status= element.viewValue;
+                }
+              });
+            });
 
 
           })
       }
     });
-
-
   }
 
+     public statuses: Choice[] = [
+    { value: 'returned', viewValue: 'مرتد'},
+    { value: 'partially', viewValue: 'سداد جزئي'},
+    { value: 'resolved', viewValue: 'تسوية'},
+    { value: 'law', viewValue: 'الشؤون القانونية'},
+    { value: 'payed', viewValue:'تم السداد' }]
+
+    public sources:Choice[]=[
+      { value: '0', viewValue: 'وارد'},
+      { value: '1', viewValue: 'صادر'}
+
+    ]
+
+    getarabic(status){
+      confirm(status);
+      this.recordStatus="";
+      this.statuses.forEach(element => {
+        if (status==element.value){
+          this.recordStatus= element.viewValue;
+        }
+      });
+    }
+
+    update(check){
+
+    }
+
+
 }
+
+
+interface Choice {
+  value: string;
+  viewValue: string;
+}
+
+
+

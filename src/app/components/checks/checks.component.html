@@ -1,27 +1,36 @@
-<mat-card class="accent">
-    <h2 >الشيكات</h2>
-  </mat-card>
+<mat-card color="accent">
+  <h2>الشيكات</h2>
+</mat-card>
 
 <div>
   <mat-card>
     <table>
       <tr>
-          <th>الرقم</th>
-          <th>رقم الفاتورة</th>
-          <th>اسم البنك</th>
-          <th>المبلغ</th>
-          <th>المصدر</th>
-          <th>تاريخ الشيك</th>
-        
+        <th>الرقم</th>
+        <th>رقم الفاتورة</th>
+        <th>اسم البنك</th>
+        <th>المبلغ</th>
+        <th>المصدر</th>
+        <th>تاريخ الشيك</th>
+        <th>إسم صاحب الحساب</th>
+        <th>حالة الشيك</th>
+    
+        <th>تحديث حالة الشيك</th>
+
       </tr>
       <tr *ngFor="let check of checks">
-          <td>{{check.id}}</td>
-          <td>{{check.invoice}}</td>
-          <td>{{check.banckname}}</td>
-          <td>{{check.amount}}</td>
-          <td>{{check.source}}</td>
-          <td>{{check.date | date}}</td>
-        </tr>
+        <td>{{check.id}}</td>
+        <td>{{check.invoice}}</td>
+        <td>{{check.banckname}}</td>
+        <td>{{check.amount}}</td>
+        <td>{{check.source}}</td>
+        <td>{{check.date | date : 'dd/MM/yyyy'}}</td>
+        <td>{{check.checkowner}}</td>
+        <td>
+          {{check.status}}
+        </td>
+        <td><button mat-raised-button color="warn" (click)="update(check)">تحديث حالة</button></td>
+      </tr>
     </table>
-    </mat-card>
+  </mat-card>
 </div>

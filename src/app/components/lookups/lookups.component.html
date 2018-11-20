@@ -8,28 +8,31 @@
 <br>
 <div *ngIf="lookupitems.length>0 && visible" id="datatable">
 
+    <mat-card class="warn">
 
-    <table class="responsive">
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <!-- <th *ngIf="group.group=='banks' || group.group=='tresuries'">balance </th>
+        <table class="responsive">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <!-- <th *ngIf="group.group=='banks' || group.group=='tresuries'">balance </th>
             <th *ngIf="group.isleaf==1">price</th> -->
-            <th>Mod</th>
-            <th>Del</th>
-        </tr>
-        <tr *ngFor="let item of lookupitems">
-            <td>{{item.id}}</td>
-            <td>{{item.titlear}}</td>
-        
-            <td>
-                <button mat-raised-button color="primary" (click)="modify(item)">Modify</button>
-            </td>
-            <td>
-                <button mat-raised-button color="primary" (click)="delete(item)">Delete</button>
-            </td>
-        </tr>
-    </table>
+                <th>Mod</th>
+                <th>Del</th>
+            </tr>
+            <tr *ngFor="let item of lookupitems">
+                <td>{{item.id}}</td>
+                <td>{{item.titlear}}</td>
+
+                <td>
+                    <button mat-raised-button color="primary" (click)="modify(item)">Modify</button>
+                </td>
+                <td>
+                    <button mat-raised-button color="primary" (click)="delete(item)">Delete</button>
+                </td>
+            </tr>
+        </table>
+    </mat-card>
+
 
 </div>
 <div *ngIf="group != null">
