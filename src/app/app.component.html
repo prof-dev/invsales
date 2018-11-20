@@ -4,6 +4,9 @@
   <span class="filler">
 
   </span>
+  <h6 *ngIf="user!=null">
+    المستخدم الحالي : {{user.fullname}}
+  </h6>
   <div>
     <!-- <button mat-raised-button color="Accent" routerLink="/lookups"> ضبط النظام</button> -->
     <mat-menu #appMenu="matMenu">
@@ -12,18 +15,23 @@
       <button mat-menu-item routerLink="/checks">الشيكات</button>
       <button mat-menu-item routerLink="/userforms">المستخدمين</button>
     </mat-menu>
-    <button mat-stroked-button [matMenuTriggerFor]="appMenu" class="accent">
-      <mat-icon>القائمة</mat-icon>
-    </button>
-  </div>
-  <span class="filler2">
 
-  </span>
+    <!-- <mat-card>
+        
+      </mat-card> -->
+
+   
+     
+    
+    <button mat-stroked-button [matMenuTriggerFor]="appMenu">
+     <img src="assets/menu.png" alt="" class="btn-img" matTooltip="القائمة">
+    </button>
+    <button  mat-stroked-button>
+        <img src="assets/exit.png" style="cursor:pointer" alt="" (click)="logout()" class="btn-img" matTooltip="الخروج">
+     </button>
+  </div>
+
 
 </mat-toolbar>
-<mat-card>
-  <h6 *ngIf="user!=null">
-    المستخدم الحالي : <br>{{user.fullname}}
-  </h6>
-</mat-card>
+
 <router-outlet></router-outlet>

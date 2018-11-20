@@ -32,3 +32,17 @@ export class Tresuries{
     titlear:string;
 
 }
+
+
+export class Check {
+    id: number;
+    checkno: string;
+    bank: string;
+    date: Date;
+    status: string;
+    clarified: number;
+    checkowner: string;
+    lastholder: string;
+    amount: number;
+    source :string;
+  }
