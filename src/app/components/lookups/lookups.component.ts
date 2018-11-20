@@ -3,7 +3,6 @@ import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
 
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-lookups',
@@ -19,7 +18,7 @@ export class LookupsComponent implements OnInit {
   public visible: boolean;
   public operation: string = "new";
   public form: boolean = false;
-
+  public i:number;
 
   public bank :any;
 
@@ -53,6 +52,10 @@ export class LookupsComponent implements OnInit {
 
   }
   setGroup(group) {
+   // this.visible = true;
+    this.data = {
+      address: "", balance: 0, price: 0
+    };
     this.bank = {
       group: group.group,
       id: null,
@@ -60,11 +63,9 @@ export class LookupsComponent implements OnInit {
       isleaf: 0,
       titleen: "",
       titlear: "",
-      data: null
+      data:null
     };
-    this.data = {
-      address: "", balance: 0, price: 0
-    };
+    
     this.form = false;
     this.group = group;
     if (group.group == "new") {
@@ -76,7 +77,9 @@ export class LookupsComponent implements OnInit {
     this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
       .subscribe(res => {
         this.lookupitems = res.json().lookups;
+       
       })
+    
     this.visible = true;
     console.log("group is set to:", group.group);
 
@@ -128,15 +131,16 @@ export class LookupsComponent implements OnInit {
     this.bank.parent = this.group.id;
   }
 
-  save(item) {
+  save(item,d) {
 
     if (item.id == null) {
-      if (this.group.group != 'new') {
-        item.parent = this.group.id;
+      if (this.group.group == 'new') {
+        item.parent = 0;
 
       }
-
-      item.data = JSON.stringify(item.data);
+      item.parent = this.group.id;
+      this.bank.data= JSON.stringify(d);
+      
       console.log(item.data);
 
       this._hs.post('lookups', item).subscribe(res => {
@@ -158,7 +162,7 @@ export class LookupsComponent implements OnInit {
 
 
 
-      item.data = JSON.stringify(this.data);
+      item.data = JSON.stringify(d);
       console.log(item.selected);
 
       this._hs.put('lookups', "id", item).subscribe(res => {

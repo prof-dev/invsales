@@ -20,11 +20,11 @@ interface Lookup {
 
 
 @Component({
-    selector: 'app-SuppCus',
-    templateUrl: './SuppCus.component.html',
-    styleUrls: ['./SuppCus.component.css']
+    selector: 'app-suppcus',
+    templateUrl: './suppcus.component.html',
+    styleUrls: ['./suppcus.component.css']
 })
-export class SuppCusComponent implements OnInit {
+export class SuppcusComponent implements OnInit {
     public rows: any = [];
     public keys: string[] = [];
     public lookup: Lookup[] = [];

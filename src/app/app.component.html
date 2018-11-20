@@ -1,21 +1,29 @@
-<mat-toolbar color="primary">My App
-<span *ngIf="user!=null">
-  {{user.fullname}}
-</span>
+<mat-toolbar color="primary">نظام إدارة المبيعات
+
 
   <span class="filler">
 
-</span>
+  </span>
   <div>
-      <button mat-raised-button color="Accent" routerLink="/lookups"> ضبط النظام</button>
-      <mat-menu #appMenu="matMenu">
-          <button mat-menu-item>Settings</button>
-          <button mat-menu-item>Help</button>
-        </mat-menu>
-        <button mat-icon-button [matMenuTriggerFor]="appMenu" class="Accent">
-            <mat-icon>القائمة</mat-icon>
-          </button>
+    <!-- <button mat-raised-button color="Accent" routerLink="/lookups"> ضبط النظام</button> -->
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item routerLink="/lookups"> ضبط النظام</button>
+      <button mat-menu-item routerLink="/invoice">الفواتير</button>
+      <button mat-menu-item routerLink="/checks">الشيكات</button>
+      <button mat-menu-item routerLink="/userforms">المستخدمين</button>
+    </mat-menu>
+    <button mat-stroked-button [matMenuTriggerFor]="appMenu" class="accent">
+      <mat-icon>القائمة</mat-icon>
+    </button>
   </div>
-</mat-toolbar>
-<router-outlet></router-outlet>
+  <span class="filler2">
 
+  </span>
+
+</mat-toolbar>
+<mat-card>
+  <h6 *ngIf="user!=null">
+    المستخدم الحالي : <br>{{user.fullname}}
+  </h6>
+</mat-card>
+<router-outlet></router-outlet>

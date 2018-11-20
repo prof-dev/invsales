@@ -1,7 +1,9 @@
 .filler{
-    width: 50%;
+    width: 82%;
 }
-
+.filler2{
+    width: 5%;
+}
 .comp-container{
     margin-top: 100px;
 }

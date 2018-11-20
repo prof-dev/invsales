@@ -1,0 +1,27 @@
+<mat-card class="accent">
+    <h2 >الشيكات</h2>
+  </mat-card>
+
+<div>
+  <mat-card>
+    <table>
+      <tr>
+          <th>الرقم</th>
+          <th>رقم الفاتورة</th>
+          <th>اسم البنك</th>
+          <th>المبلغ</th>
+          <th>المصدر</th>
+          <th>تاريخ الشيك</th>
+        
+      </tr>
+      <tr *ngFor="let check of checks">
+          <td>{{check.id}}</td>
+          <td>{{check.invoice}}</td>
+          <td>{{check.banckname}}</td>
+          <td>{{check.amount}}</td>
+          <td>{{check.source}}</td>
+          <td>{{check.date | date}}</td>
+        </tr>
+    </table>
+    </mat-card>
+</div>

@@ -5,7 +5,7 @@ import {
   MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule, MatMenuModule,
   MatInputModule, MatFormFieldModule, MatChipsModule, MatButtonToggleModule, MatDialogModule, MatSliderModule,
    MatProgressBarModule, MatOptionModule, MatSelectModule, MatTooltipModule,
-    MatExpansionModule, MatCheckboxModule, MatAutocompleteModule
+    MatExpansionModule, MatCheckboxModule, MatAutocompleteModule,
 } from '@angular/material';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'

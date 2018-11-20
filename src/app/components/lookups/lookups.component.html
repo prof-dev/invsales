@@ -13,12 +13,15 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
+            <!-- <th *ngIf="group.group=='banks' || group.group=='tresuries'">balance </th>
+            <th *ngIf="group.isleaf==1">price</th> -->
             <th>Mod</th>
             <th>Del</th>
         </tr>
         <tr *ngFor="let item of lookupitems">
             <td>{{item.id}}</td>
             <td>{{item.titlear}}</td>
+        
             <td>
                 <button mat-raised-button color="primary" (click)="modify(item)">Modify</button>
             </td>
@@ -29,11 +32,7 @@
     </table>
 
 </div>
-
-
 <div *ngIf="group != null">
-
-
     <div *ngIf="form">
         <mat-card>
             <mat-tab-group>
@@ -51,7 +50,7 @@
                             </mat-form-field>
                             <span class="filler"></span>
                             <mat-form-field *ngIf="bank.parent!=0">
-                                <input matInput  placeholder="العنوان" name="add" [(ngModel)]="data.address">
+                                <input matInput placeholder="العنوان" name="add" [(ngModel)]="data.address">
                             </mat-form-field>
                             <mat-form-field required *ngIf="bank.group=='banks'  || bank.group=='tresuries'">
                                 <input matInput placeholder="الرصيد" name="balance" [(ngModel)]="data.balance" value="group.group">
@@ -67,7 +66,7 @@
                             <br>
                             <br>
                         </div>
-                        <button mat-raised-button (click)="save(bank)" color="primary">حفظ</button>
+                        <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
                     </mat-tab>
                 </div>
 
