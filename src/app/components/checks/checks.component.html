@@ -18,12 +18,13 @@
         <th>تحديث حالة الشيك</th>
 
       </tr>
-      <tr *ngFor="let check of checks">
+      <tr *ngFor="let check of checkes">
         <td>{{check.id}}</td>
         <td>{{check.invoice}}</td>
         <td>{{check.banckname}}</td>
         <td>{{check.amount}}</td>
-        <td>{{check.source}}</td>
+        <td *ngIf="check.source=='صادر'" style="color: red">{{check.source}}</td>
+        <td *ngIf="check.source!='صادر'" style="color: green">{{check.source}}</td>
         <td>{{check.date | date : 'dd/MM/yyyy'}}</td>
         <td>{{check.checkowner}}</td>
         <td>
