@@ -21,10 +21,19 @@ export class AppComponent implements OnInit{
     });
   }
 
+  logout(){
+
+    this._ss.setUser({id:0});
+    this._router.navigateByUrl('/login');
+  }
+
 
 
   constructor(private _hs:HttpService, 
     private _ss:ShareService,
     private _router:Router) { }
+
+
+    
   
 }

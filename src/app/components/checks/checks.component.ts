@@ -7,6 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { element } from '@angular/core/src/render3/instructions';
 import { Check } from 'src/app/classes/Lookup';
+import { toDate } from '@angular/common/src/i18n/format_date';
 
 @Component({
   selector: 'app-checks',
@@ -14,6 +15,8 @@ import { Check } from 'src/app/classes/Lookup';
   styleUrls: ['./checks.component.css']
 })
 export class ChecksComponent implements OnInit {
+
+  
   myControl = new FormControl();
   options: string[] = [];
   public filteredOptions: Observable<string[]>;
@@ -22,7 +25,10 @@ export class ChecksComponent implements OnInit {
   public recordStatus: string;
   public i: number;
   public checkes: Check[] = [];
-  public check:Check;
+  public check: Check;
+ 
+  
+  
 
 
   public sourceese: Choice[] = [
@@ -30,6 +36,9 @@ export class ChecksComponent implements OnInit {
     { value: 'out', viewValue: 'صادر' }
 
   ]
+ public checkmodify: Check;
+
+  
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
@@ -41,7 +50,7 @@ export class ChecksComponent implements OnInit {
   }
 
   ngOnInit() {
-
+   
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
@@ -58,19 +67,19 @@ export class ChecksComponent implements OnInit {
 
             this.checks = res.json().checks;
 
-          
+
             this.checks.forEach(check => {
-              this.check=check;
+              this.check = check;
               this.statuses.forEach(element => {
                 if (check.status == element.value) {
-                
-                  this.check.status=element.viewValue;
-                 
+
+                  this.check.status = element.viewValue;
+
                 }
               })
               this.sourceese.forEach(element => {
                 if (check.source == element.value) {
-                  this.check.source=element.viewValue;
+                  this.check.source = element.viewValue;
                 }
 
               })
@@ -82,7 +91,12 @@ export class ChecksComponent implements OnInit {
           });
       }
     });
+
+
+    
+    
   }
+  
 
   public statuses: Choice[] = [
     { value: 'returned', viewValue: 'مرتد' },
@@ -96,6 +110,8 @@ export class ChecksComponent implements OnInit {
   update(check) {
 
   }
+
+  
 
 
 }

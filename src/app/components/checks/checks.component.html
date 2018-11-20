@@ -14,7 +14,7 @@
         <th>تاريخ الشيك</th>
         <th>إسم صاحب الحساب</th>
         <th>حالة الشيك</th>
-    
+
         <th>تحديث حالة الشيك</th>
 
       </tr>
@@ -34,4 +34,38 @@
       </tr>
     </table>
   </mat-card>
+
+
+  
 </div>
+
+<!-- <div>
+  
+  <mat-card>
+    <div>
+      <mat-tab label=":العملية">
+        <hr>
+
+        <div class="the-container">
+          <mat-form-field>
+            <input matInput required placeholder="اسم صاحب الحساب" name="email" [(ngModel)]="checkmodify.checkowner">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput required placeholder="رقم الشيك" name="group" [(ngModel)]="checkmodify.checkno">
+          </mat-form-field>
+          <span class="filler"></span>
+
+          <select matNativeControl required class="primary" [(ngModel)]="checkmodify.status">
+            <option *ngFor="let ch of statuses" [(value)]="ch.value">{{ch.viewValue}} </option>
+
+
+          </select>
+          <br>
+          <br>
+        </div>
+        <button mat-raised-button (click)="save(checkmodify)" color="primary">حفظ</button>
+      </mat-tab>
+    </div>
+
+  </mat-card> -->
+<!-- </div> -->
