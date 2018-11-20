@@ -5,9 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { element } from '@angular/core/src/render3/instructions';
 import { Check } from 'src/app/classes/Lookup';
-import { toDate } from '@angular/common/src/i18n/format_date';
 
 @Component({
   selector: 'app-checks',
@@ -24,8 +22,20 @@ export class ChecksComponent implements OnInit {
   public checks: any[] = [];
   public recordStatus: string;
   public i: number;
-  public checkes: Check[] = [];
-  public check: Check;
+  public checkes: any[] = [];
+  public check={
+    id: 0,
+    checkno: "",
+    bank: "",
+    date: "",
+    status: "",
+    checkowner: "0",
+    lastholder: "",
+    amount: 4,
+    source :"",
+    user:0,
+    comment:""
+  }
  
   
   
@@ -36,7 +46,7 @@ export class ChecksComponent implements OnInit {
     { value: 'out', viewValue: 'صادر' }
 
   ]
- public checkmodify: Check;
+
 
   
 
@@ -99,6 +109,7 @@ export class ChecksComponent implements OnInit {
   
 
   public statuses: Choice[] = [
+    { value: 'clarified', viewValue: 'مظهر' },
     { value: 'returned', viewValue: 'مرتد' },
     { value: 'partially', viewValue: 'سداد جزئي' },
     { value: 'resolved', viewValue: 'تسوية' },
@@ -108,7 +119,7 @@ export class ChecksComponent implements OnInit {
 
 
   update(check) {
-
+    this.check=check;
   }
 
   
