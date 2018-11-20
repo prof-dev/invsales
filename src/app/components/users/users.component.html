@@ -1,32 +1,148 @@
-<div class="forms ar" dir="rtl">
-  <h1>إدخال بيانات الأقسام</h1>
-  <form name="product_form" class="form-vertical" role="form" novalidate>
-   
-    <table >
-      <tr>
-        <td>
-            <label>إسم الصنف</label>
-        </td>
-     
-        <td>
-            <input type="text" class="form-control" name="idBrands" placeholder="الإسم" focus />
-        </td>
-        <td>
-            <label>إسم الرقم</label>
-        </td>
-        <td>
-            <input class="form-control" name="BrandName" placeholder=""  />
-        </td>
-      </tr>
-      
-    </table>
-    
-   
-
-      
-  
-
-   
-  </form>
-
+<div class="container ar" dir="rtl">
+  <br>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Users Management</mat-card-title>
+      <mat-card-subtitle>Administrative Area</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <button mat-raised-button color="primary" (click)="refreshUsers()">Refresh users</button>
+      <br>
+      <br>
+      <div *ngIf="users!=null">
+        <table>
+          <tr>
+            <th>User name</th>
+            <th>Fullname</th>
+          </tr>
+          <tr *ngFor="let user of users">
+            <td>{{user.username}}</td>
+            <td>{{user.fullname}}</td>
+            <td>
+              <img src="assets/icnEdit.png" alt="" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
+            </td>
+            <td>
+              <img src="assets/icnStore.png" alt="" (click)="setStores(user)" class="btn-img" matTooltip="Edit user Stores">
+            </td>
+            <td>
+              <img src="assets/icnBranch.png" alt="" (click)="setBranches(user)" class="btn-img" matTooltip="Edit user Branches">
+            </td>
+            <td *ngIf="user.locked==1">
+              <img src="assets/icnLocked.png" alt="" (click)="unlock(user)" class="btn-img" matTooltip="Unlock this user">
+            </td>
+            <td *ngIf="user.locked==0">
+              <img src="assets/icnUnlocked.png" alt="" (click)="lock(user)" class="btn-img" matTooltip="Lock this user">
+            </td>
+            <td>
+              <img src="assets/icnDelete.png" alt="" (click)="delete(user)" class="btn-img" matTooltip="Delete this user">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="action=='editbranches'">
+    <mat-card-header>
+      <mat-card-title>Editing Branches</mat-card-title>
+      <mat-card-subtitle>Editing User Bracnhes</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <tr>
+          <th>Branche Name</th>
+          <th>Add/Remove</th>
+        </tr>
+        <tr *ngFor="let one of branches">
+          <td>{{one.titlear}}</td>
+          <td></td>
+          <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
+            <td>
+              <img src="assets/icnDelete.png" alt="" (click)="deleteSB(one)" class="btn-img">
+            </td>
+          </div>
+          <div *ngIf="actionUserBranches.indexOf(one.id)<0">
+            <td>
+              <img src="assets/icnAdd.png" alt="" (click)="addSB(one)" class="btn-img">
+            </td>
+          </div>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="action=='editstores'">
+    <mat-card-header>
+      <mat-card-title>Editing Wherhouses</mat-card-title>
+      <mat-card-subtitle>Editing User Wharehouses</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <tr>
+          <th>Wharehouse Name</th>
+          <th>Add/Remove</th>
+        </tr>
+        <tr *ngFor="let one of stores">
+          <td>{{one.titlear}}</td>
+          <td></td>
+          <div *ngIf="actionUserStores.indexOf(one.id)>=0">
+            <td>
+              <img src="assets/icnDelete.png" alt="" (click)="deleteSB(one)" class="btn-img">
+            </td>
+          </div>
+          <div *ngIf="actionUserStores.indexOf(one.id)<0">
+            <td>
+              <img src="assets/icnAdd.png" alt="" (click)="addSB(one)" class="btn-img">
+            </td>
+          </div>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="action=='edituser'">
+    <mat-card-header>
+      <mat-card-title>Editing a User</mat-card-title>
+      <mat-card-subtitle>Editing user {{actionUser.fullname}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Full name" name="fullname" [(ngModel)]="actionUser.fullname">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="User name" name="username" [(ngModel)]="actionUser.username">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="User phone" name="phone" [(ngModel)]="actionUser.phone" type="phone">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="User balance" name="balance" [(ngModel)]="actionUser.balance" readonly>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="User roles" name="roles" [(ngModel)]="actionUser.roles">
+      </mat-form-field>
+      <br>
+      <img *ngIf="actionUser.locked==1" src="assets/icnLocked.png" alt="" (click)="actionUser.locked=!actionUser.locked" class="btn-img" matTooltip="Unlock this user">
+      <img *ngIf="actionUser.locked==0" src="assets/icnUnlocked.png" alt="" (click)="actionUser.locked=!actionUser.locked" class="btn-img" matTooltip="Lock this user">
+      <br>
+      <button mat-raised-button color="primary" (click)="saveUser()">Save</button>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="action=='deleteuser'">
+      <mat-card-header>
+        <mat-card-title>Deleting a user</mat-card-title>
+        <mat-card-subtitle>Deleting user {{actionUser.fullname}} id: {{actionUser.id}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h1>Are you sure you want to delete user {{actionUser.fullname}}??</h1>
+        <br>
+        <button mat-raised-button color="primary" (click)="deleteUser()">Yes</button>
+        <br>
+        <br>
+        <p>
+          {{deleteMsg}}
+        </p>
+      </mat-card-content>
+    </mat-card>
 </div>

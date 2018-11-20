@@ -1,3 +1,30 @@
-.ar{
-    text-align: right;
+.ar {
+  text-align: right;
+}
+
+td {
+  padding-left: 10px;
+  text-align: right;
+}
+table{
+  border: 1px solid black;
+}
+.container {
+  margin-top: 20px;
+  display: flex;
+}
+
+.mat-card {
+  width: 500px;
+  margin-right: 10px;
+}
+.btn-img{
+    cursor: pointer;
+}
+.btn-img:hover{
+    border: 2px solid #2980b9;
+    width: 45px;
+}
+.mat-form-field{
+  width: 100%;
 }
