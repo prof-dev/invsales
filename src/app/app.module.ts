@@ -17,7 +17,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { UsersComponent } from './components/users/users.component';
 import { GeneralComponent } from './components/general/general.component';
 import { SigninComponent } from './components/signin/signin.component';
-import { LookupsComponent } from './components/lookups/lookups.component';
+import { LookupsComponent, LookupsComponentDialog } from './components/lookups/lookups.component';
 import { FormsModule,FormControl, ReactiveFormsModule} from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
@@ -40,7 +40,7 @@ import { ChecksComponent } from './components/checks/checks.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent
+    ChecksComponent,LookupsComponentDialog,
     
 
   ],
@@ -56,7 +56,8 @@ import { ChecksComponent } from './components/checks/checks.component';
 
   ],
   providers: [HttpService, ShareService,{provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,LookupsComponentDialog],
+  entryComponents: [LookupsComponent,LookupsComponentDialog]
 })
 export class AppModule { }
 
