@@ -20,22 +20,22 @@
             <td>{{user.username}}</td>
             <td>{{user.fullname}}</td>
             <td>
-              <img src="assets/icnEdit.png" alt="" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
+              <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
             </td>
             <td>
-              <img src="assets/icnStore.png" alt="" (click)="setStores(user)" class="btn-img" matTooltip="Edit user Stores">
+              <img src="assets/icnStore.png" alt="" width="32" (click)="setStores(user)" class="btn-img" matTooltip="Edit user Stores">
             </td>
             <td>
-              <img src="assets/icnBranch.png" alt="" (click)="setBranches(user)" class="btn-img" matTooltip="Edit user Branches">
+              <img src="assets/icnBranch.png" alt="" width="32" (click)="setBranches(user)" class="btn-img" matTooltip="Edit user Branches">
             </td>
             <td *ngIf="user.locked==1">
-              <img src="assets/icnLocked.png" alt="" (click)="unlock(user)" class="btn-img" matTooltip="Unlock this user">
+              <img src="assets/icnLocked.png" alt="" width="32" (click)="unlock(user)" class="btn-img" matTooltip="Unlock this user">
             </td>
             <td *ngIf="user.locked==0">
-              <img src="assets/icnUnlocked.png" alt="" (click)="lock(user)" class="btn-img" matTooltip="Lock this user">
+              <img src="assets/icnUnlocked.png" alt="" width="32" (click)="lock(user)" class="btn-img" matTooltip="Lock this user">
             </td>
             <td>
-              <img src="assets/icnDelete.png" alt="" (click)="delete(user)" class="btn-img" matTooltip="Delete this user">
+              <img src="assets/icnDelete.png" alt="" width="32" (click)="delete(user)" class="btn-img" matTooltip="Delete this user">
             </td>
           </tr>
         </table>
@@ -58,12 +58,12 @@
           <td></td>
           <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
             <td>
-              <img src="assets/icnDelete.png" alt="" (click)="deleteSB(one)" class="btn-img">
+              <img src="assets/icnDelete.png"  width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
             </td>
           </div>
           <div *ngIf="actionUserBranches.indexOf(one.id)<0">
             <td>
-              <img src="assets/icnAdd.png" alt="" (click)="addSB(one)" class="btn-img">
+              <img src="assets/icnAdd.png"  width="32" alt="" (click)="addSB(one)" class="btn-img" matTooltip="Add Branch to user">
             </td>
           </div>
         </tr>
@@ -86,12 +86,12 @@
           <td></td>
           <div *ngIf="actionUserStores.indexOf(one.id)>=0">
             <td>
-              <img src="assets/icnDelete.png" alt="" (click)="deleteSB(one)" class="btn-img">
+              <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Store from user">
             </td>
           </div>
           <div *ngIf="actionUserStores.indexOf(one.id)<0">
             <td>
-              <img src="assets/icnAdd.png" alt="" (click)="addSB(one)" class="btn-img">
+              <img src="assets/icnAdd.png" alt="" width="32" (click)="addSB(one)" class="btn-img" matTooltip="Add Store to user">
             </td>
           </div>
         </tr>
