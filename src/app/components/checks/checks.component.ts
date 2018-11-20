@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { Check } from 'src/app/classes/Lookup';
 })
 export class ChecksComponent implements OnInit {
 
+  @ViewChild('panel', { read: ElementRef }) public panel: ElementRef<any>;
   
   myControl = new FormControl();
   options: string[] = [];
