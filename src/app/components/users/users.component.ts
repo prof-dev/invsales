@@ -69,7 +69,7 @@ export class UsersComponent implements OnInit {
     }
     else {
       this.actionUserStores.splice(this.actionUserStores.indexOf(one.id), 1);
-      this.actionUser.sores = JSON.stringify(this.actionUserStores);
+      this.actionUser.stores = JSON.stringify(this.actionUserStores);
     }
     this._hs.put('users', 'id', this.actionUser).subscribe(res => {
       if (res.json() == 1) {
@@ -88,7 +88,7 @@ export class UsersComponent implements OnInit {
     }
     else {
       this.actionUserStores.push(one.id);
-      this.actionUser.sores = JSON.stringify(this.actionUserStores);
+      this.actionUser.stores = JSON.stringify(this.actionUserStores);
     }
     this._hs.put('users', 'id', this.actionUser).subscribe(res => {
       if (res.json() == 1) {
