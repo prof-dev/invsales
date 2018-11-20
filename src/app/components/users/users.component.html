@@ -20,22 +20,22 @@
             <td>{{user.username}}</td>
             <td>{{user.fullname}}</td>
             <td>
-              <img src="assets/icnEdit.png" alt="" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
+              <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
             </td>
             <td>
-              <img src="assets/icnStore.png" alt="" (click)="setStores(user)" class="btn-img" matTooltip="Edit user Stores">
+              <img src="assets/icnStore.png" alt="" width="32" (click)="setStores(user)" class="btn-img" matTooltip="Edit user Stores">
             </td>
             <td>
-              <img src="assets/icnBranch.png" alt="" (click)="setBranches(user)" class="btn-img" matTooltip="Edit user Branches">
+              <img src="assets/icnBranch.png" alt="" width="32" (click)="setBranches(user)" class="btn-img" matTooltip="Edit user Branches">
             </td>
             <td *ngIf="user.locked==1">
-              <img src="assets/icnLocked.png" alt="" (click)="unlock(user)" class="btn-img" matTooltip="Unlock this user">
+              <img src="assets/icnLocked.png" alt="" width="32" (click)="unlock(user)" class="btn-img" matTooltip="Unlock this user">
             </td>
             <td *ngIf="user.locked==0">
-              <img src="assets/icnUnlocked.png" alt="" (click)="lock(user)" class="btn-img" matTooltip="Lock this user">
+              <img src="assets/icnUnlocked.png" alt="" width="32" (click)="lock(user)" class="btn-img" matTooltip="Lock this user">
             </td>
             <td>
-              <img src="assets/icnDelete.png" alt="" (click)="delete(user)" class="btn-img" matTooltip="Delete this user">
+              <img src="assets/icnDelete.png" alt="" width="32" (click)="delete(user)" class="btn-img" matTooltip="Delete this user">
             </td>
           </tr>
         </table>
