@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from './services/http.service';
 import { ShareService } from './services/share.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit{
   public user:any=null;
+  mode = new FormControl('over');
 
   ngOnInit(): void {
     this._ss.User.subscribe(user=>{
