@@ -28,7 +28,7 @@ interface Lookup {
     styleUrls: ['./suppcus.component.css']
 })
 export class SuppcusComponent implements OnInit {
-   
+
     public lookup: Lookup[] = [];
     public theader: any = [];
     public data: any = {};
@@ -58,29 +58,25 @@ export class SuppcusComponent implements OnInit {
         else if (this.recdata.type == 'cus') {
             this.formtype = 'الموردين';
         }
-
-
-
     }
-
-
     onNoClick(): void {
         this.dialogRef.close();
-      }
+    }
 
-      save(supcus){
-          if(supcus.fullname!=""){
+    save(supcus) {
+        if (supcus.fullname != "") {
+            supcus.data = JSON.stringify(supcus.data);
             this._hs.post('suppcus', supcus).subscribe(res => {
 
                 console.log("تمت إضافة " + supcus.fullname + " id :" + res);
 
                 this.dialogRef.close();
-              })
-          }
-          else{
-              this.message='الرجاء ملء جميع الحقول';
-          }
-      }
+            })
+        }
+        else {
+            this.message = 'الرجاء ملء جميع الحقول';
+        }
+    }
 }
 
 
