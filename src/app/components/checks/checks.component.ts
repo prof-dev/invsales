@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { Check } from 'src/app/classes/Lookup';
 
 @Component({
   selector: 'app-checks',
@@ -12,14 +13,43 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./checks.component.css']
 })
 export class ChecksComponent implements OnInit {
+
+  @ViewChild('panel', { read: ElementRef }) public panel: ElementRef<any>;
+  
   myControl = new FormControl();
   options: string[] = [];
   public filteredOptions: Observable<string[]>;
   public user: any;
   public checks: any[] = [];
   public recordStatus: string;
+  public i: number;
+  public checkes: any[] = [];
+  public check={
+    id: 0,
+    checkno: "",
+    bank: "",
+    date: "",
+    status: "",
+    checkowner: "0",
+    lastholder: "",
+    amount: 4,
+    source :"",
+    user:0,
+    comment:""
+  }
+ 
+  
+  
 
 
+  public sourceese: Choice[] = [
+    { value: 'in', viewValue: 'وارد' },
+    { value: 'out', viewValue: 'صادر' }
+
+  ]
+
+
+  
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
@@ -31,7 +61,7 @@ export class ChecksComponent implements OnInit {
   }
 
   ngOnInit() {
-
+   
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
@@ -47,47 +77,53 @@ export class ChecksComponent implements OnInit {
             console.log(res.json());
 
             this.checks = res.json().checks;
-            console.log(this.checks);
-            this.checks.forEach(ch => {
+
+
+            this.checks.forEach(check => {
+              this.check = check;
               this.statuses.forEach(element => {
-                if (ch.status==element.value){
-                  ch.status= element.viewValue;
+                if (check.status == element.value) {
+
+                  this.check.status = element.viewValue;
+
                 }
-              });
+              })
+              this.sourceese.forEach(element => {
+                if (check.source == element.value) {
+                  this.check.source = element.viewValue;
+                }
+
+              })
+              this.checkes.push(this.check);
             });
 
 
-          })
+
+          });
       }
     });
+
+
+    
+    
+  }
+  
+
+  public statuses: Choice[] = [
+    { value: 'clarified', viewValue: 'مظهر' },
+    { value: 'returned', viewValue: 'مرتد' },
+    { value: 'partially', viewValue: 'سداد جزئي' },
+    { value: 'resolved', viewValue: 'تسوية' },
+    { value: 'law', viewValue: 'الشؤون القانونية' },
+    { value: 'payed', viewValue: 'تم السداد' }]
+
+
+
+  update(check) {
+    this.check=check;
   }
 
-     public statuses: Choice[] = [
-    { value: 'returned', viewValue: 'مرتد'},
-    { value: 'partially', viewValue: 'سداد جزئي'},
-    { value: 'resolved', viewValue: 'تسوية'},
-    { value: 'law', viewValue: 'الشؤون القانونية'},
-    { value: 'payed', viewValue:'تم السداد' }]
-
-    public sources:Choice[]=[
-      { value: '0', viewValue: 'وارد'},
-      { value: '1', viewValue: 'صادر'}
-
-    ]
-
-    getarabic(status){
-      confirm(status);
-      this.recordStatus="";
-      this.statuses.forEach(element => {
-        if (status==element.value){
-          this.recordStatus= element.viewValue;
-        }
-      });
-    }
-
-    update(check){
-
-    }
+  
 
 
 }
@@ -97,6 +133,12 @@ interface Choice {
   value: string;
   viewValue: string;
 }
+
+interface Choice2 {
+  value: number;
+  viewValue: string;
+}
+
 
 
 

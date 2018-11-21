@@ -33,6 +33,7 @@
             <mat-form-field>
               <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="item.price">
             </mat-form-field>
+            <label>طريق الدفع</label>
             <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod">
               <option *ngFor="let ch of paymentmethods" [(value)]="ch.value">{{ch.viewValue}} </option>
 
