@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatToolbarModule, MatTabsModule, MatButtonModule, MatSidenavModule, MatIconModule,
+  MatToolbarModule, MatTabsModule, MatButtonModule, MatIconModule,
   MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule, MatMenuModule,
   MatInputModule, MatFormFieldModule, MatChipsModule, MatButtonToggleModule, MatDialogModule, MatSliderModule,
    MatProgressBarModule, MatOptionModule, MatSelectModule, MatTooltipModule,
@@ -11,6 +11,7 @@ import {
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatRadioModule, MatRadioGroup, MatRadioButton} from "@angular/material/radio";
+import { MatSidenavModule } from "@angular/material/sidenav";
 @NgModule({
   imports: [
     CommonModule,

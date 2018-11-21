@@ -32,10 +32,8 @@ export class UsersComponent implements OnInit {
     this.actionUser = user;
     this.actionUserStores = JSON.parse(this.actionUser.stores);
     this.actionUserBranches = JSON.parse(this.actionUser.branches);
-    console.log('the user', user);
     this._hs.get('lookups', 'filter[]=group,eq,branch').subscribe(res => {
       this.branches = res.json().lookups;
-      console.log('got branches: ', this.branches);
     });
   }
   setStores(user) {
@@ -44,23 +42,43 @@ export class UsersComponent implements OnInit {
     this.actionUserStores = JSON.parse(this.actionUser.stores);
     this.actionUserBranches = JSON.parse(this.actionUser.branches);
 
-    console.log('the user', user);
     this._hs.get('lookups', 'filter[]=group,eq,store').subscribe(res => {
       this.stores = res.json().lookups;
-      console.log('got stores: ', this.stores);
-
     });
   }
-  addUser(){
-    this.actionUser={
-      fullname:'',
-      username:'',
-      pwd:'',
-      balance:0,
-      roles:'',
-      locked:1,
-      phone:''
+  saveUser() {
+    if (this.actionUser.id > 0) {
+      this._hs.put('users', 'id', this.actionUser).subscribe(res => {
+        if (res.json() == 1) {
+
+        }
+      });
+    } else {
+      delete this.actionUser.id;
+      this._hs.post('users', this.actionUser).subscribe(res => {
+        console.log('adding result: ', res.json());
+        
+      });
+    }
+  }
+  addUser() {
+    this.action = "adduser";
+    this.actionUser = {
+      id: 0,
+      fullname: '',
+      username: '',
+      pwd: 'renewpass' + Math.random(),
+      balance: 0,
+      roles: '',
+      locked: 1,
+      phone: ''
     };
+
+
+  }
+  edit(user) {
+    this.action = "edituser";
+    this.actionUser = user;
   }
   deleteSB(one) {
     if (this.action == "editbranches") {
@@ -101,28 +119,18 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  edit(user) {
-    this.action = "edituser";
-    this.actionUser = user;
-  }
-  saveUser() {
-    this._hs.put('users', 'id', this.actionUser).subscribe(res => {
-      if (res.json() == 1) {
 
-      }
-    });
 
-  }
 
   delete(user) {
     this.action = "deleteuser";
     this.actionUser = user;
-    this.deleteMsg="";
+    this.deleteMsg = "";
   }
   deleteUser() {
     this._hs.delete('users', this.actionUser.id).subscribe(res => {
       if (res.json() == 1) {
-        this.deleteMsg="User is deleted successfylly, please refresh users.";
+        this.deleteMsg = "User is deleted successfylly, please refresh users.";
       }
     });
   }
@@ -163,8 +171,6 @@ export class UsersComponent implements OnInit {
         if (res.json().users.length != 0) {
           var auser = res.json().users[0]
           this._ss.setUser(auser);
-          console.log('auser is: ', auser);
-
         }
       });
   }

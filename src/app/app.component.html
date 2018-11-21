@@ -1,37 +1,29 @@
-<mat-toolbar color="primary">نظام إدارة المبيعات
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav [mode]="mode.value">
+    <p>
+      <mat-radio-group class="example-radio-group" [formControl]="mode">
+        <mat-radio-button value="over">Ov</mat-radio-button>
+        <mat-radio-button value="side">Si</mat-radio-button>
+        <mat-radio-button value="push">Pu</mat-radio-button>
+      </mat-radio-group>
+    </p>
+    <p>
+        <button mat-raised-button routerLink="/lookups" class="sd-btn"> ضبط النظام</button><br>
+        <button mat-raised-button routerLink="/invoice"class="sd-btn">الفواتير</button><br>
+        <button mat-raised-button routerLink="/checks" class="sd-btn">الشيكات</button><br>
+        <button mat-raised-button routerLink="/userforms" class="sd-btn">المستخدمين</button><br>
+    </p>
+  </mat-sidenav>
 
-
-  <span class="filler">
-
-  </span>
-  <h6 *ngIf="user!=null">
-    المستخدم الحالي : {{user.fullname}}
-  </h6>
-  <div>
-    <!-- <button mat-raised-button color="Accent" routerLink="/lookups"> ضبط النظام</button> -->
-    <mat-menu #appMenu="matMenu">
-      <button mat-menu-item routerLink="/lookups"> ضبط النظام</button>
-      <button mat-menu-item routerLink="/invoice">الفواتير</button>
-      <button mat-menu-item routerLink="/checks">الشيكات</button>
-      <button mat-menu-item routerLink="/userforms">المستخدمين</button>
-    </mat-menu>
-
-    <!-- <mat-card>
-        
-      </mat-card> -->
-
-   
-     
-    
-    <button mat-stroked-button [matMenuTriggerFor]="appMenu">
-     <img src="assets/menu.png" alt="" class="btn-img" matTooltip="القائمة">
-    </button>
-    <button  mat-stroked-button>
-        <img src="assets/exit.png" style="cursor:pointer" alt="" (click)="logout()" class="btn-img" matTooltip="الخروج">
-     </button>
-  </div>
-
-
-</mat-toolbar>
-
-<router-outlet></router-outlet>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+        <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
+        <span>
+        نظام إدارة المبيعات
+      </span>
+    </mat-toolbar>
+    <span class="filler">
+    </span>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

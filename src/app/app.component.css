@@ -1,9 +1,22 @@
-.filler{
-    width: 82%;
+.filler {
+  width: 82%;
 }
-.filler2{
-    width: 5%;
+
+.filler2 {
+  width: 5%;
 }
-.comp-container{
-    margin-top: 100px;
+
+.comp-container {
+  margin-top: 100px;
+}
+
+mat-sidenav {
+  width: 200px;
+  height: 100%;
+}
+mat-sidenav-content{
+  height: 800px;
+}
+.sd-btn{
+    wi
 }

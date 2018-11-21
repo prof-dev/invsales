@@ -1,6 +1,6 @@
 <div class="container ar" dir="rtl">
   <br>
-  <mat-card>
+  <mat-card class="users-card">
     <mat-card-header>
       <mat-card-title>Users Management</mat-card-title>
       <mat-card-subtitle>Administrative Area</mat-card-subtitle>
@@ -58,12 +58,12 @@
           <td></td>
           <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
             <td>
-              <img src="assets/icnDelete.png"  width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
+              <img src="assets/icnDelete.png" width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
             </td>
           </div>
           <div *ngIf="actionUserBranches.indexOf(one.id)<0">
             <td>
-              <img src="assets/icnAdd.png"  width="32" alt="" (click)="addSB(one)" class="btn-img" matTooltip="Add Branch to user">
+              <img src="assets/icnAdd.png" width="32" alt="" (click)="addSB(one)" class="btn-img" matTooltip="Add Branch to user">
             </td>
           </div>
         </tr>
@@ -98,10 +98,17 @@
       </table>
     </mat-card-content>
   </mat-card>
-  <mat-card *ngIf="action=='edituser'">
+  <mat-card *ngIf="action=='edituser' ||action=='adduser' ">
+
     <mat-card-header>
-      <mat-card-title>Editing a User</mat-card-title>
-      <mat-card-subtitle>Editing user {{actionUser.fullname}}</mat-card-subtitle>
+      <div *ngIf="action=='edituser'">
+        <mat-card-title>Editing Users</mat-card-title>
+        <mat-card-subtitle>Editing user {{actionUser.fullname}}</mat-card-subtitle>
+      </div>
+      <div *ngIf="action=='adduser'">
+        <mat-card-title>Adding Users</mat-card-title>
+        <mat-card-subtitle>Adding a new user</mat-card-subtitle>
+      </div>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field>
@@ -124,26 +131,30 @@
         <input matInput placeholder="User roles" name="roles" [(ngModel)]="actionUser.roles">
       </mat-form-field>
       <br>
-      <img *ngIf="actionUser.locked==1" src="assets/icnLocked.png" alt="" (click)="actionUser.locked=!actionUser.locked" class="btn-img" matTooltip="Unlock this user">
-      <img *ngIf="actionUser.locked==0" src="assets/icnUnlocked.png" alt="" (click)="actionUser.locked=!actionUser.locked" class="btn-img" matTooltip="Lock this user">
+      <img *ngIf="actionUser.locked==1" src="assets/icnLocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
+        class="btn-img" matTooltip="Unlock this user">
+      <img *ngIf="actionUser.locked==0" src="assets/icnUnlocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
+        class="btn-img" matTooltip="Lock this user">
       <br>
       <button mat-raised-button color="primary" (click)="saveUser()">Save</button>
     </mat-card-content>
   </mat-card>
   <mat-card *ngIf="action=='deleteuser'">
-      <mat-card-header>
-        <mat-card-title>Deleting a user</mat-card-title>
-        <mat-card-subtitle>Deleting user {{actionUser.fullname}} id: {{actionUser.id}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <h1>Are you sure you want to delete user {{actionUser.fullname}}??</h1>
-        <br>
-        <button mat-raised-button color="primary" (click)="deleteUser()">Yes</button>
-        <br>
-        <br>
-        <p>
-          {{deleteMsg}}
-        </p>
-      </mat-card-content>
-    </mat-card>
+    <mat-card-header>
+      <mat-card-title>Deleting a user</mat-card-title>
+      <mat-card-subtitle>Deleting user {{actionUser.fullname}} id: {{actionUser.id}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <h1>Are you sure you want to delete user {{actionUser.fullname}}??</h1>
+      <br>
+      <button mat-raised-button color="primary" (click)="deleteUser()">Yes</button>
+      <br>
+      <br>
+      <p>
+        {{deleteMsg}}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+
 </div>
