@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ShareService } from '../../services/share.service';
 import { HttpService } from '../../services/http.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { InvoiceComponent } from '../invoice/invoice.component';
+
 
 
 
@@ -25,46 +28,63 @@ interface Lookup {
     styleUrls: ['./suppcus.component.css']
 })
 export class SuppcusComponent implements OnInit {
-    public rows: any = [];
-    public keys: string[] = [];
+   
     public lookup: Lookup[] = [];
     public theader: any = [];
-    public details: any = {};
+    public data: any = {};
+    public formtype: string;
 
-    constructor(private _ss: ShareService, private _hs: HttpService, ) { }
-    ngOnInit() {
-        this._hs.get('lookups?filter=parent,eq,1')
-            .subscribe(res => {
-                console.log(res.json());
-                this.rows = res.json().lookups.records;
-                this.theader = res.json().lookups.columns;
-
-
-                console.log(this.rows);
-                console.log(this.theader);
-                for (let k in this.theader) {
-                    this.keys.push(k);
-                }
-                var i = 1;
-                this.rows.forEach(element => {
-                    
-
-                    this.lookup[i].id = element[0];
-                    this.lookup[i].group = element[1];
-                    this.lookup[i].parent = element[2];
-                    this.lookup[i].isleaf = element[4];
-                    if (element[3] != null) {
-                        var temp = "'" + element.data + "'";
-                        console.log(temp);
-                        this.lookup[i].data = JSON.parse(element[3]);
-                        console.log(element.data);
-                    }
-
-                    i++;
-
-
-
-                });
-            });
+    public form = {
+        "type": "",
+        "id": 0,
+        "balance": 0.00,
+        "fullname": "",
+        "details": {
+            "phone": "",
+            "whatsapp": "",
+            "email": "",
+            "phone2": "",
+            "location": "4555,55555"
+        }
     }
-}   
+    message: string;
+
+    constructor(private _ss: ShareService, private _hs: HttpService, public dialogRef: MatDialogRef<InvoiceComponent>,
+        @Inject(MAT_DIALOG_DATA) public recdata: DialogData) { }
+    ngOnInit() {
+        if (this.recdata.type == 'sup') {
+            this.formtype = 'العملاء';
+        }
+        else if (this.recdata.type == 'cus') {
+            this.formtype = 'الموردين';
+        }
+
+
+
+    }
+
+
+    onNoClick(): void {
+        this.dialogRef.close();
+      }
+
+      save(supcus){
+          if(supcus.fullname!=""){
+            this._hs.post('suppcus', supcus).subscribe(res => {
+
+                console.log("تمت إضافة " + supcus.fullname + " id :" + res);
+
+                this.dialogRef.close();
+              })
+          }
+          else{
+              this.message='الرجاء ملء جميع الحقول';
+          }
+      }
+}
+
+
+export interface DialogData {
+    type: string;
+    id: number;
+}
