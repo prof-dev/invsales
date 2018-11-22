@@ -33,7 +33,7 @@ export class SuppcusComponent implements OnInit {
 
     public form: any;
 
-
+    public operation=1;
     message: string;
 
     constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
@@ -117,6 +117,22 @@ export class SuppcusComponent implements OnInit {
     }
     onNoClick() {
         this.ngOnInit();
+    }
+
+
+    modify(item){
+        this.operation=2;
+        if(item.type=='s'){
+            this.formtype='تعديل الموردين';
+
+        }
+        else if (item.type=='c'){
+            this.formtype='تعديل العملاء';
+
+        }
+
+        this.form=item;
+
     }
 }
 
