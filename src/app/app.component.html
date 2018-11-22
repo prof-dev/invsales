@@ -30,15 +30,13 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="mode.value">
 
-    <p>
-      <button class="mnu-itm" mat-raised-button routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط
-        النظام</button><br>
-      <button class="mnu-itm" mat-raised-button routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</button><br>
-      <button class="mnu-itm" mat-raised-button routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</button><br>
-      <button class="mnu-itm" mat-raised-button routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</button><br>
-      <button class="mnu-itm" mat-raised-button routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء
-        والموردين</button><br>
-    </p>
+      <a class="mnu-itm"  routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط
+        النظام</a><br>
+      <a  class="mnu-itm" routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</a><br>
+      <a class="mnu-itm"  routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</a><br>
+      <a class="mnu-itm"  routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</a><br>
+      <a class="mnu-itm"  routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء
+        والموردين</a><br>
   </mat-sidenav>
 
   <mat-sidenav-content>
