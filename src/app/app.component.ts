@@ -24,7 +24,6 @@ export class AppComponent implements OnInit{
   }
 
   logout(){
-
     this._ss.setUser({id:0});
     this._router.navigateByUrl('/login');
   }

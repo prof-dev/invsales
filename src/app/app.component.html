@@ -8,22 +8,28 @@
       </mat-radio-group>
     </p>
     <p>
-        <button mat-raised-button routerLink="/lookups" class="sd-btn"> ضبط النظام</button><br>
-        <button mat-raised-button routerLink="/invoice"class="sd-btn">الفواتير</button><br>
-        <button mat-raised-button routerLink="/checks" class="sd-btn">الشيكات</button><br>
-        <button mat-raised-button routerLink="/userforms" class="sd-btn">المستخدمين</button><br>
-        <button mat-raised-button routerLink="/supcus" class="sd-btn">العملاء والموردين</button><br>
+      <button mat-raised-button routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط النظام</button><br>
+      <button mat-raised-button routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</button><br>
+      <button mat-raised-button routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</button><br>
+      <button mat-raised-button routerLink="/userforms" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</button><br>
+      <button mat-raised-button routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</button><br>
     </p>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-        <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
-        <span>
-        نظام إدارة المبيعات
+      <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
+      <span>
+        &nbsp;
+        <p>
+          نظام إدارة المبيعات
+        </p>
       </span>
     </mat-toolbar>
     <span class="filler">
+    </span>
+    <span>
+      {{user.fullname}}
     </span>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

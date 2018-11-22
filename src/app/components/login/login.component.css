@@ -1,0 +1,12 @@
+.contents{
+    width:100%;
+}
+mat-card{
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    width:400px;
+}
+mat-form-field{
+    width: 100%;
+}
