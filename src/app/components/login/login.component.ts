@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   public user = {
-    username: "Shangab",
+    username: "Troy",
     pwd: "123",
   }
 
