@@ -13,7 +13,8 @@ import { FormControl } from '@angular/forms';
 })
 export class InvoiceComponent implements OnInit {
   myControl = new FormControl();
-  options: string[] = [];
+  customers: string[] = [];
+  suppliers: string[] = [];
   public optionids: any[] = [];
   public filteredOptions: Observable<string[]>;
   public user: any;
@@ -35,11 +36,7 @@ export class InvoiceComponent implements OnInit {
 
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+   
     this._ss.User.subscribe(user => {
       this.user = user;
       if (this.user.id == 0) {
@@ -94,8 +91,13 @@ export class InvoiceComponent implements OnInit {
   //
   public _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    if(this.invoice.type =='presales'){
+      return this.suppliers.filter(option => option.toLowerCase().includes(filterValue));
+    }
+    else if(this.invoice.type =='sales'){
+      return this.customers.filter(option => option.toLowerCase().includes(filterValue));
+    }
+ 
   }
 
   additem(item) {
@@ -105,32 +107,38 @@ export class InvoiceComponent implements OnInit {
   }
 
   setType(type) {
-    if (type == "sales") {
-      this.operation = "المبيعات";
+    
 
-      this._hs.get('suppcus', 'filter[]=type,eq,cus')
-        .subscribe(res => {
-          this.suppcus = res.json().suppcus;
-          console.log(res.json());
-        })
-
-    }
-    else {
-      this.operation = "المشتريات";
-      this._hs.get('suppcus', 'filter[]=type,eq,sup')
-        .subscribe(res => {
-          console.log(res.json());
-          this.suppcus = res.json().suppcus;
-        })
-    }
-
-    this.suppcus.forEach(element => {
-      console.log(element.name);
-
-       this.options.push(element.name);
-      this.optionids.push(element.id);
-    });
+    this.customers=[];
+    this.suppliers=[];
     this.invoice.type = type;
+
+    this._hs.get('suppcus')
+    .subscribe(res => {
+      this.suppcus = res.json().suppcus;
+      console.log(res.json());
+    })
+    
+    this.suppcus.forEach(element => {
+  
+     if(element.type =='cus'){
+      console.log("customeris :",element.name);
+      this.customers.push(element.fullname+","+element.id+","+element.data.phone);
+     }
+      else if(element.type =='sup'){
+        console.log("supplier is :",element.name);
+        this.suppliers.push(element.fullname+","+element.id+","+element.data.phone);
+      }
+
+
+
+    });
+    this.filteredOptions = this.myControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+    
   }
 
   save() {

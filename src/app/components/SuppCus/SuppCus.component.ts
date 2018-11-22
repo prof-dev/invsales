@@ -34,34 +34,29 @@ export class SuppcusComponent implements OnInit {
     public data: any = {};
     public formtype: string;
 
-    public form = {
-        "type": "",
-        "id": 0,
-        "balance": 0.00,
-        "fullname": "",
-        "details": {
-            "phone": "",
-            "whatsapp": "",
-            "email": "",
-            "phone2": "",
-            "location": "4555,55555"
-        }
-    }
+    public form:any;
+       
+    
     message: string;
 
-    constructor(private _ss: ShareService, private _hs: HttpService, public dialogRef: MatDialogRef<InvoiceComponent>,
-        @Inject(MAT_DIALOG_DATA) public recdata: DialogData) { }
+    constructor(private _ss: ShareService, private _hs: HttpService) { }
     ngOnInit() {
-        if (this.recdata.type == 'sup') {
-            this.formtype = 'العملاء';
+        this.form={
+            "type": "",
+            "id": 0,
+            "balance": 0.00,
+            "fullname": "",
+            "data": {
+                "phone": "",
+                "whatsapp": "",
+                "email": "",
+                "phone2": "",
+                "location": "4555,55555"
+            }
         }
-        else if (this.recdata.type == 'cus') {
-            this.formtype = 'الموردين';
-        }
+
     }
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
+ 
 
     save(supcus) {
         if (supcus.fullname != "") {
@@ -70,17 +65,28 @@ export class SuppcusComponent implements OnInit {
 
                 console.log("تمت إضافة " + supcus.fullname + " id :" + res);
 
-                this.dialogRef.close();
             })
         }
         else {
             this.message = 'الرجاء ملء جميع الحقول';
         }
     }
+
+
+    setType(type){
+        
+        this.form.type =type;
+        
+        if (this.form.type == 'sup') {
+            this.formtype = 'العملاء';
+        }
+        else if (this.form.type == 'cus') {
+            this.formtype = 'الموردين';
+        }
+    }
+    onNoClick(){
+        this.ngOnInit();
+    }
 }
 
 
-export interface DialogData {
-    type: string;
-    id: number;
-}

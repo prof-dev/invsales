@@ -14,7 +14,7 @@ import { ChecksComponent } from '../components/checks/checks.component';
 const routes: Routes = [
   {path:'login', component:LoginComponent},
   {path:'settings', component:SettingsComponent},
-  {path:'suppcus', component:SuppcusComponent},
+  {path:'supcus', component:SuppcusComponent},
   {path:'', component:HomeComponent},
   {path:'menu', component:MainmenuComponent},
   {path:'menu', component:NavigationComponent},
