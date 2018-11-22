@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { HttpService } from 'src/app/services/http.service';
-import { ShareService } from 'src/app/services/share.service';
+import { HttpService } from '../../services/http.service';
+import { ShareService } from '../../services/share.service';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 
 @Component({
@@ -30,7 +29,7 @@ export class LookupsComponent implements OnInit {
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
-    private _router: Router, public dialog: MatDialog) { }
+    private _router: Router) { }
 
 
 
@@ -107,10 +106,7 @@ export class LookupsComponent implements OnInit {
 
   }
   delete(item): void {
-    const dialogRef = this.dialog.open(LookupsComponentDialog, {
-      width: '250px',
-      data: { id: item.id, name: item.group }
-    });
+   
   }
 
 
@@ -194,44 +190,3 @@ interface Choice {
   viewValue: string;
 }
 
-
-
-@Component({
-  selector: 'lookups.component.dialog',
-  templateUrl: './lookups.component.dialog.html',
-})
-
-
-
-export class LookupsComponentDialog {
-
-  constructor(private _hs: HttpService, private _router: Router,
-    public dialogRef: MatDialogRef<LookupsComponentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-
-  godelete(id) {
-
-    this._hs.delete('lookups', id).subscribe(res => {
-      console.log("deletion result:" + res);
-
-      if (res.status == 200) {
-        this.dialogRef.close();
-        this._router.navigateByUrl('/lookups');
-        //this.setGroup(this.group);
-      }
-
-    });
-  }
-
-}
-
-
-export interface DialogData {
-  name: string;
-  id: number;
-}
