@@ -1,25 +1,42 @@
-<div dir="rtl">
 
-    <h1> SuppCus Component</h1>
-    <br>
-    <br>
-    <table class="table" *ngIf="rows.length>0">
-        <thead>
-            <tr>
-                <th>الرقم</th>
-                <th *ngFor="let key of keys"> {{key}} </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let row of rows; index as i">
-                <td>
-                    {{i+1}}
-                </td>
-                <td *ngFor="let key of keys">
-                    {{row[key]}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<br>
+<button mat-raised-button color="primary" (click)="setType('cus')">إدخال عميل</button>&nbsp;
+<button mat-raised-button color="primary" (click)="setType('sup')">إدخال مورد</button>
+<br>
+<h1 mat-dialog-title>  إدخال بيانات  {{formtype}}</h1>
+<br>
+<label class="message">{{message}}</label>
+<br>
+<div mat-dialog-content>
+    <mat-card>
+        <mat-form-field>
+            <input matInput required placeholder="الإسم " [(ngModel)]="form.fullname">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput required placeholder=" موبايل" [(ngModel)]="form.data.phone">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput required placeholder=" موبايل 2" [(ngModel)]="form.data.phone2">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput required placeholder=" بريد إلكتروني" [(ngModel)]="form.data.email">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput required placeholder=" رقم الواتساب" [(ngModel)]="form.data.whatsapp">
+        </mat-form-field>
+        <br>
+        <!-- capture the location from the map save it to form.data.location -->
+       
+    </mat-card>
+
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="save(form)" color='primary'>حفظ</button>
+    <button mat-raised-button (click)="onNoClick()" color='warn'>تراجع</button>
+
 
 </div>
