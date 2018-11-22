@@ -1,9 +1,8 @@
-
 <br>
 <button mat-raised-button color="primary" (click)="setType('c')">إدخال عميل</button>&nbsp;
 <button mat-raised-button color="primary" (click)="setType('s')">إدخال مورد</button>
 <br>
-<h1 mat-dialog-title>  إدخال بيانات  {{formtype}}</h1>
+<h1 mat-dialog-title> إدخال بيانات {{formtype}}</h1>
 <br>
 <label class="message">{{message}}</label>
 <br>
@@ -29,7 +28,7 @@
         </mat-form-field>
         <br>
         <!-- capture the location from the map save it to form.data.location -->
-       
+
     </mat-card>
 
 </div>
@@ -41,30 +40,33 @@
 
 </div>
 
-<mat-card>
+<mat-card *ngIf="formtype != ''">
     <h2>{{formtype}}</h2>
 
     <table class="responsive">
-            <tr>
-                <th>الرقم</th>
-                <th>الإسم</th>
-                <th>رقم الهاتف</th>
-                <th>الموبايل</th>
-                <th>الواتساب</th>
-                <th>الايميل</th>
-                <th>الرصيد</th>
-                </tr>
-                <tr *ngFor="let row of suppcus  ">
-                    <td>{{row.id}}</td>
-                    <td>{{row.fullname}}</td>
-                    <td>{{row.data.phone}}</td>
-                    <td>{{row.data.phone2}}</td>
-                    <td>{{row.data.whatsapp}}</td>
-                    <td>{{row.data.email}}</td>
-                    <td>{{row.balance}}</td>
-                   
+        <tr>
+            <th>الرقم</th>
+            <th>الإسم</th>
+            <th>رقم الهاتف</th>
+            <th>الموبايل</th>
+            <th>الواتساب</th>
+            <th>الايميل</th>
+            <th>الرصيد</th>
+            <th>تعديل</th>
+        </tr>
+        <tr *ngFor="let row of suppcus  ">
+            <td>{{row.id}}</td>
+            <td>{{row.fullname}}</td>
+            <td>{{row.data.phone}}</td>
+            <td>{{row.data.phone2}}</td>
+            <td>{{row.data.whatsapp}}</td>
+            <td>{{row.data.email}}</td>
+            <td>{{row.balance}}</td>
+            <td>
+                <button mat-raised-button color="primary" (click)="modify()">Modify</button>
+            </td>
 
-                </tr>
-                </table> 
 
+        </tr>
+    </table>
 </mat-card>
