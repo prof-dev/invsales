@@ -24,6 +24,7 @@ import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { ChecksComponent } from './components/checks/checks.component';
 import { DialogsComponent } from "./components/dialogs/dialogs.component";
+import { ReturnsComponent } from './components/returns/returns.component';
 
 
 @NgModule({
@@ -40,7 +41,7 @@ import { DialogsComponent } from "./components/dialogs/dialogs.component";
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent
+    ChecksComponent,DialogsComponent, ReturnsComponent
     
 
   ],

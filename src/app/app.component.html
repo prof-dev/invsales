@@ -1,46 +1,51 @@
 <mat-toolbar color="primary" class="mat-elevation-z4 mytoolbar">
-    <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
-    <span>
-      &nbsp;
-      <p>
-        نظام إدارة المبيعات
-      </p>
-    </span>
-    <span>
-      <img src="assets/logo.jpg" width="50" alt="">
-    </span>
-    <span class="filler">
-    </span>
-    <div *ngIf="user.id>0; else elseBlock">
-      <span>{{user.fullname}} &nbsp;</span>
-      <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
+  <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
+  <span>
+    &nbsp;
+    <p>
+      نظام إدارة المبيعات والمشتروات
+    </p>
+  </span>
+  <span class="filler">
+  </span>
+  <div *ngIf="user.id>0; else elseBlock">
+    <span>{{user.fullname}} &nbsp;</span>
+    <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
 
-    </div>
-    <ng-template #elseBlock>
-      <span>
-        <button width="32" type="button" class="right" mat-button (click)="routeTo('/login')"> Login
-        </button>
-      </span>
-    </ng-template>
-
-  </mat-toolbar>
-  <div [hidden]="!appIsBusy" class="prog-bar">
-    <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
   </div>
+  <ng-template #elseBlock>
+    <span>
+      <button width="32" type="button" class="right" mat-button (click)="routeTo('/login')"> Login
+      </button>
+    </span>
+  </ng-template>
+
+</mat-toolbar>
+<div [hidden]="!appIsBusy" class="prog-bar">
+  <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+</div>
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="mode.value">
-
-      <a class="mnu-itm"  routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط
-        النظام</a><br>
-      <a  class="mnu-itm" routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</a><br>
-      <a class="mnu-itm"  routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</a><br>
-      <a class="mnu-itm"  routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</a><br>
-      <a class="mnu-itm"  routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء
-        والموردين</a><br>
+    <span>
+      <img src="assets/logo.jpg"  alt="">
+    </span><br>
+    
+    <a class="mnu-itm" routerLink="/" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
+    <hr>
+    <a class="mnu-itm" routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط
+      النظام</a><br>
+    <a class="mnu-itm" routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</a><br>
+    <a class="mnu-itm" routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</a><br>
+    <a class="mnu-itm" routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</a><br>
+    <a class="mnu-itm" routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء
+      والموردين</a><br>
+    <hr>
+    <a class="mnu-itm" routerLink="/returns" class="sd-btn" (click)="sidenav.toggle()">المردودات</a><br>
   </mat-sidenav>
 
   <mat-sidenav-content>
-   
-    <router-outlet></router-outlet>
+    <div class="main-div">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,46 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <h1>المردودات</h1>
+        </mat-card-title>
+        <mat-card-subtitle>مردودات المبيعات والمشتروات</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field>
+            <mat-select placeholder="اختر النوع" [(ngModel)]="returns.type">
+                <mat-option value="s">مردودات المبيعات</mat-option>
+                <mat-option value="p">مردودات المشتروات</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <div *ngIf="returns.type==='p'">
+        </div>
+        <div *ngIf="returns.type==='s'">
+            <mat-form-field>
+                <input matInput type="text" required placeholder="رقم الفاتوره">
+                <br>
+                <a mat-raised-button (click)="fetchInvoice()" color="primary">جلب الفاتوره</a>
+            </mat-form-field>
+
+            <table>
+                <tr>
+                    <th>ItemNo</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Return</th>
+                </tr>
+                <tr *ngFor="let one of inv">
+                    <td>{{one.idx}}</td>
+                    <td>{{one.name}}</td>
+                    <td>{{one.qty}}</td>
+                    <td>
+                        <mat-form-field>
+                            <input matInput type="text" required placeholder="" [value]="one.return">
+                        </mat-form-field>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>
