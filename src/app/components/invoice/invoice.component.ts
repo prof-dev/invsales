@@ -27,7 +27,7 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
-  public items:any[]=[];
+
 
   public operation: string = "";
 

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ShareService } from '../../services/share.service';
+import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-general',
@@ -7,9 +10,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GeneralComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    // public dialogRef: MatDialogRef<DialogsComponent>,
+    // @Inject(MAT_DIALOG_DATA)
+    // public data: DialogData,
+    // public _hs: HttpService,
+    // public _ss: ShareService
+    ) {
+
+
+  }
+
 
   ngOnInit() {
+    this._ss.User.subscribe(user => {
+      this.user = user;
+      if (this.user.id == 0) {
+        this._router.navigateByUrl('/login');
+      } else {
+
+
+
+      }
+    });
   }
 
   // print(printSectionId) {
@@ -23,4 +46,20 @@ export class GeneralComponent implements OnInit {
 
   
 
+}
+
+
+// export class DialogData {
+//   public reportname: string;
+//   public message: string;
+//   public submessage: string;
+//   public result: any;
+//   public placeholder: string;
+//   constructor() {
+//     this.type = '';
+//     this.message = '';
+//     this.submessage = '';
+//     this.result = '';
+//     this.placeholder = '';
+//   }
 }
