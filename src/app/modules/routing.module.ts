@@ -12,10 +12,10 @@ import { LookupsComponent } from '../components/lookups/lookups.component';
 import { InvoiceComponent } from '../components/invoice/invoice.component';
 import { ChecksComponent } from '../components/checks/checks.component';
 const routes: Routes = [
+  {path:'', component:HomeComponent},
   {path:'login', component:LoginComponent},
   {path:'settings', component:SettingsComponent},
   {path:'supcus', component:SuppcusComponent},
-  {path:'', component:HomeComponent},
   {path:'menu', component:MainmenuComponent},
   {path:'menu', component:NavigationComponent},
   {path:'users',component:UsersComponent},

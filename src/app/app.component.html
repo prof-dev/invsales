@@ -1,18 +1,15 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="mode.value">
+    <img src="assets/logo.jpg" alt="">
+
     <p>
-      <mat-radio-group class="example-radio-group" [formControl]="mode">
-        <mat-radio-button value="over">Ov</mat-radio-button>
-        <mat-radio-button value="side">Si</mat-radio-button>
-        <mat-radio-button value="push">Pu</mat-radio-button>
-      </mat-radio-group>
-    </p>
-    <p>
-      <button mat-raised-button routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط النظام</button><br>
-      <button mat-raised-button routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</button><br>
-      <button mat-raised-button routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</button><br>
-      <button mat-raised-button routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</button><br>
-      <button mat-raised-button routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</button><br>
+      <button class="mnu-itm" mat-raised-button routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط
+        النظام</button><br>
+      <button class="mnu-itm" mat-raised-button routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</button><br>
+      <button class="mnu-itm" mat-raised-button routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</button><br>
+      <button class="mnu-itm" mat-raised-button routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</button><br>
+      <button class="mnu-itm" mat-raised-button routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء
+        والموردين</button><br>
     </p>
   </mat-sidenav>
 
@@ -25,12 +22,27 @@
           نظام إدارة المبيعات
         </p>
       </span>
+      <span>
+        <img src="assets/logo.jpg" width="50" alt="">
+      </span>
+      <span class="filler">
+      </span>
+      <div *ngIf="user.id>0; else elseBlock">
+        <span>{{user.fullname}} &nbsp;</span>
+        <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
+
+      </div>
+      <ng-template #elseBlock>
+        <span>
+          <button width="32" type="button" class="right" mat-button (click)="routeTo('/login')"> Login
+          </button>
+        </span>
+      </ng-template>
+
     </mat-toolbar>
-    <span class="filler">
-    </span>
-    <span>
-      {{user.fullname}}
-    </span>
+    <div [hidden]="!appIsBusy">
+      <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

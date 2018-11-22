@@ -25,7 +25,7 @@ export class DialogsComponent implements OnInit {
     this._ss.User.subscribe(user => {
       this.user = user;
       switch (this.data.type) {
-        case 'getsupplier':
+        case 'dfdfdfd':
           this.data.result = ['', ''];
         default:
           break;

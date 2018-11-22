@@ -5,7 +5,7 @@ import { HttpService } from './services/http.service';
 import { ShareService } from './services/share.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,28 +13,42 @@ import { FormControl } from '@angular/forms';
 })
 export class AppComponent implements OnInit{
   public user:any=null;
-  mode = new FormControl('over');
+  public mode = new FormControl('side');
+  public appIsBusy: {};
 
   ngOnInit(): void {
+    this._ss.setAppIsBusy(false);
     this._ss.User.subscribe(user=>{
       this.user=user;
       console.log('user in app: ', this.user);
       
     });
+    this._ss.SnackBar.subscribe((snack: string) => {
+      if (snack && snack.length > 0) {
+        this.snackBar.open(snack, 'Ok', {
+          duration: 5000,
+          announcementMessage: 'Announcement !!'
+        });
+      }
+    });
+    this._ss.AppIsBusy.subscribe(busy => {
+      this.appIsBusy = busy;
+      console.log('app is busy', this.appIsBusy);
+    });
   }
-
-  logout(){
-    this._ss.setUser({id:0});
-    this._router.navigateByUrl('/login');
-  }
-
-
 
   constructor(private _hs:HttpService, 
     private _ss:ShareService,
-    private _router:Router) { }
+    private _router:Router,
+    private snackBar:MatSnackBar) { }
 
 
-    
+    logout() {
+      this._ss.setUser({id:0});
+      this._router.navigateByUrl('/');
+    }
+    routeTo(url) {
+      this._router.navigateByUrl(url);
+    }
   
 }

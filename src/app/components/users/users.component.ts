@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { ShareService } from '../../services/share.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -9,7 +10,7 @@ import { ShareService } from '../../services/share.service';
 })
 export class UsersComponent implements OnInit {
   public users: any;
-  public loggedInUser: any;
+  public loggedInUser: any=null;
   public actionUser: any;
   public actionUserStores: any;
   public actionUserBranches: any;
@@ -18,14 +19,21 @@ export class UsersComponent implements OnInit {
   public branches: any[] = [];
   public stores: any[] = [];
   public deleteMsg: string;
-  constructor(private _hs: HttpService, private _ss: ShareService) { }
+  constructor(private _hs: HttpService, private _ss: ShareService, private _router:Router) { 
+    
+  }
 
   ngOnInit() {
-    this.login();
+    
     this._ss.User.subscribe(user => {
       this.loggedInUser = user;
+      if (this.loggedInUser.id==0 && this.loggedInUser.roles.indexOf('admin')<0){
+        this._router.navigateByUrl('/login');
+      }
     });
-
+    if (this.loggedInUser==null  || this.loggedInUser.id==0 || this.loggedInUser.roles.indexOf('admin')<0){
+      this._router.navigateByUrl('/login');
+    }
   }
   setBranches(user) {
     this.action = "editbranches";
@@ -165,13 +173,5 @@ export class UsersComponent implements OnInit {
       });
     }
   }
-  login() {
-    this._hs.get('users', 'filter[]=username,eq,Troy&filter[]=pwd,eq,123&satisfy=all')
-      .subscribe(res => {
-        if (res.json().users.length != 0) {
-          var auser = res.json().users[0]
-          this._ss.setUser(auser);
-        }
-      });
-  }
+
 }
