@@ -127,9 +127,7 @@ export class InvoiceComponent implements OnInit {
     })
     
     this.suppcus.forEach(element => {
-
       element.data=JSON.parse(element.data);
-
      if(element.type =='c'){
       console.log("customeris :",element.name);
 
