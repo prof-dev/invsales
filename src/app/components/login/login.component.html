@@ -20,5 +20,6 @@
         <mat-chip-list *ngIf="messages && messages.message">
             <mat-chip selected color="{{messages.color}}">{{messages.message}}</mat-chip>
         </mat-chip-list>
+        <button mat-raised-button (click)="showD()" color="primary">show dialog</button>
     </mat-card>
 </div>

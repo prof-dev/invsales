@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ShareService } from '../../services/share.service';
 import { HttpService } from '../../services/http.service';
+import { UtilsService } from '../../services/utils.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
+  constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router, private _ut:UtilsService) { }
   ngOnInit() {
   }
 
@@ -29,5 +30,18 @@ export class LoginComponent implements OnInit {
           this._router.navigateByUrl('/');
         }
       });
+  }
+
+  showD(){
+    this._ut.messageBox('confirm', 'Deleting ', 'Sure??')
+    .afterClosed()
+    .subscribe(result => {
+        if (result == 'ok') {
+          console.log('OK');
+        }else{
+          console.log('No');
+
+        }
+    });
   }
 }

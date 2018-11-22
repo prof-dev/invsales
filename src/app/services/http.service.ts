@@ -6,7 +6,6 @@ import { environment } from "../../environments/environment";
 })
 export class HttpService {
   public APISERVER:string = '';
-  public APIURL:string = '';
   public HOST: string = '';
 
   constructor(public _http: Http) {
@@ -16,7 +15,7 @@ export class HttpService {
     if (environment.production) {
       this.APISERVER = 'http://www.prof-dev.com/';
     }else{
-      this.APISERVER = 'http:/localhost/invsales/';
+      this.APISERVER = 'http://localhost/invsales/';
     }
     this.HOST=this.APISERVER+'api.php/';
   }
@@ -24,9 +23,9 @@ export class HttpService {
     return this._http.post(this.HOST + table, data);
   }
   get(table, where?) {
-    var str=this.HOST + table + "?transform=1&" + where;
-    console.log('req: ',str);
-    return this._http.get(str);
+    console.log('url: ', this.HOST + table + "?transform=1&" + where);
+    
+    return this._http.get(this.HOST + table + "?transform=1&" + where);
   }
   put(table, int_auto_primarykey_field, body) {
     return this._http.put(this.HOST + table + '/' + body[int_auto_primarykey_field], body);

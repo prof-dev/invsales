@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from 'src/app/services/http.service';
-import { ShareService } from 'src/app/services/share.service';
+import { HttpService } from '../../services/http.service';
+import { ShareService } from '../../services/share.service';
 
 @Component({
   selector: 'app-users',

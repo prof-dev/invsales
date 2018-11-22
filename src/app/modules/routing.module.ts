@@ -18,7 +18,7 @@ const routes: Routes = [
   {path:'', component:HomeComponent},
   {path:'menu', component:MainmenuComponent},
   {path:'menu', component:NavigationComponent},
-  {path:'userforms',component:UsersComponent},
+  {path:'users',component:UsersComponent},
   {path:'printing',component:GeneralComponent},
   {path:'lookups',component:LookupsComponent},
   {path:'invoice',component:InvoiceComponent},

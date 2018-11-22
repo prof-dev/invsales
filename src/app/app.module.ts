@@ -23,7 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { ChecksComponent } from './components/checks/checks.component';
-
+import { DialogsComponent } from "./components/dialogs/dialogs.component";
 
 
 @NgModule({
@@ -40,7 +40,7 @@ import { ChecksComponent } from './components/checks/checks.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,LookupsComponentDialog,
+    ChecksComponent,LookupsComponentDialog,DialogsComponent
     
 
   ],
@@ -57,7 +57,7 @@ import { ChecksComponent } from './components/checks/checks.component';
   ],
   providers: [HttpService, ShareService,{provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}],
   bootstrap: [AppComponent,LookupsComponentDialog],
-  entryComponents: [LookupsComponent,LookupsComponentDialog]
+  entryComponents: [LookupsComponent,LookupsComponentDialog,DialogsComponent]
 })
 export class AppModule { }
 

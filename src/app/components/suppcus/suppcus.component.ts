@@ -4,9 +4,6 @@ import { HttpService } from '../../services/http.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InvoiceComponent } from '../invoice/invoice.component';
 
-
-
-
 interface Data {
     name: string;
     address: string;
@@ -21,7 +18,6 @@ interface Lookup {
 }
 
 
-
 @Component({
     selector: 'app-suppcus',
     templateUrl: './suppcus.component.html',
@@ -33,10 +29,7 @@ export class SuppcusComponent implements OnInit {
     public theader: any = [];
     public data: any = {};
     public formtype: string;
-
     public form:any;
-       
-    
     message: string;
 
     constructor(private _ss: ShareService, private _hs: HttpService) { }
