@@ -1,22 +1,22 @@
 <br><br>
-<button mat-raised-button color="primary" (click)="setType('sales')">فاتورة مبيعات</button>&nbsp;
-<button mat-raised-button color="primary" (click)="setType('presales')">فاتورة مشتريات</button>
+<button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
+<button mat-raised-button color="primary" (click)="setType('p')">فاتورة مشتريات</button>
 <br>
 <br>
 
 <div *ngIf="invoice.type!=''">
   <mat-card>
-    <mat-tab-group>
+
       <div class="AddLookup">
-        <mat-tab label="إصدار فاتورة">{{operation}}
+        <h1> إصدار فاتورة   {{operation}}</h1>
 
           <br>
           <br>
-          <input *ngIf="invoice.type=='sales'" type="text" required placeholder="إسم العميل" aria-label="Number"
+          <input *ngIf="invoice.type=='s'" type="text" required placeholder="إسم العميل" aria-label="Number"
             matInput [formControl]="myControl" [matAutocomplete]="auto" >
           
 
-          <input *ngIf="invoice.type=='presales'" type="text" required placeholder="إسم المورد" aria-label="Number"
+          <input *ngIf="invoice.type=='p'" type="text" required placeholder="إسم المورد" aria-label="Number"
             matInput [formControl]="myControl" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -43,10 +43,9 @@
             <br>
           </div>
           <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
-        </mat-tab>
+     
       </div>
 
-    </mat-tab-group>
   </mat-card>
 
 
