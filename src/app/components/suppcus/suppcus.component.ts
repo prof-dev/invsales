@@ -38,25 +38,30 @@ export class SuppcusComponent implements OnInit {
 
     constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
     ngOnInit() {
-        this.form = {
-            "type": "",
-            "id": 0,
-            "balance": 0.00,
-            "fullname": "",
-            "data": {
-                "phone": "",
-                "whatsapp": "",
-                "email": "",
-                "phone2": ""
-                // "location" "4555,55555"
-            }
-        }
+
         this._ss.User.subscribe(user => {
             this.user = user;
             if (this.user.id == 0) {
-                this._router.navigateByUrl('/login');
+              this._router.navigateByUrl('/login');
+            } else {
+                this.form = {
+                    "type": "",
+                    "id": 0,
+                    "balance": 0.00,
+                    "fullname": "",
+                    "data": {
+                        "phone": "",
+                        "whatsapp": "",
+                        "email": "",
+                        "phone2": ""
+                        // "location" "4555,55555"
+                    }
+                }
+      
+              
             }
-        });
+          });
+    
 
     }
 
