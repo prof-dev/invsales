@@ -1,20 +1,20 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ShareService } from '../../services/share.service';
 import { HttpService } from '../../services/http.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { InvoiceComponent } from '../invoice/invoice.component';
+import { Router } from '@angular/router';
 
 interface Data {
-    name: string;
-    address: string;
-    balance: number;
+    phone: string;
+    phone2: string;
+    whatsapp: string;
+    email: string;
 }
-interface Lookup {
+interface Suppcus {
     id: number;
-    parent: number;
-    isleaf: number;
-    data: Data;
-    group: string;
+    type: string;
+    fullname: string;
+    data: any;
+    balance: number;
 }
 
 
@@ -25,16 +25,20 @@ interface Lookup {
 })
 export class SuppcusComponent implements OnInit {
 
-    public lookup: Lookup[] = [];
+    public suppcus: Suppcus[] = [];
     public theader: any = [];
-    public data: any = {};
+    public data: Data;
     public formtype: string;
-    public form:any;
+    public user: any;
+
+    public form: any;
+
+
     message: string;
 
-    constructor(private _ss: ShareService, private _hs: HttpService) { }
+    constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
     ngOnInit() {
-        this.form={
+        this.form = {
             "type": "",
             "id": 0,
             "balance": 0.00,
@@ -43,22 +47,30 @@ export class SuppcusComponent implements OnInit {
                 "phone": "",
                 "whatsapp": "",
                 "email": "",
-                "phone2": "",
-                "location": "4555,55555"
+                "phone2": ""
+                // "location" "4555,55555"
             }
         }
+        this._ss.User.subscribe(user => {
+            this.user = user;
+            if (this.user.id == 0) {
+                this._router.navigateByUrl('/login');
+            }
+        });
 
     }
- 
 
-    save(supcus) {
-        if (supcus.fullname != "") {
-            supcus.data = JSON.stringify(supcus.data);
-            this._hs.post('suppcus', supcus).subscribe(res => {
 
-                console.log("تمت إضافة " + supcus.fullname + " id :" + res);
+    save(form) {
+        if (form.fullname != "") {
+            form.data = JSON.stringify(form.data);
+            console.log(form.data);
+            this._hs.post('suppcus', form).subscribe(res => {
+
+                this.message ='تم حفظ  '+ this.formtype+' بنجاح';
 
             })
+            this.ngOnInit();
         }
         else {
             this.message = 'الرجاء ملء جميع الحقول';
@@ -66,18 +78,39 @@ export class SuppcusComponent implements OnInit {
     }
 
 
-    setType(type){
-        
-        this.form.type =type;
-        
-        if (this.form.type == 'sup') {
-            this.formtype = 'العملاء';
+    setType(type) {
+
+        this.form.type = type;
+
+        if (this.form.type == 's') {
+            this.formtype = ' الموردين';
+
+
+            this._hs.get('suppcus', 'filter=type,eq,s')
+                .subscribe(res => {
+                    this.suppcus = res.json().suppcus;
+                    this.suppcus .forEach(element => {
+                        element.data=JSON.parse(element.data);
+                    });
+                })
+
         }
-        else if (this.form.type == 'cus') {
-            this.formtype = 'الموردين';
+        else if (this.form.type == 'c') {
+            this.formtype = 'العملاء';
+            this._hs.get('suppcus', 'filter=type,eq,c')
+            .subscribe(res => {
+                this.suppcus = res.json().suppcus;
+                this.suppcus .forEach(element => {
+                    element.data=JSON.parse(element.data);
+                    console.log(element.data);
+                    
+
+                });
+
+            })
         }
     }
-    onNoClick(){
+    onNoClick() {
         this.ngOnInit();
     }
 }
