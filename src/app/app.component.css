@@ -13,13 +13,24 @@
 mat-sidenav {
   width: 200px;
   height: 100%;
+  padding-top: 100px;
 }
 mat-sidenav-content{
   height: 800px;
+  padding-top: 100px;
 }
 .sd-btn{
     widows: 10px;
 }
 .mnu-itm{
 width:170px;
+}
+.mytoolbar {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+}
+.prog-bar{
+  margin-top: 64px;
 }

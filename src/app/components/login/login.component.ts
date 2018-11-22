@@ -30,12 +30,13 @@ export class LoginComponent implements OnInit {
           this._ss.setUser(auser);
           this._router.navigateByUrl('/');
           this._ss.setAppIsBusy(false);
-        }else{
+
+        } else {
           this._ss.setSnackBar("We could not log you in!")
+          this._ss.setAppIsBusy(false);
         }
       });
   }
-
   showD() {
 
     this._ut.messageBox('input', 'what is your name', 'Please tell the truth and enter your name', 'Your name')

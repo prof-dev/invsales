@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
     });
     this._ss.SnackBar.subscribe((snack: string) => {
       if (snack && snack.length > 0) {
-        this.snackBar.open(snack, 'Ok', {
+        this.snackBar.open(snack, 'حسناً', {
           duration: 5000,
           announcementMessage: 'Announcement !!'
         });
@@ -33,7 +33,6 @@ export class AppComponent implements OnInit{
     });
     this._ss.AppIsBusy.subscribe(busy => {
       this.appIsBusy = busy;
-      console.log('app is busy', this.appIsBusy);
     });
   }
 

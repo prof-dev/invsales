@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { Check } from 'src/app/classes/Lookup';
 
 @Component({
   selector: 'app-checks',
