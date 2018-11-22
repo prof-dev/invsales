@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { fadeInItems } from '@angular/material';
 
 @Component({
   selector: 'app-invoice',
@@ -26,8 +27,9 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
+  public items:any[]=[];
 
-  public operation: any = "";
+  public operation: string = "";
 
 
   constructor(private _hs: HttpService,
@@ -112,7 +114,12 @@ export class InvoiceComponent implements OnInit {
     this.customers=[];
     this.suppliers=[];
     this.invoice.type = type;
+    if(type=='s'){
+      this.operation='المبيعات';
+    }else{
+      this.operation='المشتريات';
 
+    }
     this._hs.get('suppcus')
     .subscribe(res => {
       this.suppcus = res.json().suppcus;
@@ -120,7 +127,9 @@ export class InvoiceComponent implements OnInit {
     })
     
     this.suppcus.forEach(element => {
+
       element.data=JSON.parse(element.data);
+
      if(element.type =='c'){
       console.log("customeris :",element.name);
 
