@@ -1,0 +1,53 @@
+<br><br>
+<button mat-raised-button color="primary" (click)="setType('sales')">فاتورة مبيعات</button>&nbsp;
+<button mat-raised-button color="primary" (click)="setType('presales')">فاتورة مشتريات</button>
+<br>
+<br>
+
+<div *ngIf="invoice.type!=''">
+  <mat-card>
+    <mat-tab-group>
+      <div class="AddLookup">
+        <mat-tab label="إصدار فاتورة">{{operation}}
+
+          <br>
+          <br>
+          <input *ngIf="invoice.type=='sales'" type="text" required placeholder="إسم العميل" aria-label="Number"
+            matInput [formControl]="myControl" [matAutocomplete]="auto" >
+          
+
+          <input *ngIf="invoice.type=='presales'" type="text" required placeholder="إسم المورد" aria-label="Number"
+            matInput [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+          <div class="the-container">
+
+            <button mat-raised-button color="primary" (click)="additem()">إضافة عنصر </button>
+            <br>
+            <br>
+
+
+            <mat-form-field>
+              <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="item.price">
+            </mat-form-field>
+            <label>طريق الدفع</label>
+            <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod">
+              <option *ngFor="let ch of paymentmethods" [(value)]="ch.value">{{ch.viewValue}} </option>
+
+
+            </select>
+            <br>
+            <br>
+          </div>
+          <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
+        </mat-tab>
+      </div>
+
+    </mat-tab-group>
+  </mat-card>
+
+
+</div>

@@ -1,9 +1,22 @@
-/* .danger{
-    background:red;
+.filler {
+  width: 82%;
 }
-.warning{
-    background: yellow;
-} */
-.navbar-top{
-   background-color: gold;
+
+.filler2 {
+  width: 5%;
+}
+
+.comp-container {
+  margin-top: 100px;
+}
+
+mat-sidenav {
+  width: 200px;
+  height: 100%;
+}
+mat-sidenav-content{
+  height: 800px;
+}
+.sd-btn{
+    widows: 10px;
 }

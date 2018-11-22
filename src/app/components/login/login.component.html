@@ -1,0 +1,25 @@
+<div class="contents">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title color="primary">
+                    تسجيل الدخول
+
+            </mat-card-title>
+
+        </mat-card-header>
+        <mat-form-field>
+            <input matInput placeholder="البريد الالكتروني" name="email" [(ngModel)]="user.username">
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+            <input matInput placeholder="كلمه السر" name="pwd" [(ngModel)]="user.pwd">
+        </mat-form-field>
+        <br>
+        <br>
+        <button mat-raised-button (click)="login()" color="primary">دخول</button>
+        <mat-chip-list *ngIf="messages && messages.message">
+            <mat-chip selected color="{{messages.color}}">{{messages.message}}</mat-chip>
+        </mat-chip-list>
+        <button mat-raised-button (click)="showD()" color="primary">show dialog</button>
+    </mat-card>
+</div>

@@ -6,7 +6,6 @@ import { environment } from "../../environments/environment";
 })
 export class HttpService {
   public APISERVER:string = '';
-  public APIURL:string = '';
   public HOST: string = '';
 
   constructor(public _http: Http) {
@@ -14,9 +13,9 @@ export class HttpService {
   }
   doenv() {
     if (environment.production) {
-      this.APISERVER = 'http://localhost:83/projectAngularShangap/';
+      this.APISERVER = 'http://www.prof-dev.com/';
     }else{
-      this.APISERVER = 'http://localhost:83/projectAngularShangap/';
+      this.APISERVER = 'http://localhost/invsales/';
     }
     this.HOST=this.APISERVER+'api.php/';
   }
@@ -24,6 +23,8 @@ export class HttpService {
     return this._http.post(this.HOST + table, data);
   }
   get(table, where?) {
+    console.log('url: ', this.HOST + table + "?transform=1&" + where);
+    
     return this._http.get(this.HOST + table + "?transform=1&" + where);
   }
   put(table, int_auto_primarykey_field, body) {

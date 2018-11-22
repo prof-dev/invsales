@@ -3,22 +3,27 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './modules/routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './compoennts/login/login.component';
-import { SettingsComponent } from './compoennts/settings/settings.component';
+import { LoginComponent } from './components/login/login.component';
+import { SettingsComponent } from './components/settings/settings.component';
 import { MaterialModule } from './modules/material.module';
 import { TreeModule } from "angular-tree-component";
 import { HttpModule } from '@angular/http';
 import { HttpService } from './services/http.service';
 import { ShareService } from './services/share.service';
-import { SuppCusComponent } from './compoennts/SuppCus/SuppCus.component';
-import { NgbModule,NgbAlertModule,NgbAlertConfig } from "@ng-bootstrap/ng-bootstrap";
-import { HomeComponent } from './compoennts/home/home.component';
-import { MainmenuComponent } from './compoennts/mainmenu/mainmenu.component';
-import { NavigationComponent } from './compoennts/navigation/navigation.component';
-import { UsersComponent } from './compoennts/forms/users/users.component';
-import { GeneralComponent } from './compoennts/printing/general/general.component';
-import { SigninComponent } from './compoennts/signin/signin.component';
-
+import { SuppcusComponent } from './components/suppcus/suppcus.component';
+import { HomeComponent } from './components/home/home.component';
+import { MainmenuComponent } from './components/mainmenu/mainmenu.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { UsersComponent } from './components/users/users.component';
+import { GeneralComponent } from './components/general/general.component';
+import { SigninComponent } from './components/signin/signin.component';
+import { LookupsComponent, LookupsComponentDialog } from './components/lookups/lookups.component';
+import { FormsModule,FormControl, ReactiveFormsModule} from "@angular/forms";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
+import { InvoiceComponent } from './components/invoice/invoice.component';
+import { ChecksComponent } from './components/checks/checks.component';
+import { DialogsComponent } from "./components/dialogs/dialogs.component";
 
 
 @NgModule({
@@ -26,13 +31,16 @@ import { SigninComponent } from './compoennts/signin/signin.component';
     AppComponent,
     LoginComponent,
     SettingsComponent,
-    SuppCusComponent,
+    SuppcusComponent,
     HomeComponent,
     MainmenuComponent,
     NavigationComponent,
     UsersComponent,
     GeneralComponent,
-    SigninComponent
+    SigninComponent,
+    LookupsComponent,
+    InvoiceComponent,
+    ChecksComponent,LookupsComponentDialog,DialogsComponent
     
 
   ],
@@ -42,12 +50,18 @@ import { SigninComponent } from './compoennts/signin/signin.component';
     MaterialModule,
     TreeModule.forRoot(),
     HttpModule,
-    NgbModule,
-    NgbAlertModule,
-    
+    FormsModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule
 
   ],
-  providers: [HttpService, ShareService,NgbAlertConfig],
-  bootstrap: [AppComponent]
+  providers: [HttpService, ShareService,{provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}],
+  bootstrap: [AppComponent,LookupsComponentDialog],
+  entryComponents: [LookupsComponent,LookupsComponentDialog,DialogsComponent]
 })
 export class AppModule { }
+
+
+
+
+

@@ -1,0 +1,14 @@
+.table{
+    border: 1mm;
+    background-color:goldenrod;
+
+}
+
+/* .mat-dialog-content{
+    width: 500px;
+} */
+
+.message{
+    color: red;
+    background-color: aqua;
+}

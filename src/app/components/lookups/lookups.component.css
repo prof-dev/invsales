@@ -1,0 +1,14 @@
+.mat-raised-button{
+    margin-right: 10px;
+}
+
+.responsive{
+    border: 1mm;
+    
+}
+#addNew{
+    visibility:hidden;
+}
+.filler{
+    width: 5%;
+}

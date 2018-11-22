@@ -1,32 +1,36 @@
-<div *ngIf=true>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav [mode]="mode.value">
+    <p>
+      <mat-radio-group class="example-radio-group" [formControl]="mode">
+        <mat-radio-button value="over">Ov</mat-radio-button>
+        <mat-radio-button value="side">Si</mat-radio-button>
+        <mat-radio-button value="push">Pu</mat-radio-button>
+      </mat-radio-group>
+    </p>
+    <p>
+      <button mat-raised-button routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط النظام</button><br>
+      <button mat-raised-button routerLink="/invoice" class="sd-btn" (click)="sidenav.toggle()">الفواتير</button><br>
+      <button mat-raised-button routerLink="/checks" class="sd-btn" (click)="sidenav.toggle()">الشيكات</button><br>
+      <button mat-raised-button routerLink="/users" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</button><br>
+      <button mat-raised-button routerLink="/supcus" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</button><br>
+    </p>
+  </mat-sidenav>
 
-
-
-  <div id="wrapper row" dir="rtl">
-    <nav class="navbar-top col-lg-12" role="navigation">
-      <app-navigation></app-navigation>
-    </nav>
-
-    <div class="row">
-      <div class="col-lg-2">
-        <nav class="navbar-side" role="navigation">
-
-          <app-mainmenu></app-mainmenu>
-        </nav>
-      </div>
-
-      <div id="page-wrapper" class="col-lg-10">
-
-        <div class="page-content" dir="rtl">
-
-          <router-outlet></router-outlet>
-
-
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-
-</div>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
+      <span>
+        &nbsp;
+        <p>
+          نظام إدارة المبيعات
+        </p>
+      </span>
+    </mat-toolbar>
+    <span class="filler">
+    </span>
+    <span>
+      {{user.fullname}}
+    </span>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
