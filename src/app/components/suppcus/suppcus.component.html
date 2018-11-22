@@ -40,10 +40,10 @@
 
 </div>
 
-<mat-card *ngIf="formtype != ''">
+<mat-card >
     <h2>{{formtype}}</h2>
 
-    <table class="responsive">
+    <table class="responsive" *ngIf="formtype != ''">
         <tr>
             <th>الرقم</th>
             <th>الإسم</th>
