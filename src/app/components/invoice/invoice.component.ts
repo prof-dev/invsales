@@ -91,10 +91,10 @@ export class InvoiceComponent implements OnInit {
   //
   public _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    if(this.invoice.type =='presales'){
+    if(this.invoice.type =='p'){
       return this.suppliers.filter(option => option.toLowerCase().includes(filterValue));
     }
-    else if(this.invoice.type =='sales'){
+    else if(this.invoice.type =='s'){
       return this.customers.filter(option => option.toLowerCase().includes(filterValue));
     }
  
@@ -120,12 +120,14 @@ export class InvoiceComponent implements OnInit {
     })
     
     this.suppcus.forEach(element => {
-  
-     if(element.type =='cus'){
+      element.data=JSON.parse(element.data);
+     if(element.type =='c'){
       console.log("customeris :",element.name);
+
       this.customers.push(element.fullname+","+element.id+","+element.data.phone);
      }
-      else if(element.type =='sup'){
+      else if(element.type =='s'){
+
         console.log("supplier is :",element.name);
         this.suppliers.push(element.fullname+","+element.id+","+element.data.phone);
       }

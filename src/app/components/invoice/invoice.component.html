@@ -1,6 +1,6 @@
 <br><br>
-<button mat-raised-button color="primary" (click)="setType('sales')">فاتورة مبيعات</button>&nbsp;
-<button mat-raised-button color="primary" (click)="setType('presales')">فاتورة مشتريات</button>
+<button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
+<button mat-raised-button color="primary" (click)="setType('p')">فاتورة مشتريات</button>
 <br>
 <br>
 
@@ -12,11 +12,11 @@
 
           <br>
           <br>
-          <input *ngIf="invoice.type=='sales'" type="text" required placeholder="إسم العميل" aria-label="Number"
+          <input *ngIf="invoice.type=='s'" type="text" required placeholder="إسم العميل" aria-label="Number"
             matInput [formControl]="myControl" [matAutocomplete]="auto" >
           
 
-          <input *ngIf="invoice.type=='presales'" type="text" required placeholder="إسم المورد" aria-label="Number"
+          <input *ngIf="invoice.type=='p'" type="text" required placeholder="إسم المورد" aria-label="Number"
             matInput [formControl]="myControl" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -33,12 +33,13 @@
             <mat-form-field>
               <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="item.price">
             </mat-form-field>
-            <label>طريق الدفع</label>
-            <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod">
+            <mat-form-field>
+            <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod" placeholder="طريقة الدفع">
               <option *ngFor="let ch of paymentmethods" [(value)]="ch.value">{{ch.viewValue}} </option>
 
 
             </select>
+          </mat-form-field>
             <br>
             <br>
           </div>
