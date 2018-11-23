@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UsersComponent implements OnInit {
   public users: any;
-  public loggedInUser: any=null;
+  public loggedInUser: any = null;
   public actionUser: any;
   public actionUserStores: any;
   public actionUserBranches: any;
@@ -19,19 +19,16 @@ export class UsersComponent implements OnInit {
   public branches: any[] = [];
   public stores: any[] = [];
   public deleteMsg: string;
-  constructor(private _hs: HttpService, private _ss: ShareService, private _router:Router) { 
-    
+  constructor(private _hs: HttpService, private _ss: ShareService, private _router: Router) {
+
   }
 
   ngOnInit() {
-    
+
     this._ss.User.subscribe(user => {
       this.loggedInUser = user;
-      if (this.loggedInUser.id==0 && this.loggedInUser.roles.indexOf('admin')<0){
-        this._router.navigateByUrl('/login');
-      }
     });
-    if (this.loggedInUser==null  || this.loggedInUser.id==0 || this.loggedInUser.roles.indexOf('admin')<0){
+    if (this.loggedInUser == null || this.loggedInUser.id == 0 ||  this.loggedInUser.roles.indexOf('topadmin') < 0) {
       this._router.navigateByUrl('/login');
     }
   }
@@ -65,7 +62,7 @@ export class UsersComponent implements OnInit {
       delete this.actionUser.id;
       this._hs.post('users', this.actionUser).subscribe(res => {
         console.log('adding result: ', res.json());
-        
+
       });
     }
   }

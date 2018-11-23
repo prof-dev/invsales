@@ -2,17 +2,6 @@
   text-align: right;
 }
 
-td {
-  padding-left: 10px;
-  text-align: right;
-}
-
-table {
-  border: 1px solid black;
-  width: 100%;
-  height: 400px;
-  overflow-y: scroll;
-}
 
 .container {
   margin-top: 20px;

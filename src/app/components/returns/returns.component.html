@@ -7,17 +7,17 @@
     </mat-card-header>
     <mat-card-content>
         <mat-form-field>
-            <mat-select placeholder="اختر النوع" [(ngModel)]="returns.type">
+            <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type">
                 <mat-option value="s">مردودات المبيعات</mat-option>
                 <mat-option value="p">مردودات المشتروات</mat-option>
             </mat-select>
         </mat-form-field>
         <br>
-        <div *ngIf="returns.type==='p'">
+        <div *ngIf="retOb.type==='p'">
         </div>
-        <div *ngIf="returns.type==='s'">
+        <div *ngIf="retOb.type==='s'">
             <mat-form-field>
-                <input matInput type="text" [(ngModel)]="returns.id" required placeholder="رقم الفاتوره أو الطلب">
+                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم الفاتوره أو طلب الشراء أو طلب الرد">
                 <br>
             </mat-form-field>
             <a mat-raised-button (click)="fetch()" color="primary">جلب الفاتوره أو الطلب</a>&nbsp;
@@ -31,8 +31,8 @@
                     <th>الكميه</th>
                     <th>المردود</th>
                 </tr>
-                <tr *ngFor="let one of returns.data">
-                    <td>{{one.itemid}}</td>
+                <tr *ngFor="let one of retOb.row.data">
+                    <td>{{one.id}}</td>
                     <td>{{one.name}}</td>
                     <td>{{one.qty}}</td>
                     <td>

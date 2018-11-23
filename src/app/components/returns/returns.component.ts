@@ -10,11 +10,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class ReturnsComponent implements OnInit {
 
-  public returns: any = {
-    id: 0,
-    type: '',
-    data: []
-  }
+  public retOb: ReturnsObject;
   public invData: any[] = [
     { itemid: 21, qty: 14, rsv: 14, return: 0 },
     { itemid: 52, qty: 11, rsv: 14, return: 0 },
@@ -32,42 +28,65 @@ export class ReturnsComponent implements OnInit {
     { itemid: 17, qty: 52, return: 0 },
   ];
 
-  constructor(private _hs: HttpService, private _ss: ShareService, private _ut: UtilsService) { }
+  constructor(private _hs: HttpService, private _ss: ShareService, private _ut: UtilsService) {
+    this.retOb = new ReturnsObject(this._hs);
+  }
 
   ngOnInit() {
 
   }
 
   fetch() {
+    this.retOb.reset();
     this._ss.setAppIsBusy(true);
-    this._hs.get('pursalesret', 'filter=poinvid,eq,' + this.returns.id)
+    this._hs.get('pursalesret', 'filter[]=id,eq,' + this.retOb.id + '&filter[]=type,eq,' + this.retOb.type + '&satisfy=all')
       .subscribe(res => {
-        if (res.json().pursalesret.length == 0) {
-          this._hs.get('pursales', 'filter=id,eq,' + this.returns.id)
-            .subscribe(res2 => {
-              if (res2.json().pursales.length == 0) {
-                this._ss.setSnackBar('لا يوجد هذا الرقم في النظام')
-              } else {
-                if (this.returns.type == 's')
-                  this.returns.data = this.invData;
-                else
-                  this.returns.data = this.poData;
-              }
-              this._ss.setAppIsBusy(false);
-
-            });
+        if (res.json().pursalesret.length == 1) {
+          this.retOb.row = res.json().pursalesret[0];
+          this.retOb.inrets = true;
+          this.prepareRetOb();
+          this._ss.setAppIsBusy(false);
         } else {
-          if (this.returns.type == 's')
-            this.returns.data = this.invData;
-          else
-            this.returns.data = this.poData;
+          this._hs.get('pursalesret', 'filter[]=poinvid,eq,' + this.retOb.id + '&filter[]=type,eq,' + this.retOb.type + '&satisfy=all')
+            .subscribe(res2 => {
+              if (res2.json().pursalesret.length == 1) {
+                this.retOb.row = res2.json().pursalesret[0];
+                this.retOb.inrets = true;
+                this.prepareRetOb();
+                this._ss.setAppIsBusy(false);
+              } else {
+                this._hs.get('pursales', 'filter[]=id,eq,' + this.retOb.id + '&filter[]=type,eq,' + this.retOb.type + '&satisfy=all')
+                  .subscribe(res3 => {
+                    if (res3.json().pursales.length == 1) {
+                      this.retOb.row = res3.json().pursales[0];
+                      this.prepareRetOb();
+                    } else {
+                      this._ss.setSnackBar('لا يوجد هذا الرقم في النظام')
+                    }
+                    this._ss.setAppIsBusy(false);
+                  });
+              }
+            });
+
+
         }
-        this._ss.setAppIsBusy(false);
       });
   }
+  prepareRetOb() {
+    this.retOb.row.data = JSON.parse(this.retOb.row.data);
+    this.retOb.buildItemsIds();
+    this.retOb.getItems().subscribe(res => {
+      this.retOb.fixItems(res.json().lookups);
+    });
+  }
+
+
   save() {
     this._ss.setAppIsBusy(true);
-    console.log('data', JSON.stringify(this.poData));
+    this.retOb.saveApplication().subscribe(res=>{
+      console.log('res of save: ', res.json());
+      this._ss.setAppIsBusy(false);
+    });
   }
   delivered() {
     this._ut.messageBox('confirm', 'اسنلام مردودات', 'هل فعلا تم اسنلام المردودات؟؟')
@@ -78,4 +97,66 @@ export class ReturnsComponent implements OnInit {
         }
       });
   }
+}
+
+export class ReturnsObject {
+  public id: number;
+  public type: string;
+  public row: any = {};
+  private itemsids: number[];
+  public inrets: boolean;
+  public ready: boolean;
+  constructor(private _ht: HttpService) {
+    this.id = 0;
+    this.type = 's';
+    this.row = {};
+    this.itemsids = [0];
+    this.inrets = false;
+    this.ready = false;
+  }
+  reset() {
+    this.row = {};
+    this.itemsids = [0];
+    this.inrets = false;
+    this.ready = false;
+  }
+  buildItemsIds() {
+    this.row.data.forEach(itm => {
+      this.itemsids.push(itm.id);
+    });
+  }
+  getItems() {
+    return this._ht.get('lookups', 'filter[]=group,eq,item&filter[]=id,in,' + this.itemsids + '&satisfy=all')
+  }
+  saveApplication() {
+    let therow: any = JSON.parse(JSON.stringify(this.row));
+    therow.poinvid = therow.id;
+    therow.locked = 0;
+    therow.data.forEach(itm => {
+      delete itm.name;
+    });
+
+    therow.data = JSON.stringify(therow.data);
+    console.log('the row: ', therow);
+    console.log('ret ob: ', this);
+    if (this.ready) {
+      if (this.inrets) {
+        return this._ht.put('pursalesret', 'id', therow);
+      } else {
+        delete this.id;
+        return this._ht.post('pursalesret', therow);
+      }
+    }
+  }
+
+  fixItems(items: any[]) {
+    this.row.data.forEach(rec => {
+      var recitem: any = items.find(el => { return rec.id == el.id });
+      if (recitem)
+        rec.name = recitem.titlear;
+    });
+    this.ready = true;
+    console.log('this.ready:', this.ready);
+  }
+ 
 }
