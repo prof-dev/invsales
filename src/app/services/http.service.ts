@@ -15,7 +15,7 @@ export class HttpService {
     if (environment.production) {
       this.APISERVER = 'http://www.prof-dev.com/';
     }else{
-      this.APISERVER = 'http://www.prof-dev.com/';
+      this.APISERVER = 'http://localhost/invsales/';
     }
     this.HOST=this.APISERVER+'api.php/';
   }

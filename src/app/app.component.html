@@ -19,7 +19,7 @@
       </button>
     </span>
   </ng-template>
-
+  
 </mat-toolbar>
 <div [hidden]="!appIsBusy" class="prog-bar">
   <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
@@ -27,9 +27,9 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="mode.value">
     <span>
-      <img src="assets/logo.jpg"  alt="">
+      <img src="assets/logo.jpg" alt="">
     </span><br>
-    
+
     <a class="mnu-itm" routerLink="/" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
     <hr>
     <a class="mnu-itm" routerLink="/lookups" class="sd-btn" (click)="sidenav.toggle()"> ضبط

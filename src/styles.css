@@ -1,2 +1,33 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~angular-tree-component/dist/angular-tree-component.css';
+
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td, table th {
+    border: 1px solid #ddd;
+}
+table td{
+    height: 30px;
+    padding-right: 5px;
+}
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    text-align: right;
+    background-color: blue;
+    color: white;
+}
+
+table mat-form-field{
+    width:80px;
+}

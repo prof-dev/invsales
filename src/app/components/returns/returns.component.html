@@ -17,27 +17,26 @@
         </div>
         <div *ngIf="returns.type==='s'">
             <mat-form-field>
-                <input matInput type="text" required placeholder="رقم الفاتوره">
+                <input matInput type="text" [(ngModel)]="returns.id" required placeholder="رقم الفاتوره أو الطلب">
                 <br>
-                <a mat-raised-button (click)="fetchInvoice()" color="primary">جلب الفاتوره</a>
             </mat-form-field>
-
+            <a mat-raised-button (click)="fetch()" color="primary">جلب الفاتوره أو الطلب</a>&nbsp;
+            <a mat-raised-button (click)="save()" color="primary">حفظ</a>&nbsp;
+            <a mat-raised-button (click)="delivered()" color="primary">تأكيد الاستلام</a>&nbsp;
+            <a mat-raised-button (click)="delete()" color="primary">حذف الطلب</a>
             <table>
                 <tr>
-                    <th>ItemNo</th>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Return</th>
+                    <th>رقم النوع</th>
+                    <th>التفاصيل</th>
+                    <th>الكميه</th>
+                    <th>المردود</th>
                 </tr>
-                <tr *ngFor="let one of inv">
-                    <td>{{one.idx}}</td>
+                <tr *ngFor="let one of returns.data">
+                    <td>{{one.itemid}}</td>
                     <td>{{one.name}}</td>
                     <td>{{one.qty}}</td>
                     <td>
-                        <mat-form-field>
-                            <input matInput type="text" required placeholder="" [value]="one.return">
-                        </mat-form-field>
-
+                        <input type="text" required placeholder="" [value]="one.return">
                     </td>
                 </tr>
             </table>
