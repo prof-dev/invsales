@@ -6,9 +6,9 @@
 
 <div *ngIf="invoice.type!=''">
   <mat-card>
-    <mat-tab-group>
+
       <div class="AddLookup">
-        <mat-tab label="إصدار فاتورة">{{operation}}
+        <h1> إصدار فاتورة   {{operation}}</h1>
 
           <br>
           <br>
@@ -44,10 +44,9 @@
             <br>
           </div>
           <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
-        </mat-tab>
+     
       </div>
 
-    </mat-tab-group>
   </mat-card>
 
 

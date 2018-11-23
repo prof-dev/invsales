@@ -33,35 +33,55 @@ export class SuppcusComponent implements OnInit {
 
     public form: any;
 
-
+    public operation=0;
     message: string;
 
     constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
     ngOnInit() {
-        this.form = {
-            "type": "",
-            "id": 0,
-            "balance": 0.00,
-            "fullname": "",
-            "data": {
-                "phone": "",
-                "whatsapp": "",
-                "email": "",
-                "phone2": ""
-                // "location" "4555,55555"
-            }
-        }
+        this.operation=0;
         this._ss.User.subscribe(user => {
             this.user = user;
             if (this.user.id == 0) {
-                this._router.navigateByUrl('/login');
+              this._router.navigateByUrl('/login');
+            } else {
+                this.form = {
+                    "type": "",
+                    "id": 0,
+                    "balance": 0.00,
+                    "fullname": "",
+                    "data": {
+                        "phone": "",
+                        "whatsapp": "",
+                        "email": "",
+                        "phone2": ""
+                        // "location" "4555,55555"
+                    }
+                }
+      
+              
             }
-        });
+          });
+    
 
     }
 
 
     save(form) {
+        if(form.id!=0){
+            form.data = JSON.stringify(form.data);
+            console.log(form.data);
+            this._hs.put('suppcus', "id",form).subscribe(res => {
+             
+                    _ss.setSnackBar('تم حفظ  '+ this.formtype+' بنجاح');
+                   
+          
+              
+
+            });
+            this.ngOnInit();
+           
+        }
+        else 
         if (form.fullname != "") {
             form.data = JSON.stringify(form.data);
             console.log(form.data);
@@ -69,17 +89,19 @@ export class SuppcusComponent implements OnInit {
 
                 this.message ='تم حفظ  '+ this.formtype+' بنجاح';
 
-            })
+            });
             this.ngOnInit();
         }
         else {
             this.message = 'الرجاء ملء جميع الحقول';
+        
         }
     }
 
 
     setType(type) {
-
+        this.ngOnInit();
+        this.operation=1;
         this.form.type = type;
 
         if (this.form.type == 's') {
@@ -112,6 +134,23 @@ export class SuppcusComponent implements OnInit {
     }
     onNoClick() {
         this.ngOnInit();
+    }
+
+
+    modify(item){
+        this.operation=2;
+        if(item.type=='s'){
+            this.formtype='تعديل الموردين';
+
+        }
+        else if (item.type=='c'){
+            this.formtype='تعديل العملاء';
+
+        }
+
+        this.form=item;
+     //   this.form.data=JSON.parse(item.data);
+
     }
 }
 
