@@ -83,7 +83,7 @@ export class ReturnsComponent implements OnInit {
 
   save() {
     this._ss.setAppIsBusy(true);
-    this.retOb.saveApplication().subscribe(res=>{
+    this.retOb.saveApplication().subscribe(res => {
       console.log('res of save: ', res.json());
       this._ss.setAppIsBusy(false);
     });
@@ -96,6 +96,14 @@ export class ReturnsComponent implements OnInit {
           //confirm here
         }
       });
+  }
+  print() {
+    var w = window.open();
+    w.document.write(document.getElementById("printdiv").innerHTML);
+    w.document.close(); // needed for chrome and safari
+    javascript: w.print();
+    w.close();
+    return false;
   }
 }
 
@@ -158,5 +166,5 @@ export class ReturnsObject {
     this.ready = true;
     console.log('this.ready:', this.ready);
   }
- 
+  
 }

@@ -68,17 +68,4 @@ export class GeneralComponent implements OnInit {
 }
 
 
-export class DialogData {
-  public reportname: string;
-  public message: string;
-  public submessage: string;
-  public result: any;
-  public placeholder: string;
-  constructor() {
-    this.type = '';
-    this.message = '';
-    this.submessage = '';
-    this.result = '';
-    this.placeholder = '';
-  }
-}
+
