@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 export class ChecksComponent implements OnInit {
 
   @ViewChild('panel', { read: ElementRef }) public panel: ElementRef<any>;
-  
+
   myControl = new FormControl();
   options: string[] = [];
   public filteredOptions: Observable<string[]>;
@@ -23,7 +23,7 @@ export class ChecksComponent implements OnInit {
   public recordStatus: string;
   public i: number;
   public checkes: any[] = [];
-  public check={
+  public check = {
     id: 0,
     checkno: "",
     bank: "",
@@ -32,13 +32,13 @@ export class ChecksComponent implements OnInit {
     checkowner: "0",
     lastholder: "",
     amount: 4,
-    source :"",
-    user:0,
-    comment:""
+    source: "",
+    user: 0,
+    comment: ""
   }
- 
-  
-  
+
+
+
 
 
   public sourceese: Choice[] = [
@@ -48,7 +48,7 @@ export class ChecksComponent implements OnInit {
   ]
 
 
-  
+
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
@@ -60,7 +60,7 @@ export class ChecksComponent implements OnInit {
   }
 
   ngOnInit() {
-   
+
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
@@ -103,10 +103,10 @@ export class ChecksComponent implements OnInit {
     });
 
 
-    
-    
+
+
   }
-  
+
 
   public statuses: Choice[] = [
     { value: 'clarified', viewValue: 'مظهر' },
@@ -119,10 +119,37 @@ export class ChecksComponent implements OnInit {
 
 
   update(check) {
-    this.check=check;
+    this.check = check;
   }
 
-  
+  save(check) {
+    check.user=this.user.id;
+    
+    if (check.id != 0) {
+      this._hs.put('checks', "id", check).subscribe(res => {
+
+        // _ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+
+        console.log('تم حفظ  ' + check.checkno + ' بنجاح');
+        this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+
+
+
+      });
+    }
+    else {
+      console.log(check.data);
+      this._hs.post('checks', check).subscribe(res => {
+
+        this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+        console.log('تم حفظ  ' + check.checkno + ' بنجاح');
+
+
+      });
+    }
+  }
+
+
 
 
 }

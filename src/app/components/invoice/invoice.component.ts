@@ -27,7 +27,31 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
+  public check = {
+    id: 0,
+    checkno: "",
+    bank: "",
+    date: "",
+    status: "",
+    checkowner: "0",
+    lastholder: "",
+    amount: 4,
+    source: "",
+    user: 0,
+    comment: ""
+  };
 
+  public inventory={
+    id:0;
+    data:[];
+  };
+
+  public stocks={
+    item:0;
+    avail:0;
+    rsv:0;
+    coming:0;
+  };
 
   public operation: string = "";
 
@@ -44,13 +68,14 @@ export class InvoiceComponent implements OnInit {
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
       } else {
-        // this._hs.get('lookups', 'filter=isleaf,eq,0')
-        //   .subscribe(res => {
-        //     this.lookups = res.json().lookups;
-        //     console.log(this.lookups);
+        this._hs.get('lookups', 'filter=group,eq,item')
+          .subscribe(res => {
+            this.items = res.json().lookups;
+            console.log(this.items);
 
-
-        //   })
+ 
+           
+          });
       }
     });
 
