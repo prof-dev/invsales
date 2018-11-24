@@ -20,8 +20,6 @@ export class AppComponent implements OnInit{
     this._ss.setAppIsBusy(false);
     this._ss.User.subscribe(user=>{
       this.user=user;
-      console.log('user in app: ', this.user);
-      
     });
     this._ss.SnackBar.subscribe((snack: string) => {
       if (snack && snack.length > 0) {

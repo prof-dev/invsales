@@ -55,7 +55,6 @@
         </tr>
         <tr *ngFor="let one of branches">
           <td>{{one.titlear}}</td>
-          <td></td>
           <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
             <td>
               <img src="assets/icnDelete.png" width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
@@ -83,7 +82,6 @@
         </tr>
         <tr *ngFor="let one of stores">
           <td>{{one.titlear}}</td>
-          <td></td>
           <div *ngIf="actionUserStores.indexOf(one.id)>=0">
             <td>
               <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Store from user">

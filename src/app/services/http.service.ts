@@ -23,8 +23,6 @@ export class HttpService {
     return this._http.post(this.HOST + table, data);
   }
   get(table, where?) {
-    console.log('url: ', this.HOST + table + "?transform=1&" + where);
-    
     return this._http.get(this.HOST + table + "?transform=1&" + where);
   }
   put(table, int_auto_primarykey_field, body) {
