@@ -52,12 +52,13 @@ export class LookupsComponent implements OnInit {
 
   }
   setGroup(group) {
-    // this.visible = true;
+    this.visible = true;
     this.data = {
       address: "", balance: 0, price: 0
     };
+    if(group==null){
     this.bank = {
-      group: group.group,
+      group:"",
       id: null,
       parent: 0,
       isleaf: 0,
@@ -65,16 +66,29 @@ export class LookupsComponent implements OnInit {
       titlear: "",
       data: null
     };
-
-    this.form = false;
-    this.group = group;
-    if (group.group == "new") {
-      this.filterby = 0;
-    }
-    else {
-      this.filterby = group.id;
-    }
-    this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
+    this.group = this.bank;
+    this.group.data=this.data;
+    }else{
+      this.bank = {
+        group: group.group,
+        id: null,
+        parent: 0,
+        isleaf: 0,
+        titleen: "",
+        titlear: "",
+        data: null
+      };
+      this.group = group;
+      this.group.data=this.data;
+       this.form = false;
+       if(group.id==null){
+        this.filterby = 0;
+       }
+       else{
+        this.filterby = group.id;
+       }
+      
+        this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
       .subscribe(res => {
         this.lookupitems = res.json().lookups;
 
@@ -84,6 +98,8 @@ export class LookupsComponent implements OnInit {
     console.log("group is set to:", group.group);
 
 
+    }
+    
   }
 
   modify(item) {
@@ -105,17 +121,28 @@ export class LookupsComponent implements OnInit {
     this.visible = false;
 
   }
+
+
   delete(item): void {
-   
+    this._hs.delete('lookups', item.id).subscribe(res => {
+      if (res.json() == 1) {
+
+        this._ss.setSnackBar("تم الحذف بنجاااح");
+      
+      }
+    });
+
+
   }
 
 
 
-  addnew() {
-    this.bank.id = null;
+  addnewlookup() {
+   this.setGroup(null);
     this.form = true;
     this.operation = "إدخال جديد";
     this.bank.titlear = "";
+    this.bank.group="";
     this.data.address = "";
     this.data.balance = 0;
     this.data.price = 0;
@@ -123,40 +150,39 @@ export class LookupsComponent implements OnInit {
     this.visible = false;
 
 
-    this.bank.parent = this.group.id;
+    this.bank.parent = 0;
+  }
+
+  addnewitem(parent) {
+   this.setGroup(parent);
+    this.visible = false;
+    this.form = true;
+    this.operation = "إدخال جديد";
+    this.bank.titlear = "";
+    this.data.address = "";
+    this.data.balance = 0;
+    this.data.price = 0;
+    this.bank.titleen = "";
+    
+    this.visible = false;
+
+
+    this.bank.parent = parent.id;
   }
 
   save(item, d) {
 
     if (item.id == null) {
-      if (this.group.group == 'new') {
-        item.parent = 0;
-
-      }
-      item.parent = this.group.id;
       this.bank.data = JSON.stringify(d);
-
       console.log(item.data);
-
       this._hs.post('lookups', item).subscribe(res => {
 
         console.log("تمت إضافة " + this.group.titlear + " id :" + res);
 
       })
 
-
-
     }
     else {
-
-      if (this.group.group != 'new') {
-        item.parent = this.group.id;
-      } else {
-        item.parent = this.group.id;
-      }
-
-
-
       item.data = JSON.stringify(d);
       console.log(item.selected);
 
@@ -173,10 +199,6 @@ export class LookupsComponent implements OnInit {
 
 
   }
-
-
-
-
   public leaf: Choice[] = [
     { value: '1', viewValue: 'فرع نهائي' },
     { value: '0', viewValue: 'قسم رئيسي / أو فرعي' }]

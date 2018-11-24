@@ -12,8 +12,6 @@ import { HttpService } from './services/http.service';
 import { ShareService } from './services/share.service';
 import { SuppcusComponent } from './components/suppcus/suppcus.component';
 import { HomeComponent } from './components/home/home.component';
-import { MainmenuComponent } from './components/mainmenu/mainmenu.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { UsersComponent } from './components/users/users.component';
 import { GeneralComponent } from './components/general/general.component';
 import { SigninComponent } from './components/signin/signin.component';
@@ -34,8 +32,6 @@ import { ReturnsComponent } from './components/returns/returns.component';
     SettingsComponent,
     SuppcusComponent,
     HomeComponent,
-    MainmenuComponent,
-    NavigationComponent,
     UsersComponent,
     GeneralComponent,
     SigninComponent,
