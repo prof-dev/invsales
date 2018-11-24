@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShareService } from '../../services/share.service';
 import { HttpService } from '../../services/http.service';
 
+
 @Component({
   selector: 'app-general',
   templateUrl: './general.component.html',
@@ -68,17 +69,17 @@ export class GeneralComponent implements OnInit {
 }
 
 
-export class DialogData {
-  public reportname: string;
-  public message: string;
-  public submessage: string;
-  public result: any;
-  public placeholder: string;
-  constructor() {
-    this.type = '';
-    this.message = '';
-    this.submessage = '';
-    this.result = '';
-    this.placeholder = '';
-  }
+// export class DialogData {
+//   public reportname: string;
+//   public message: string;
+//   public submessage: string;
+//   public result: any;
+//   public placeholder: string;
+//   constructor() {
+//     this.type = '';
+//     this.message = '';
+//     this.submessage = '';
+//     this.result = '';
+//     this.placeholder = '';
+//   }
 }

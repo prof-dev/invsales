@@ -131,7 +131,7 @@ export class ChecksComponent implements OnInit {
         // _ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
 
         console.log('تم حفظ  ' + check.checkno + ' بنجاح');
-        this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+        this._ss.setSnackBar('تم حفظ  ' + check.checkno + ' بنجاح');
 
 
 
@@ -141,7 +141,7 @@ export class ChecksComponent implements OnInit {
       console.log(check.data);
       this._hs.post('checks', check).subscribe(res => {
 
-        this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+        this._ss.setSnackBar('تم حفظ  ' +  check.checkno + ' بنجاح');
         console.log('تم حفظ  ' + check.checkno + ' بنجاح');
 
 

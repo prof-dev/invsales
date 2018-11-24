@@ -41,17 +41,17 @@ export class InvoiceComponent implements OnInit {
     comment: ""
   };
 
-  public inventory={
-    id:0;
-    data:[];
-  };
+  public inventory = {
+    id: 0,
+    data: [],
+  }
 
-  public stocks={
-    item:0;
-    avail:0;
-    rsv:0;
-    coming:0;
-  };
+  public stocks = {
+    item: 0,
+    avail: 0,
+    rsv: 0,
+    coming: 0,
+  }
 
   public operation: string = "";
 
@@ -62,7 +62,7 @@ export class InvoiceComponent implements OnInit {
 
 
   ngOnInit() {
-   
+
     this._ss.User.subscribe(user => {
       this.user = user;
       if (this.user.id == 0) {
@@ -73,8 +73,8 @@ export class InvoiceComponent implements OnInit {
             this.items = res.json().lookups;
             console.log(this.items);
 
- 
-           
+
+
           });
       }
     });
@@ -118,13 +118,13 @@ export class InvoiceComponent implements OnInit {
   //
   public _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    if(this.invoice.type =='p'){
+    if (this.invoice.type == 'p') {
       return this.suppliers.filter(option => option.toLowerCase().includes(filterValue));
     }
-    else if(this.invoice.type =='s'){
+    else if (this.invoice.type == 's') {
       return this.customers.filter(option => option.toLowerCase().includes(filterValue));
     }
- 
+
   }
 
   additem(item) {
@@ -134,45 +134,46 @@ export class InvoiceComponent implements OnInit {
   }
 
   setType(type) {
-    
 
-    this.customers=[];
-    this.suppliers=[];
+
+    this.customers = [];
+    this.suppliers = [];
     this.invoice.type = type;
-    if(type=='s'){
-      this.operation='المبيعات';
-    }else{
-      this.operation='المشتريات';
+    if (type == 's') {
+      this.operation = 'المبيعات';
+    } else {
+      this.operation = 'المشتريات';
 
     }
     this._hs.get('suppcus')
-    .subscribe(res => {
-      this.suppcus = res.json().suppcus;
-      console.log(res.json());
-    })
-    
-    this.suppcus.forEach(element => {
-      element.data=JSON.parse(element.data);
-     if(element.type =='c'){
-      console.log("customeris :",element.name);
-
-      this.customers.push(element.fullname+","+element.id+","+element.data.phone);
-     }
-      else if(element.type =='s'){
-
-        console.log("supplier is :",element.name);
-        this.suppliers.push(element.fullname+","+element.id+","+element.data.phone);
-      }
+      .subscribe(res => {
+        // this.suppcus = res.json().suppcus;
+        console.log(res.json());
 
 
+        res.json().suppcus.forEach(element => {
+          element.data = JSON.parse(element.data);
+          if (element.type == 'c') {
+            console.log("customeris :", element.fullname);
 
-    });
+            this.customers.push(element.fullname + "," + element.id + "," + element.data.phone);
+          }
+          else if (element.type == 's') {
+
+            console.log("supplier is :", element.fullname);
+            this.suppliers.push(element.fullname + "," + element.id + "," + element.data.phone);
+          }
+
+
+
+        });
+      });
     this.filteredOptions = this.myControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-    
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
   }
 
   save() {
