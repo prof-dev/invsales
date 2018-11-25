@@ -13,22 +13,38 @@
           <br>
           <br>
           <input *ngIf="invoice.type=='s'" type="text" required placeholder="إسم العميل" aria-label="Number"
-            matInput [formControl]="myControl" [matAutocomplete]="auto" >
+            matInput [formControl]="myControl" [matAutocomplete]="auto">
           
 
           <input *ngIf="invoice.type=='p'" type="text" required placeholder="إسم المورد" aria-label="Number"
-            matInput [formControl]="myControl" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option}}
+            matInput [formControl]="myControl" [matAutocomplete]="auto" >
+          <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="selected(option)" >
+              {{option.fullname}}
             </mat-option>
           </mat-autocomplete>
+         
+            
+            <mat-form-field>
+              <input matInput required placeholder=" اسم العميل"  [(ngModel)]="selecteditem.fullname">
+            </mat-form-field>
+                
+            <mat-form-field>
+              <input matInput required placeholder=" رصيد العميل"  [(ngModel)]="selecteditem.balance">
+            </mat-form-field>
+                
+            <mat-form-field>
+              <input matInput required placeholder=" vrl العميل"  [(ngModel)]="selecteditem.id">
+            </mat-form-field>
+        
+
+
           <div class="the-container">
 
             <button mat-raised-button color="primary" (click)="additem()">إضافة عنصر </button>
             <br>
             <br>
-
+           
 
             <mat-form-field>
               <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="item.price">
