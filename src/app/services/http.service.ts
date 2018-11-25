@@ -21,19 +21,22 @@ export class HttpService {
     this.HOST=this.APISERVER+'api.php/';
   }
   post(table, data) {
-    this.log(this.currentUser,table,'c',this.currentScreen,data);
+    this._http.post(this.HOST+'log',{user:this.currentUser,table:table,cud:'c',screen:this.currentScreen,body: JSON.stringify(data)}).subscribe(res=>{
+    });
     return this._http.post(this.HOST + table, data);
   }
   get(table, where?) {
     return this._http.get(this.HOST + table + "?transform=1&" + where);
   }
   put(table, int_auto_primarykey_field, body) {
-    this.log(this.currentUser,table,'c',this.currentScreen,body);
+    this._http.post(this.HOST+'log',{user:this.currentUser,table:table,cud:'u',screen:this.currentScreen,body: JSON.stringify(body)}).subscribe(res=>{
+    });
     return this._http.put(this.HOST + table + '/' + body[int_auto_primarykey_field], body);
   }
  
   delete(table, id) {
-    this.log(this.currentUser,table,'c',this.currentScreen,id);
+    this._http.post(this.HOST+'log',{user:this.currentUser,table:table,cud:'d',screen:this.currentScreen,body: id}).subscribe(res=>{
+    });
     return this._http.delete(this.HOST + table + '/' + id);
   }
   log(user, table, cud,screen, body){
