@@ -22,6 +22,7 @@ import { InvoiceComponent } from './components/invoice/invoice.component';
 import { ChecksComponent } from './components/checks/checks.component';
 import { DialogsComponent } from "./components/dialogs/dialogs.component";
 import { ReturnsComponent } from './components/returns/returns.component';
+import { LogComponent } from './components/log/log.component';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { ReturnsComponent } from './components/returns/returns.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent, ReturnsComponent
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent
     
 
   ],

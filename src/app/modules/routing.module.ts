@@ -9,6 +9,7 @@ import { LookupsComponent } from '../components/lookups/lookups.component';
 import { InvoiceComponent } from '../components/invoice/invoice.component';
 import { ChecksComponent } from '../components/checks/checks.component';
 import { ReturnsComponent } from '../components/returns/returns.component';
+import { LogComponent } from '../components/log/log.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path:'invoice',component:InvoiceComponent},
   {path:'checks',component:ChecksComponent},
   {path:'returns',component:ReturnsComponent},
+  {path:'log',component:LogComponent},
 ];
 
 @NgModule({
