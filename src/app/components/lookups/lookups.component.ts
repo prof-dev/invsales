@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { ShareService } from '../../services/share.service';
 import { Router } from '@angular/router';
+import { UtilsService } from '../../services/utils.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class LookupsComponent implements OnInit {
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
-    private _router: Router) { }
+    private _router: Router,private _ut : UtilsService) { }
 
 
 
@@ -123,7 +124,7 @@ export class LookupsComponent implements OnInit {
   }
 
 
-  delete(item): void {
+  dodelete(item): void {
     this._hs.delete('lookups', item.id).subscribe(res => {
       if (res.json() == 1) {
 
@@ -199,6 +200,19 @@ export class LookupsComponent implements OnInit {
 
 
   }
+
+  deleteitem(item) {
+
+    this._ut.messageBox('confirm', 'تأكيد احذف', 'هل أنت متأكد من حذف العنصر؟')
+      .afterClosed()
+      .subscribe(result => {
+        if (result == 'ok') {
+          console.log('res: ', this._ut.thedata.result);
+          this.dodelete(item);
+         
+        }
+      });
+  }
   public leaf: Choice[] = [
     { value: '1', viewValue: 'فرع نهائي' },
     { value: '0', viewValue: 'قسم رئيسي / أو فرعي' }]
@@ -206,6 +220,8 @@ export class LookupsComponent implements OnInit {
 
 
 }
+
+
 
 interface Choice {
   value: string;
