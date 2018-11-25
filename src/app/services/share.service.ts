@@ -15,6 +15,7 @@ export class ShareService {
 
   public User = this.user.asObservable();
   setUser(user) {
+    this._hs.currentUser=user.username;
     this.user.next(user);
   }
 

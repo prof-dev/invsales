@@ -1,3 +1,24 @@
-<p>
-  log works!
-</p>
+<div class="container" dir="rtl">
+  <br>
+  <mat-card class="logs-card">
+    <table>
+      <tr>
+        <th>اسم المستخدم</th>
+        <th>التاريخ</th>
+        <th>الجدول</th>
+        <th>الشاشه</th>
+        <th>العمليه</th>
+      </tr>
+      <tr *ngFor="let log of logs">
+        <td>{{log.user}}</td>
+        <td>{{log.date}}</td>
+        <td>{{log.table}}</td>
+        <td>{{log.screen}}</td>
+        <td> <button mat-raised-button (click)="details(log)"><img src="assets/{{log.cud}}.png" alt="" width="32"></button>  </td>
+      </tr>
+    </table>
+  </mat-card>
+  <mat-card class="log-card">
+    {{log.body | json}}
+  </mat-card>
+</div>
