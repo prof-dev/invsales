@@ -19,52 +19,6 @@
         </mat-form-field>
         <br>
         <div *ngIf="retOb.type==='p'">
-            <mat-form-field>
-                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم طلب الشراء أو طلب الرد">
-                <br>
-            </mat-form-field>
-            <a mat-raised-button (click)="fetch()" color="primary">جلب طلب الشراء أو طلب الرد</a>&nbsp;
-            <a mat-raised-button (click)="save()" color="primary">حفظ</a>&nbsp;
-            <a mat-raised-button (click)="delivered()" color="primary">تأكيد التسليم</a>&nbsp;
-            <a mat-raised-button (click)="delete()" color="primary">حذف الطلب</a>&nbsp;
-            <a mat-raised-button onclick="print()" color="primary">طباعه</a>&nbsp;
-            <div id="printdiv" class="mat">
-                <table class="header">
-                    <tr>
-                        <td>
-                    <tr>الخرطوم السجانة</tr>
-                    <tr>0123111000</tr>
-                    <tr>Awadallah</tr>
-                    </td>
-                    <td><span></span></td>
-                    <td>
-                        <h1 style="text-align: center">شركة هيفن</h1>
-                    </td>
-                    <td><span></span></td>
-                    <td>
-                        <span>
-                            <img src="assets/logo.jpg" alt="">
-                        </span>
-                    </td>
-                    </tr>
-                </table>
-                <table>
-                    <tr>
-                        <th>رقم النوع</th>
-                        <th>التفاصيل</th>
-                        <th>الكميه</th>
-                        <th>المردود</th>
-                    </tr>
-                    <tr *ngFor="let one of retOb.row.data">
-                        <td>{{one.id}}</td>
-                        <td>{{one.name}}</td>
-                        <td>{{one.qty}}</td>
-                        <td>
-                            <input type="text" required placeholder="" [value]="one.return">
-                        </td>
-                    </tr>
-                </table>
-            </div>
         </div>
         <div *ngIf="retOb.type==='s'">
             <mat-form-field>
@@ -75,27 +29,8 @@
             <a mat-raised-button (click)="save()" color="primary">حفظ</a>&nbsp;
             <a mat-raised-button (click)="delivered()" color="primary">تأكيد الاستلام</a>&nbsp;
             <a mat-raised-button (click)="delete()" color="primary">حذف الطلب</a>&nbsp;
-            <a mat-raised-button onclick="print()" color="primary">طباعه</a>&nbsp;
+            <a mat-raised-button (click)="print()" color="primary">طباعه</a>&nbsp;
             <div id="printdiv" class="mat">
-                <table class="header">
-                    <tr>
-                        <td>
-                    <tr>الخرطوم السجانة</tr>
-                    <tr>0123111000</tr>
-                    <tr>Awadallah</tr>
-                    </td>
-                    <td><span></span></td>
-                    <td>
-                        <h1 style="text-align: center">شركة هيفن</h1>
-                    </td>
-                    <td><span></span></td>
-                    <td>
-                        <span>
-                            <img src="assets/logo.jpg" alt="">
-                        </span>
-                    </td>
-                    </tr>
-                </table>
                 <table>
                     <tr>
                         <th>رقم النوع</th>

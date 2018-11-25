@@ -12,20 +12,9 @@ export class ReturnsComponent implements OnInit {
 
   public retOb: ReturnsObject;
   public invData: any[] = [
-    { itemid: 21, qty: 14, rsv: 14, return: 0 },
-    { itemid: 52, qty: 11, rsv: 14, return: 0 },
-    { itemid: 73, qty: 104, rsv: 14, return: 0 },
-    { itemid: 14, qty: 414, rsv: 14, return: 0 },
-    { itemid: 52, qty: 124, rsv: 14, return: 0 },
-    { itemid: 16, qty: 12, rsv: 14, return: 0 },
-  ];
-  public poData: any[] = [
-    { itemid: 121, qty: 114, return: 0 },
-    { itemid: 522, qty: 121, return: 0 },
-    { itemid: 53, qty: 14, return: 0 },
-    { itemid: 74, qty: 44, return: 0 },
-    { itemid: 51, qty: 24, return: 0 },
-    { itemid: 17, qty: 52, return: 0 },
+    { id: 1, qty: 14, return: 0 },
+    { id: 2, qty: 11, return: 0 },
+    { id: 3, qty: 104, return: 0 },
   ];
 
   constructor(private _hs: HttpService, private _ss: ShareService, private _ut: UtilsService) {
@@ -98,12 +87,7 @@ export class ReturnsComponent implements OnInit {
       });
   }
   print() {
-    var w = window.open();
-    w.document.write(document.getElementById("printdiv").innerHTML);
-    w.document.close(); // needed for chrome and safari
-    javascript: w.print();
-    w.close();
-    return false;
+    this._ut.showReport('طلب مردودات المبيعات', 'printdiv');
   }
 }
 
@@ -166,5 +150,5 @@ export class ReturnsObject {
     this.ready = true;
     console.log('this.ready:', this.ready);
   }
-  
+
 }

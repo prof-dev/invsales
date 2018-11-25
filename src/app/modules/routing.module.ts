@@ -5,7 +5,6 @@ import { SettingsComponent } from "../components/settings/settings.component";
 import { SuppcusComponent } from "../components/suppcus/suppcus.component";
 import { HomeComponent } from "../components/home/home.component";
 import { UsersComponent } from "../components/users/users.component";
-import { GeneralComponent } from "../components/general/general.component";
 import { LookupsComponent } from '../components/lookups/lookups.component';
 import { InvoiceComponent } from '../components/invoice/invoice.component';
 import { ChecksComponent } from '../components/checks/checks.component';
@@ -17,7 +16,6 @@ const routes: Routes = [
   {path:'settings', component:SettingsComponent},
   {path:'supcus', component:SuppcusComponent},
   {path:'users',component:UsersComponent},
-  {path:'printing',component:GeneralComponent},
   {path:'lookups',component:LookupsComponent},
   {path:'invoice',component:InvoiceComponent},
   {path:'checks',component:ChecksComponent},

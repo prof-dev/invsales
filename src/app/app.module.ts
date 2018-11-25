@@ -13,7 +13,6 @@ import { ShareService } from './services/share.service';
 import { SuppcusComponent } from './components/suppcus/suppcus.component';
 import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
-import { GeneralComponent } from './components/general/general.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { LookupsComponent } from './components/lookups/lookups.component';
 import { FormsModule,FormControl, ReactiveFormsModule} from "@angular/forms";
@@ -33,7 +32,6 @@ import { ReturnsComponent } from './components/returns/returns.component';
     SuppcusComponent,
     HomeComponent,
     UsersComponent,
-    GeneralComponent,
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
