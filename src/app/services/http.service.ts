@@ -32,7 +32,9 @@ export class HttpService {
   delete(table, id) {
     return this._http.delete(this.HOST + table + '/' + id);
   }
-  
+  log(user, table, cud,screen, body){
+    this.post('log', {user:user, table:table, cud:cud,screen:screen, body:body}).subscribe(res=>{});
+  }
   sendeMail(email: string, apikey: string, password: string, username: string) {
     return this._http.get(this.APISERVER + "mail.php?type=send&password=" + password + "&username=" + username + "&email=" + email + "&apikey=" + apikey);
   }

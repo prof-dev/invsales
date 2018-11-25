@@ -87,6 +87,7 @@ export class ReturnsComponent implements OnInit {
       });
   }
   print() {
+    this._hs.log('user1','tbl1','c','screen x','so and so');
     this._ut.showReport('طلب مردودات المبيعات', 'printdiv');
   }
 }

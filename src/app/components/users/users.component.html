@@ -2,19 +2,19 @@
   <br>
   <mat-card class="users-card">
     <mat-card-header>
-      <mat-card-title>Users Management</mat-card-title>
-      <mat-card-subtitle>Administrative Area</mat-card-subtitle>
+      <mat-card-title>اداره المستخدمين</mat-card-title>
+      <mat-card-subtitle>شاشه اداريه عليا</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <button mat-raised-button color="primary" (click)="refreshUsers()">Refresh users</button>
-      <button mat-raised-button color="primary" (click)="addUser()">Add new user</button>
+      <button mat-raised-button color="primary" (click)="refreshUsers()">تحديث المستخدمين</button>
+      <button mat-raised-button color="primary" (click)="addUser()">اضافة مستخدم جديد</button>
       <br>
       <br>
       <div *ngIf="users!=null">
         <table>
           <tr>
-            <th>User name</th>
-            <th>Fullname</th>
+            <th>اسم الدخول</th>
+            <th>الاسم الكامل</th>
           </tr>
           <tr *ngFor="let user of users">
             <td>{{user.username}}</td>
@@ -44,14 +44,14 @@
   </mat-card>
   <mat-card *ngIf="action=='editbranches'">
     <mat-card-header>
-      <mat-card-title>Editing Branches</mat-card-title>
-      <mat-card-subtitle>Editing User Bracnhes</mat-card-subtitle>
+      <mat-card-title>تعديل الأفرع</mat-card-title>
+      <mat-card-subtitle>تعديل أفرع المستخدم</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <table>
         <tr>
-          <th>Branche Name</th>
-          <th>Add/Remove</th>
+          <th>اسم الفرع</th>
+          <th>اضف أو اذل</th>
         </tr>
         <tr *ngFor="let one of branches">
           <td>{{one.titlear}}</td>
@@ -71,14 +71,14 @@
   </mat-card>
   <mat-card *ngIf="action=='editstores'">
     <mat-card-header>
-      <mat-card-title>Editing Wherhouses</mat-card-title>
-      <mat-card-subtitle>Editing User Wharehouses</mat-card-subtitle>
+      <mat-card-title>تعديل المخازن</mat-card-title>
+      <mat-card-subtitle>تعديل مخازن المستخدم</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <table>
         <tr>
-          <th>Wharehouse Name</th>
-          <th>Add/Remove</th>
+          <th>اسم المخزن</th>
+          <th>أضف أو أذل</th>
         </tr>
         <tr *ngFor="let one of stores">
           <td>{{one.titlear}}</td>
@@ -100,33 +100,33 @@
 
     <mat-card-header>
       <div *ngIf="action=='edituser'">
-        <mat-card-title>Editing Users</mat-card-title>
-        <mat-card-subtitle>Editing user {{actionUser.fullname}}</mat-card-subtitle>
+        <mat-card-title>تعديل بيانات المستخدمين</mat-card-title>
+        <mat-card-subtitle>تعديل المستخدم : {{actionUser.fullname}}</mat-card-subtitle>
       </div>
       <div *ngIf="action=='adduser'">
-        <mat-card-title>Adding Users</mat-card-title>
-        <mat-card-subtitle>Adding a new user</mat-card-subtitle>
+        <mat-card-title>إضافة المستخدمين</mat-card-title>
+        <mat-card-subtitle>إضافة مستخدم جديد</mat-card-subtitle>
       </div>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field>
-        <input matInput placeholder="Full name" name="fullname" [(ngModel)]="actionUser.fullname">
+        <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.fullname">
       </mat-form-field>
       <br>
       <mat-form-field>
-        <input matInput placeholder="User name" name="username" [(ngModel)]="actionUser.username">
+        <input matInput placeholder="اسم الدخول" name="username" [(ngModel)]="actionUser.username">
       </mat-form-field>
       <br>
       <mat-form-field>
-        <input matInput placeholder="User phone" name="phone" [(ngModel)]="actionUser.phone" type="phone">
+        <input matInput placeholder="رقم الهاتف" name="phone" [(ngModel)]="actionUser.phone" type="phone">
       </mat-form-field>
       <br>
       <mat-form-field>
-        <input matInput placeholder="User balance" name="balance" [(ngModel)]="actionUser.balance" readonly>
+        <input matInput placeholder="رصيد المستخدم" name="balance" [(ngModel)]="actionUser.balance" readonly>
       </mat-form-field>
       <br>
       <mat-form-field>
-        <input matInput placeholder="User roles" name="roles" [(ngModel)]="actionUser.roles">
+        <input matInput placeholder="إدوار المستخدم" name="roles" [(ngModel)]="actionUser.roles">
       </mat-form-field>
       <br>
       <img *ngIf="actionUser.locked==1" src="assets/icnLocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
@@ -134,18 +134,18 @@
       <img *ngIf="actionUser.locked==0" src="assets/icnUnlocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
         class="btn-img" matTooltip="Lock this user">
       <br>
-      <button mat-raised-button color="primary" (click)="saveUser()">Save</button>
+      <button mat-raised-button color="primary" (click)="saveUser()">حفظ</button>
     </mat-card-content>
   </mat-card>
   <mat-card *ngIf="action=='deleteuser'">
     <mat-card-header>
-      <mat-card-title>Deleting a user</mat-card-title>
+      <mat-card-title>حذف مستخدم</mat-card-title>
       <mat-card-subtitle>Deleting user {{actionUser.fullname}} id: {{actionUser.id}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <h1>Are you sure you want to delete user {{actionUser.fullname}}??</h1>
+      <h1>هل أنت متأكد أنك تريد حذف المستخدم  {{actionUser.fullname}} من النظام؟؟</h1>
       <br>
-      <button mat-raised-button color="primary" (click)="deleteUser()">Yes</button>
+      <button mat-raised-button color="primary" (click)="deleteUser()">نعم احذفه من النظام</button>
       <br>
       <br>
       <p>
