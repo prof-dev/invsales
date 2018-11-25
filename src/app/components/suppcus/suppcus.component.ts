@@ -49,6 +49,7 @@ export class SuppcusComponent implements OnInit {
                     "id": 0,
                     "balance": 0.00,
                     "fullname": "",
+                    "branch":"",
                     "data": {
                         "phone": "",
                         "whatsapp": "",
@@ -72,7 +73,7 @@ export class SuppcusComponent implements OnInit {
             console.log(form.data);
             this._hs.put('suppcus', "id",form).subscribe(res => {
              
-                    _ss.setSnackBar('تم حفظ  '+ this.formtype+' بنجاح');
+                   this._ss.setSnackBar('تم حفظ  '+ this.formtype+' بنجاح');
                    
           
               

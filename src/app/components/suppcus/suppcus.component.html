@@ -16,6 +16,9 @@
         <mat-form-field>
             <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance">
         </mat-form-field>
+        <mat-form-field  *ngIf="form.type=='c'">
+                <input matInput required placeholder=" فرع العميل" [(ngModel)]="form.branch">
+            </mat-form-field>
         <mat-form-field>
             <input matInput required placeholder=" موبايل" [(ngModel)]="form.data.phone">
         </mat-form-field>
@@ -54,16 +57,18 @@
                 <th>الموبايل</th>
                 <th>الواتساب</th>
                 <th>الايميل</th>
+                <th *ngIf="form.type=='c'">الفرع</th>
                 <th>الرصيد</th>
                 <th>تعديل</th>
             </tr>
             <tr *ngFor="let row of suppcus  ">
                 <td>{{row.id}}</td>
-                <td>{{row.fullname}}</td>
+                <td>{{row.fullname}}</td>   
                 <td>{{row.data.phone}}</td>
                 <td>{{row.data.phone2}}</td>
                 <td>{{row.data.whatsapp}}</td>
                 <td>{{row.data.email}}</td>
+                <td *ngIf="form.type=='c'">{{row.branch}}</td>
                 <td>{{row.balance}}</td>
                 <td>
                     <button mat-raised-button color="primary" (click)="modify(row)">تعديل</button>

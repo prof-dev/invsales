@@ -1,7 +1,9 @@
+<h1>شاشة ضبط النظام</h1>
 <div class="container ar" dir="rtl">
+    
     <mat-card>
         <mat-card-content>
-            <button mat-raised-button color="primary" (click)="addnewlookup()">إضافة ضبط الجديد</button>
+            <button mat-raised-button color="warn" (click)="addnewlookup()">إضافة ضبط الجديد</button>
         </mat-card-content>
         <table>
             <tr>
@@ -23,7 +25,7 @@
                     <img src="assets/icnAdd.png" width="32" alt="" (click)="addnewitem(row)" class="btn-img" matTooltip="اضافة الى">
                 </td>
                 <td>
-                    <img src="assets/icnDelete.png" alt="" width="32" (click)="delete(row)" class="btn-img" matTooltip="حذف">
+                    <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteitem(row)" class="btn-img" matTooltip="حذف">
                 </td>
             </tr>
 
@@ -32,7 +34,7 @@
     </mat-card>
 
     <mat-card *ngIf="lookupitems.length>0 && visible" id="datatable">
-
+            <h3> {{group.titlear}}</h3>
         <table class="responsive">
             <tr>
                 <th>Id</th>
@@ -50,7 +52,7 @@
                     <button mat-raised-button color="primary" (click)="modify(item)">Modify</button>
                 </td>
                 <td>
-                    <img src="assets/icnDelete.png" alt="" width="32" (click)="delete(item)" class="btn-img" matTooltip="حذف">
+                    <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteitem(item)" class="btn-img" matTooltip="حذف">
                 </td>
             </tr>
         </table>

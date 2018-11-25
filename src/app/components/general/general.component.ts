@@ -60,7 +60,7 @@ export class GeneralComponent implements OnInit {
 
 
     w.document.close(); // needed for chrome and safari
-    javascript: w.print();
+    w.print();
     w.close();
     return false;
   }
@@ -82,4 +82,4 @@ export class GeneralComponent implements OnInit {
 //     this.result = '';
 //     this.placeholder = '';
 //   }
-}
+

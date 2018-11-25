@@ -101,7 +101,7 @@ export class ReturnsComponent implements OnInit {
     var w = window.open();
     w.document.write(document.getElementById("printdiv").innerHTML);
     w.document.close(); // needed for chrome and safari
-    javascript: w.print();
+       w.print();
     w.close();
     return false;
   }
