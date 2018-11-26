@@ -23,6 +23,8 @@ import { ChecksComponent } from './components/checks/checks.component';
 import { DialogsComponent } from "./components/dialogs/dialogs.component";
 import { ReturnsComponent } from './components/returns/returns.component';
 import { LogComponent } from './components/log/log.component';
+import { SadadComponent } from './component/sadad/sadad.component';
+import { InventoryComponent } from './component/inventory/inventory.component';
 
 
 @NgModule({
@@ -36,7 +38,7 @@ import { LogComponent } from './components/log/log.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent
     
 
   ],
