@@ -136,6 +136,7 @@ export class UsersComponent implements OnInit {
     this._hs.delete('users', this.actionUser.id).subscribe(res => {
       if (res.json() == 1) {
         this.deleteMsg = "User is deleted successfylly, please refresh users.";
+
       }
     });
   }
@@ -145,7 +146,6 @@ export class UsersComponent implements OnInit {
     this.actionUser.locked = 1;
     this._hs.put('users', 'id', this.actionUser).subscribe(res => {
       if (res.json() == 1) {
-
       }
     });
   }
@@ -155,7 +155,6 @@ export class UsersComponent implements OnInit {
     this.actionUser.locked = 0;
     this._hs.put('users', 'id', this.actionUser).subscribe(res => {
       if (res.json() == 1) {
-
       }
     });
   }
