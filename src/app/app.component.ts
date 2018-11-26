@@ -47,5 +47,8 @@ export class AppComponent implements OnInit{
     routeTo(url) {
       this._router.navigateByUrl(url);
     }
-  
+  goto(url:string){
+    this._ss.setScreen(url);
+    this._router.navigateByUrl(url);
+  }
 }

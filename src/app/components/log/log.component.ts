@@ -19,5 +19,6 @@ export class LogComponent implements OnInit {
 
   details(log) {
     this.log=log;
+    this.log.body= JSON.parse(this.log.body);
   }
 }

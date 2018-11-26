@@ -14,11 +14,15 @@
         <td>{{log.date}}</td>
         <td>{{log.table}}</td>
         <td>{{log.screen}}</td>
-        <td> <button mat-raised-button (click)="details(log)"><img src="assets/{{log.cud}}.png" alt="" width="32"></button>  </td>
+        <td> <button mat-raised-button (click)="details(log)"><img src="assets/{{log.cud}}.png" alt="" width="32"></button>
+        </td>
       </tr>
     </table>
   </mat-card>
   <mat-card class="log-card">
-    {{log.body | json}}
+    <div class="log-div">
+        {{log.body | json}}
+
+    </div>
   </mat-card>
 </div>

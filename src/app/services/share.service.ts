@@ -26,6 +26,14 @@ export class ShareService {
     this.snackBar.next(message);
   }
 
+  //Screen
+  private screen = new BehaviorSubject({});
+  public Screen = this.screen.asObservable();
+  setScreen(screen) {
+    this._hs.currentScreen=screen;
+    this.screen.next(screen);
+  }
+
   //appIsBusy
   private appIsBusy = new BehaviorSubject({});
   public AppIsBusy = this.appIsBusy.asObservable();
