@@ -4,10 +4,18 @@
 
 <div>
 
-<mat-card>
-  <mat-card-content>
+  <mat-card>
+    <mat-card-content>
     
-  </mat-card-content>
-</mat-card>
+
+        <select matNativeControl required class="primary" placeholder="إختيار المخزن"  [(ngModel)]="inventroy.storeid" >
+          <option *ngFor="let option of storeselect " [value]="option.id">
+            {{option.titlear}}
+          </option>
+
+        </select>
+    
+    </mat-card-content>
+  </mat-card>
 
 </div>

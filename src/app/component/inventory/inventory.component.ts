@@ -10,15 +10,16 @@ import { Router } from '@angular/router';
 })
 export class InventoryComponent implements OnInit {
   public user: any;
+  public storeselect:any[]=[];
   public items: any[] = [];
   public item: any = {};
   public inventroy = {
     storeid: 0,
     data: null
   }
-  public stores:any[]=[];
+  public stores: any[] = [];
   public inventories: any[] = [];
-  store: any;
+  public store: any = {};
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router) { }
@@ -39,30 +40,60 @@ export class InventoryComponent implements OnInit {
       this._hs.get('inventory')
         .subscribe(res => {
           this.inventories = res.json().inventory;
+          console.log(this.inventories);
+
           this.inventories.forEach(element => {
+            console.log(element.data);
+
             element.data = JSON.parse(element.data);
           });
         });
-        ///////  retrieve all the stores by the group name of the parent
+
+      ///////  retrieve all the stores by the group name of the parent
       this._hs.get('lookups', 'filter=group,eq,stores')
         .subscribe(res => {
-          this.store = res.json().lookups;
+          this.store = res.json().lookups[0];
+          console.log(this.store);
+          this._hs.get('lookups', 'filter[]=parent,eq,' + this.store.id)
+          .subscribe(res => {
+            this.stores = res.json().lookups;
+            console.log(this.stores);
+            this.storeselect=this.stores.map(stores=>({id:stores.id,titlear:stores.titlear}));
+            console.log(this.storeselect);
+            
+            
+  
+          });
         });
-      this._hs.get('lookups', 'filter=parent,eq,'+this.store[0].id)
-        .subscribe(res => {
-          this.stores = res.json().lookups;
-        })
+   
+
     });
   }
 
-  additemtolist(item) {
-    this.items.push(item);
+  additemtolist(item, list: any[]): any[] {
+    list.forEach(element => {
+      if (element.id == item.id) {
+        element.avb += item.avb;
+        element.rsv += item.rsv;
+        element.com += item.com;
+      }
+      else {
+        this.items.push(item);
+      }
+    });
+
     this.item = {
       id: 0,
       avb: 0,
       rsv: 0,
       com: 0
     };
+
+    return list;
+  }
+
+  openinsertitem() {
+
   }
 
 
