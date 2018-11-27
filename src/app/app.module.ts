@@ -23,8 +23,8 @@ import { ChecksComponent } from './components/checks/checks.component';
 import { DialogsComponent } from "./components/dialogs/dialogs.component";
 import { ReturnsComponent } from './components/returns/returns.component';
 import { LogComponent } from './components/log/log.component';
-import { SadadComponent } from './component/sadad/sadad.component';
-import { InventoryComponent } from './component/inventory/inventory.component';
+import { SadadComponent } from './components/sadad/sadad.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 
 @NgModule({

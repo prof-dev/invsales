@@ -184,7 +184,7 @@ export class InventoryComponent implements OnInit {
           inner.data=JSON.stringify(inner.data);
           this._hs.put('inventory','storeid',inner).subscribe(res =>{
      
-            this._ss.setSnackBar('inserted');
+            this._ss.setSnackBar('inserted page is refreshed for you');
           });
         }
       });

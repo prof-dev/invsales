@@ -10,8 +10,8 @@ import { InvoiceComponent } from '../components/invoice/invoice.component';
 import { ChecksComponent } from '../components/checks/checks.component';
 import { ReturnsComponent } from '../components/returns/returns.component';
 import { LogComponent } from '../components/log/log.component';
-import { InventoryComponent } from '../component/inventory/inventory.component';
-import { SadadComponent } from '../component/sadad/sadad.component';
+import { InventoryComponent } from '../components/inventory/inventory.component';
+import { SadadComponent } from '../components/sadad/sadad.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
