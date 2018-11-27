@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class InventoryComponent implements OnInit {
   public user: any;
   public storeselect:any[]=[];
-  public items: any[] = [];
+  public items: Item[] = [];
   public item: any = {};
   public inventroy = {
     storeid: 0,
@@ -43,9 +43,10 @@ export class InventoryComponent implements OnInit {
           console.log(this.inventories);
 
           this.inventories.forEach(element => {
-            console.log(element.data);
-
-            element.data = JSON.parse(element.data);
+           
+            this.items=JSON.parse(element.data);
+            element.data = this.items;
+            console.log(this.items);
           });
         });
 
@@ -99,4 +100,10 @@ export class InventoryComponent implements OnInit {
 
 
 
+}
+export interface Item{
+  id: number,
+  avb:number,
+  rsv: number,
+  com: number
 }
