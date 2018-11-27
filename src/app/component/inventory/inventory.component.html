@@ -2,8 +2,8 @@
   inventory works!
 </p>
 
-<div>
-
+<div class="container">
+  <!-- 
   <mat-card>
     <mat-card-content>
     
@@ -16,31 +16,73 @@
         </select>
     
     </mat-card-content>
-  </mat-card>
+  </mat-card> -->
   <mat-card>
+    <h2>المخازن</h2>
     <table>
       <tr>
         <th>المخزن</th>
-        <th>التفاصيل</th>
+        
       </tr>
       <tr *ngFor="let row of inventories">
-          <td>{{row.storeid}}</td>
-          <td>
-            <tr>
-              <th>رقم البضاعة</th>
-              <th>المتاح</th>
-              <th>المحجوز</th>
-              <th>بضاعة قادمة</th>
-            </tr>
-            <tr *ngFor="let r of row.data">
-                <td>{{r.id}}</td>
-                <td>{{r.avb}}</td>
-                <td>{{r.rsv}}</td>
-                <td>{{r.com}}</td>
-            </tr>
-          </td>
+        <td>
+          {{getstorename(row.storeid)}}
+          
+        </td>
+        
+      <td>
+          <img src="assets/icnBranches.png" alt="" width="32" (click)="openinsertitem(row.data,row.storeid,'show')" >
+      </td>
+      </tr>
+      <tr>
+          <img *ngIf="touched.length>0" src="assets/icnSave.png" alt="" width="32" (click)="save()" class="btn-img" matTooltip="هنالك تغيرات الرجاء الحفظ">
       </tr>
     </table>
   </mat-card>
 
+  <mat-card>
+      <div *ngIf="entrytype=='add'">
+        <h2> الإضافة إلى مخزن {{display}}</h2>
+        <mat-form-field>
+          <input matInput required placeholder="العنصر" name="email" [(ngModel)]="item.id">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="المتاح" name="email" [(ngModel)]="item.avb">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="المحجوز " name="email" [(ngModel)]="item.rsv">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="الكمية المطلوبة" name="email" [(ngModel)]="item.com">
+        </mat-form-field><br>
+        <button mat-raised-button (click)="additemtolist(item)" color="primary">حفظ</button>
+      </div>
+      <div *ngIf="entrytype=='show'">
+          {{display}}
+        <table>
+            <tr>
+                <th>رقم البضاعة</th>
+                <th>المتاح</th>
+                <th>المحجوز</th>
+                <th>الصنف</th>
+              </tr>
+              <tr *ngFor="let r of items">
+
+                  <td>{{getproductname(r.id)}}</td>
+                  <td>{{r.avb}}</td>
+                  <td>{{r.rsv}}</td>
+                  <td>{{r.com}}</td>
+                  <td>
+                    <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(r)" class="btn-img" matTooltip="Edit user data">
+                  </td>
+                </tr>
+                <tr>
+                    <img src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img" matTooltip="Edit user data">
+                </tr>
+
+
+          
+        </table>
+      </div>
+    </mat-card>
 </div>

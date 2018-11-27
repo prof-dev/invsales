@@ -1,0 +1,9 @@
+ 
+.mat-card {
+    width: 500px;
+    margin-right: 10px;
+  }
+  .container {
+    margin-top: 20px;
+    display: flex;
+  }

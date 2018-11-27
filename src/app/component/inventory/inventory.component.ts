@@ -10,7 +10,13 @@ import { Router } from '@angular/router';
 })
 export class InventoryComponent implements OnInit {
   public user: any;
-  public storeselect:any[]=[];
+  public display = "";
+  public entrytype = "";
+  public touched:number[]=[];
+  public actionstore=0;
+  public storeselect: any[] = [];
+  public lookups: any[] = [];
+  public productsview: any[] = [];
   public items: Item[] = [];
   public item: any = {};
   public inventroy = {
@@ -20,6 +26,8 @@ export class InventoryComponent implements OnInit {
   public stores: any[] = [];
   public inventories: any[] = [];
   public store: any = {};
+  result: string;
+  istouched: boolean;
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router) { }
@@ -43,12 +51,27 @@ export class InventoryComponent implements OnInit {
           console.log(this.inventories);
 
           this.inventories.forEach(element => {
-           
-            this.items=JSON.parse(element.data);
+
+            this.items = JSON.parse(element.data);
             element.data = this.items;
             console.log(this.items);
           });
         });
+
+      this._hs.get('lookups', 'filter=group,eq,item')
+        .subscribe(res => {
+          this.lookups = res.json().lookups;
+          console.log(this.lookups);
+
+          this.lookups.forEach(element => {
+
+            element.data = JSON.parse(element.data);
+            console.log(this.items);
+          });
+          this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
+        });
+
+
 
       ///////  retrieve all the stores by the group name of the parent
       this._hs.get('lookups', 'filter=group,eq,stores')
@@ -56,32 +79,48 @@ export class InventoryComponent implements OnInit {
           this.store = res.json().lookups[0];
           console.log(this.store);
           this._hs.get('lookups', 'filter[]=parent,eq,' + this.store.id)
-          .subscribe(res => {
-            this.stores = res.json().lookups;
-            console.log(this.stores);
-            this.storeselect=this.stores.map(stores=>({id:stores.id,titlear:stores.titlear}));
-            console.log(this.storeselect);
-            
-            
-  
-          });
+            .subscribe(res => {
+              this.stores = res.json().lookups;
+              console.log(this.stores);
+              this.storeselect = this.stores.map(stores => ({ id: stores.id, titlear: stores.titlear }));
+              console.log(this.storeselect);
+
+
+
+            });
         });
-   
+
 
     });
   }
 
-  additemtolist(item, list: any[]): any[] {
-    list.forEach(element => {
+  additemtolist(item) {
+    console.log(this.items.length);
+
+    this.items.forEach(element => {
       if (element.id == item.id) {
-        element.avb += item.avb;
-        element.rsv += item.rsv;
-        element.com += item.com;
+        element.avb =element.avb +parseInt(item.avb);
+        element.rsv += parseInt(item.rsv);
+        element.com += parseInt(item.com);
       }
       else {
         this.items.push(item);
       }
     });
+    this.inventories.forEach(element => {
+      if(element.storeid==this.actionstore){
+        element.data=this.items;
+      }
+    });
+    this.istouched=false;
+    this.touched.forEach(element => {
+      if(element==this.actionstore){
+        this.istouched=true;
+      }
+    });
+    if(!this.istouched){
+      this.touched.push(this.actionstore);
+    }
 
     this.item = {
       id: 0,
@@ -90,20 +129,81 @@ export class InventoryComponent implements OnInit {
       com: 0
     };
 
-    return list;
-  }
-
-  openinsertitem() {
+    console.log(this.items);
 
   }
 
+  openinsertitem(list: any[], storeid,type) {
+    this.items = [];
+    this.items = list;
+    this.entrytype = type;
+    if(storeid!=""){
+      this.display = this.getstorename(storeid);
+      this.actionstore=storeid;
+    }
+    
+    
+    console.log(this.display);
+    
+  }
 
+  getstorename(id): string {
 
+    this.result = "";
+    this.storeselect.forEach(element => {
+      if (element.id == id) {
+        console.log("je");
+
+        this.result = element.titlear;
+
+      }
+
+    });
+    return this.result;
+  }
+
+  getproductname(id): string {
+
+    this.result = "";
+    this.productsview.forEach(element => {
+      if (element.id == id) {
+        console.log(element.titlear);
+
+        this.result = element.titlear;
+
+      }
+
+    });
+    return this.result;
+  }
+
+  save(){
+    this.touched.forEach(outer => {
+      this.inventories.forEach(inner => {
+        if(outer==inner.storeid){
+          inner.data=JSON.stringify(inner.data);
+          this._hs.put('inventory','storeid',inner).subscribe(res =>{
+     
+            this._ss.setSnackBar('inserted');
+          });
+        }
+      });
+    });
+    
+    this.touched=[];
+    this.ngOnInit();
+    
+  }
 
 }
-export interface Item{
+export interface Item {
   id: number,
-  avb:number,
+  avb: number,
   rsv: number,
   com: number
 }
+// export interface Data{
+//   price:number,
+//   address:string,
+//   balance:number
+// }
