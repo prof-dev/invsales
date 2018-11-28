@@ -127,6 +127,41 @@ export class InvoiceComponent implements OnInit {
 
   }
 
+  private getallstores() {
+    this._hs.get('lookups', 'filter=group,eq,stores')
+      .subscribe(res => {
+        this.store = res.json().lookups[0];
+        console.log(this.store);
+        this._hs.get('lookups', 'filter[]=parent,eq,' + this.store.id)
+          .subscribe(res => {
+            this.stores = res.json().lookups;
+            this.storeselect = this.stores.map(stores => ({ id: stores.id, titlear: stores.titlear }));
+            console.log(this.storeselect);
+          });
+      });
+  }
+
+  private refresh() {
+    this._ss.User.subscribe(user => {
+      this.user = user;
+      if (this.user.id == 0) {
+        this._router.navigateByUrl('/login');
+      }
+      else {
+        this._hs.get('lookups', 'filter=group,eq,item')
+          .subscribe(res => {
+            this.lookups = res.json().lookups;
+            console.log(this.lookups);
+            this.lookups.forEach(element => {
+              element.data = JSON.parse(element.data);
+              console.log(this.items);
+            });
+            this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
+          });
+      }
+    });
+  }
+
   //
   public _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
