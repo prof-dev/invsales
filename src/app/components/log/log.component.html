@@ -1,6 +1,20 @@
 <div class="container" dir="rtl">
   <br>
   <mat-card class="logs-card">
+    <mat-form-field class="loginput">
+      <input matInput type="search" placeholder="اسم المستخدم" name="user" id="user" [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field class="loginput">
+      <input matInput [matDatepicker]="fromdate" placeholder="من تاريخ">
+      <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+      <mat-datepicker #fromdate></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="loginput">
+      <input matInput [matDatepicker]="todate" placeholder="إلى تاريخ">
+      <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+      <mat-datepicker #todate></mat-datepicker>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="refresh()" class="loginput">حصر</button>
     <table>
       <tr>
         <th>اسم المستخدم</th>
@@ -9,20 +23,22 @@
         <th>الشاشه</th>
         <th>العمليه</th>
       </tr>
+
       <tr *ngFor="let log of logs">
         <td>{{log.user}}</td>
         <td>{{log.date}}</td>
         <td>{{log.table}}</td>
         <td>{{log.screen}}</td>
-        <td> <button mat-raised-button (click)="details(log)"><img src="assets/{{log.cud}}.png" alt="" width="32"></button>
+        <td> <button mat-fab-button (click)="details(log)"><img src="assets/{{log.cud}}.png" alt="" width="32"></button>
         </td>
       </tr>
     </table>
   </mat-card>
-  <mat-card class="log-card">
+  <mat-card *ngIf="log" class="log-card">
     <div class="log-div">
-        {{log.body | json}}
-
+      <p *ngFor="let kv of log.row">
+        {{kv.value}} : {{kv.name}}
+      </p>
     </div>
   </mat-card>
 </div>

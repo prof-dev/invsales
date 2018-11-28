@@ -5,12 +5,11 @@
   .logs-card{
       width:500px;
   }
-  .log-card{
+.log-card{
       margin-right: 10px;
-        width:400px;
+        width:500px;
   }
-log-div{
-    width:300px !important;
-    word-wrap: normal;
-    direction: ltr;
-}
+  .loginput{
+    width:120px;
+    margin-right: 5px;
+  }
