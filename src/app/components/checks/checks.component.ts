@@ -142,7 +142,7 @@ export class ChecksComponent implements OnInit {
       this._hs.post('checks', check).subscribe(res => {
 
         this._ss.setSnackBar('تم حفظ  ' +  check.checkno + ' بنجاح');
-        console.log('تم حفظ  ' + check.checkno + ' بنجاح');
+       
 
 
       });

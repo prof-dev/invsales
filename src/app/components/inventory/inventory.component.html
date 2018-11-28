@@ -1,0 +1,81 @@
+
+
+<div class="container">
+ 
+  <mat-card>
+    <h2>المخازن</h2>
+    <table>
+      <tr>
+        <th>المخزن</th>
+
+      </tr>
+      <tr *ngFor="let row of inventories">
+        <td>
+          {{getstorename(row.storeid)}}
+
+        </td>
+
+        <td>
+          <img src="assets/icnBranches.png" alt="" width="32" (click)="openinsertitem(row.data,row.storeid,'show')">
+        </td>
+      </tr>
+      <tr>
+        <img *ngIf="touched.length>0" src="assets/icnSave.png" alt="" width="32" (click)="save()" class="btn-img"
+          matTooltip="هنالك تغيرات الرجاء الحفظ">
+      </tr>
+    </table>
+  </mat-card>
+
+  <mat-card>
+    <div *ngIf="entrytype=='add'">
+      <h2> الإضافة إلى مخزن {{display}}</h2>
+      <mat-form-field>
+        <select matNativeControl required class="primary" placeholder="إختيار الصنف" [(ngModel)]="item.id">
+          <option *ngFor="let option of productsview " [value]="option.id">
+            {{option.titlear}}
+          </option>
+
+        </select>
+        <!-- <input matInput required placeholder="العنصر" name="email" [(ngModel)]="item.id"> -->
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput required placeholder="المتاح" name="email" [(ngModel)]="item.avb">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput required placeholder="المحجوز " name="email" [(ngModel)]="item.rsv">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput required placeholder="الكمية المطلوبة" name="email" [(ngModel)]="item.com">
+      </mat-form-field><br>
+      <button mat-raised-button (click)="additemtolist(item)" color="primary">حفظ</button>
+    </div>
+    <div *ngIf="entrytype=='show'">
+      <h1>مخزن  {{display}}</h1>
+      <table>
+        <tr>
+          <th>الصنف </th>
+          <th>المتاح</th>
+          <th>المحجوز</th>
+          <th>بضاعة قادمة</th>
+        </tr>
+        <tr *ngFor="let r of items">
+
+          <td>{{getproductname(r.id)}}</td>
+          <td>{{r.avb}}</td>
+          <td>{{r.rsv}}</td>
+          <td>{{r.com}}</td>
+          <td>
+            <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(r)" class="btn-img" matTooltip="Edit user data">
+          </td>
+        </tr>
+        <tr>
+          <img src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img"
+            matTooltip="إضافة البضاعة إلى المخزن">
+        </tr>
+
+
+
+      </table>
+    </div>
+  </mat-card>
+</div>

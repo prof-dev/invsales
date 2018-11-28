@@ -16,8 +16,11 @@ export class InvoiceComponent implements OnInit {
   myControl = new FormControl();
   customers: string[] = [];
   suppliers: string[] = [];
+  public supp: any[] = [];
+  public cuss: any[] = [];
+
   public optionids: any[] = [];
-  public filteredOptions: Observable<string[]>;
+  public filteredOptions: Observable<any[]>;
   public user: any;
   public invoice: any;
   public data: any;
@@ -27,6 +30,7 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
+  public selecteditem: any = {};
   public check = {
     id: 0,
     checkno: "",
@@ -116,13 +120,15 @@ export class InvoiceComponent implements OnInit {
   }
 
   //
-  public _filter(value: string): string[] {
+  public _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
     if (this.invoice.type == 'p') {
-      return this.suppliers.filter(option => option.toLowerCase().includes(filterValue));
+      this.selecteditem = this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
+      return this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
     else if (this.invoice.type == 's') {
-      return this.customers.filter(option => option.toLowerCase().includes(filterValue));
+      console.log(this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue)));
+      return this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
 
   }
@@ -135,7 +141,9 @@ export class InvoiceComponent implements OnInit {
 
   setType(type) {
 
-
+    this.supp = [];
+    this.cuss = [];
+    this.selecteditem = {};
     this.customers = [];
     this.suppliers = [];
     this.invoice.type = type;
@@ -155,11 +163,11 @@ export class InvoiceComponent implements OnInit {
           element.data = JSON.parse(element.data);
           if (element.type == 'c') {
             console.log("customeris :", element.fullname);
-
+            this.cuss.push(element);
             this.customers.push(element.fullname + "," + element.id + "," + element.data.phone);
           }
           else if (element.type == 's') {
-
+            this.supp.push(element);
             console.log("supplier is :", element.fullname);
             this.suppliers.push(element.fullname + "," + element.id + "," + element.data.phone);
           }
@@ -197,6 +205,16 @@ export class InvoiceComponent implements OnInit {
   ]
 
 
+  selected(item) {
+    console.log('hello');
+    
+    this.selecteditem = item;
+    return item.fullname;
+  }
+
+  displayFn(val: any) {
+    return val ? val.name : val;
+  }
 }
 
 interface Choice {
