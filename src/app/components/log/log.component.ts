@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { ShareService } from 'src/app/services/share.service';
+import { MatDatepicker } from '@angular/material';
 
 @Component({
   selector: 'app-log',
@@ -11,6 +12,11 @@ import { ShareService } from 'src/app/services/share.service';
 export class LogComponent implements OnInit {
   public logs: any[];
   public log: any;
+  public username:string;
+  @ViewChild('fromdate')
+  public fromdate:any;
+  public todate:any;
+
   constructor(private _hs: HttpService, private _ut: UtilsService, private _ss: ShareService) { }
 
   ngOnInit() {
@@ -18,7 +24,17 @@ export class LogComponent implements OnInit {
   }
 
   details(log) {
-    this.log=log;
-    this.log.body= JSON.parse(this.log.body);
+    if (this.log == log)
+      return;
+    this.log = log;
+    this.log.body = JSON.parse(this.log.body);
+    this.log.row = [];
+    for (var k in this.log.body) {
+      this.log.row.push({ name: k, value: this.log.body[k] })
+    }
+  }
+  
+  refresh() {
+    console.log('from date: ', Date.parse(this.fromdate._selectedDate) );
   }
 }
