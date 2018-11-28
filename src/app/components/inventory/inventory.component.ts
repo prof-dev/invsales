@@ -28,6 +28,7 @@ export class InventoryComponent implements OnInit {
   public store: any = {};
   result: string;
   istouched: boolean;
+   isexist: boolean;
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router) { }
@@ -96,17 +97,24 @@ export class InventoryComponent implements OnInit {
 
   additemtolist(item) {
     console.log(this.items.length);
-
+    this.isexist=false;
     this.items.forEach(element => {
+     
       if (element.id == item.id) {
-        element.avb =element.avb +parseInt(item.avb);
-        element.rsv += parseInt(item.rsv);
-        element.com += parseInt(item.com);
+        this.isexist=true;
+        element.avb =element.avb+parseInt(item.avb);
+        element.rsv =  element.rsv+parseInt(item.rsv);
+        element.com =  element.com+parseInt(item.com);
       }
-      else {
-        this.items.push(item);
-      }
+      
     });
+    if(!this.isexist){
+      item.avb=parseInt(item.avb);
+      item.id=parseInt(item.id);
+      item.rsv=parseInt(item.rsv);
+      item.com=parseInt(item.com);
+      this.items.push(item);
+    }
     this.inventories.forEach(element => {
       if(element.storeid==this.actionstore){
         element.data=this.items;
