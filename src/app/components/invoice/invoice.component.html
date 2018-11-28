@@ -1,21 +1,25 @@
-
-
-
-<mat-card >
-    <br><br>
-    <button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
-    <button mat-raised-button color="primary" (click)="setType('p')">فاتورة مشتريات</button>
-    <br>
-    <br>
-  <div class="AddLookup"  *ngIf="invoice.type!=''">
+<mat-card>
+  <br><br>
+  <button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
+  <button mat-raised-button color="primary" (click)="setType('p')">أوامر الطلبيات</button>
+  <br>
+  <br>
+  <div class="AddLookup" *ngIf="invoice.type!=''">
     <h1> إصدار فاتورة {{operation}}</h1>
     {{message}}
     <br>
     <br>
     <h3 *ngIf="invoice.type=='s'">بيانات العميل</h3>
+
+    <div *ngIf="invoice.type=='p'">
+      <h3>بيانات الطلبية</h3>
+      <mat-form-field>
+        <input matInput required placeholder="رقم الرسالة" name="shipno" [(ngModel)]="invoice.shipno">
+      </mat-form-field>
+      <hr>
+    </div>
     <h3 *ngIf="invoice.type=='p'">بيانات المورد</h3>
     <mat-form-field *ngIf="invoice.type=='s'">
-
       <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
         <mat-option>None</mat-option>
         <mat-option *ngFor="let op of cuss" [value]="op">{{op.fullname}}</mat-option>
@@ -42,25 +46,25 @@
  -->
 
     <mat-form-field>
-      <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.fullname">
+      <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.fullname" [disabled]="true">
     </mat-form-field>
 
 
 
 
     <mat-form-field>
-      <input matInput required placeholder=" رصيد العميل" [(ngModel)]="selecteditem.balance">
+      <input matInput required placeholder=" رصيد العميل" [(ngModel)]="selecteditem.balance" [disabled]="true">
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput required placeholder=" تلفون العميل" [(ngModel)]="selecteditem.data.phone">
+      <input matInput required placeholder=" تلفون العميل" [(ngModel)]="selecteditem.data.phone" [disabled]="true">
     </mat-form-field>
 
     <hr>
     <h2>الأصناف</h2>
     <mat-form-field>
 
-      <mat-select placeholder="إختيار الصنف" [(ngModel)]="product">
+      <mat-select placeholder="إختيار الصنف" [(ngModel)]="product" required>
         <mat-option>None</mat-option>
         <mat-option *ngFor="let op of productsview" [value]="op">{{op.titlear}}</mat-option>
       </mat-select>
@@ -69,23 +73,58 @@
 
 
 
-    <br>{{product.titlear}} <br>
+    رقم الصنف : {{product.id}} <br>
 
 
 
     <mat-form-field>
-      <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="product.price">
+      <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="product.price" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" العدد" name="price" [(ngModel)]="product.count">
+      <input matInput required placeholder=" العدد" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" المبلغ" name="price" [(ngModel)]="product.total" [value]="product.count*product.price">
+      <input matInput required placeholder=" المبلغ" name="total"  [(ngModel)]="product.totalprice"   required [disabled]="true">
     </mat-form-field>
-    <!-- <mat-form-field>
-        <input src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img">
-    </mat-form-field> -->
-    <br>
+    <mat-form-field>
+      <mat-select placeholder="إختيار المخزن" [(ngModel)]="product.store" required>
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let op of storeselect" [value]="op">{{op.titlear}}</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+    <button mat-raised-button (click)="additem(product)">
+      <img src="assets/icnAdd.png" alt="" width="32"  class="btn-img">
+    </button>
+    <table>
+      <tr>
+        <th>رقم الصنف</th>
+        <th>الصنف</th>
+        <th>السعر</th>
+        <th>العدد</th>
+        <th>الإجمالي</th>
+        <th>المخزن</th>
+      </tr>
+      <tr *ngFor="let row of invoiceitems;let i = index;">
+        <td>{{row.id}}</td>
+        <td>{{row.titlear}}</td>
+        <td>{{row.price}}</td>
+        <td>{{row.count}}</td>
+        <td>{{row.totalprice}}</td>
+        <td>{{row.store.titlear}}</td>
+        <td>
+            <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(row,i)" class="btn-img" matTooltip="حذف">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>المجموع</td>
+        <td>{{invoice.total}}</td>
+      </tr>
+    </table>
     <hr>
     <h3> الدفع</h3>
     <mat-form-field>

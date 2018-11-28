@@ -14,8 +14,6 @@ import { fadeInItems } from '@angular/material';
 })
 export class InvoiceComponent implements OnInit {
   myControl = new FormControl();
-  customers: string[] = [];
-  suppliers: string[] = [];
   public supp: any[] = [];
   public cuss: any[] = [];
   public productsview: any[] = [];
@@ -25,6 +23,7 @@ export class InvoiceComponent implements OnInit {
   public filteredOptions: Observable<any[]>;
   public user: any;
   public invoice: any;
+  public invoiceitems:any[]=[];
   public data: any;
   public items: any[] = [];
   public showiteminsert: boolean;
@@ -62,6 +61,9 @@ export class InvoiceComponent implements OnInit {
   
 
   public operation: string = "";
+  store: any;
+  stores: any[]=[];
+  public storeselect: any[]=[];
 
 
   constructor(private _hs: HttpService,
@@ -71,34 +73,16 @@ export class InvoiceComponent implements OnInit {
 
   ngOnInit() {
 
-    this._ss.User.subscribe(user => {
-      this.user = user;
-      if (this.user.id == 0) {
-        this._router.navigateByUrl('/login');
-      } else {
-        this._hs.get('lookups', 'filter=group,eq,item')
-        .subscribe(res => {
-          this.lookups = res.json().lookups;
-          console.log(this.lookups);
-
-          this.lookups.forEach(element => {
-
-            element.data = JSON.parse(element.data);
-            console.log(this.items);
-          });
-          this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
-        });
-      }
-    });
-
+    this.refresh();
+    this.getallstores();
 
     this.invoice = {
       type: "",
       date: Date,
       data: "",
       id: 0,
-      shipmentnumber: 0,
-      totalprice: 0,
+      shipno: 0,
+      total: 0,
       intityid: 0
 
 
@@ -181,10 +165,23 @@ export class InvoiceComponent implements OnInit {
   }
 
   additem(item) {
+   console.log(item);
    
-    this.showiteminsert = true;
+    this.invoiceitems.push(item);
+    this.invoice.total +=parseInt(item.totalprice);
+    this.product={};
 
 
+  }
+
+  remove(item,i){
+    this.invoice.total =parseInt(this.invoice.total)-parseInt(item.totalprice);
+
+      // console.log("Delete ",id);
+      this.invoiceitems.splice(i, 1);
+      
+  //  this.invoiceitems=this.invoiceitems.map(x=>x.id !== item.id);
+    this.product={};
   }
 
   setitem(item){
@@ -206,8 +203,7 @@ export class InvoiceComponent implements OnInit {
     this.supp = [];
     this.cuss = [];
     this.selecteditem;
-    this.customers = [];
-    this.suppliers = [];
+    this.invoiceitems=[];
     this.invoice.type = type;
     if (type == 's') {
       this.filteringtype='customers';
@@ -228,12 +224,10 @@ export class InvoiceComponent implements OnInit {
           if (element.type == 'c') {
             console.log("customeris :", element.fullname);
             this.cuss.push(element);
-            this.customers.push(element.fullname + "," + element.id + "," + element.data.phone);
           }
           else if (element.type == 's') {
             this.supp.push(element);
             console.log("supplier is :", element.fullname);
-            this.suppliers.push(element.fullname + "," + element.id + "," + element.data.phone);
           }
 
 
@@ -251,6 +245,13 @@ export class InvoiceComponent implements OnInit {
   save() {
 
 
+  }
+
+
+  sum(x,y){
+    console.log("hello :",x,"y :",y);
+    
+    this.product.totalprice= parseInt(x)*parseInt(y)+"";
   }
 
 
