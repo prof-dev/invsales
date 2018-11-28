@@ -59,18 +59,7 @@ export class InventoryComponent implements OnInit {
           });
         });
 
-      this._hs.get('lookups', 'filter=group,eq,item')
-        .subscribe(res => {
-          this.lookups = res.json().lookups;
-          console.log(this.lookups);
-
-          this.lookups.forEach(element => {
-
-            element.data = JSON.parse(element.data);
-            console.log(this.items);
-          });
-          this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
-        });
+      this.getallitems();
 
 
 
@@ -93,6 +82,19 @@ export class InventoryComponent implements OnInit {
 
 
     });
+  }
+
+  private getallitems() {
+    this._hs.get('lookups', 'filter=group,eq,item')
+      .subscribe(res => {
+        this.lookups = res.json().lookups;
+        console.log(this.lookups);
+        this.lookups.forEach(element => {
+          element.data = JSON.parse(element.data);
+          console.log(this.items);
+        });
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
+      });
   }
 
   additemtolist(item) {
