@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { fadeInItems } from '@angular/material';
+import { fadeInItems, DateAdapter } from '@angular/material';
 
 @Component({
   selector: 'app-invoice',
@@ -18,12 +18,23 @@ export class InvoiceComponent implements OnInit {
   public cuss: any[] = [];
   public productsview: any[] = [];
   public lookups: any[] = [];
-  public filteringtype="";
+  public filteringtype = "";
   public optionids: any[] = [];
   public filteredOptions: Observable<any[]>;
   public user: any;
-  public invoice: any;
-  public invoiceitems:any[]=[];
+  public invoice = {
+    type: "",
+    date: {},
+    data: {},
+    id: 0,
+    shipno: 0,
+    totalprice: 0,
+    entityid: 0,
+    user:0
+
+
+  }
+  public invoiceitems: any[] = [];
   public data: any;
   public items: any[] = [];
   public showiteminsert: boolean;
@@ -31,14 +42,15 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
-  public selecteditem={
+  public processinfo = {};
+  public selecteditem = {
     id: 0,
     type: "",
     fullname: "",
     data: {},
     balance: 0
   };
-  public product:any={};
+  public product: any = {};
   public check = {
     id: 0,
     checkno: "",
@@ -58,12 +70,14 @@ export class InvoiceComponent implements OnInit {
     data: [],
   }
 
-  
+
 
   public operation: string = "";
   store: any;
-  stores: any[]=[];
-  public storeselect: any[]=[];
+  stores: any[] = [];
+  public storeselect: any[] = [];
+  invoicedata: { payments: any[]; items: any[]; };
+  
 
 
   constructor(private _hs: HttpService,
@@ -76,17 +90,7 @@ export class InvoiceComponent implements OnInit {
     this.refresh();
     this.getallstores();
 
-    this.invoice = {
-      type: "",
-      date: Date,
-      data: "",
-      id: 0,
-      shipno: 0,
-      total: 0,
-      intityid: 0
-
-
-    }
+ 
     this.data = {
 
     }
@@ -153,11 +157,11 @@ export class InvoiceComponent implements OnInit {
       // this.selecteditem = this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
       return this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
-    else if (this.filteringtype== 'customers') {
+    else if (this.filteringtype == 'customers') {
       console.log(this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue)));
       return this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
-    else if (this.filteringtype== 'items') {
+    else if (this.filteringtype == 'items') {
       //console.log(this.cuss.filter(option => option.titlear.toLowerCase().includes(filterValue)));
       return this.productsview.filter(option => option.titlear.toLowerCase().includes(filterValue));
     }
@@ -165,51 +169,42 @@ export class InvoiceComponent implements OnInit {
   }
 
   additem(item) {
-   console.log(item);
-   
+    console.log(item);
     this.invoiceitems.push(item);
-    this.invoice.total +=parseInt(item.totalprice);
-    this.product={};
+    this.invoice.totalprice = this.invoice.totalprice+ parseInt(item.totalprice);
+    this.product = {};
 
 
   }
 
-  remove(item,i){
-    this.invoice.total =parseInt(this.invoice.total)-parseInt(item.totalprice);
-
-      // console.log("Delete ",id);
-      this.invoiceitems.splice(i, 1);
-      
-  //  this.invoiceitems=this.invoiceitems.map(x=>x.id !== item.id);
-    this.product={};
+  remove(item, i) {
+    this.invoice.totalprice =this.invoice.totalprice - parseInt(item.totalprice);
+    this.invoiceitems.splice(i, 1);
+    this.product = {};
   }
 
-  setitem(item){
+  setitem(item) {
     console.log('hello');
-    
-   
+
+
     return item.titlear;
 
   }
 
-  setfiltertype(){
+  setfiltertype() {
     console.log('hello');
-    
-    this.filteringtype='items';
+
+    this.filteringtype = 'items';
   }
 
   setType(type) {
-
-    this.supp = [];
-    this.cuss = [];
-    this.selecteditem;
-    this.invoiceitems=[];
+    this.reset();
     this.invoice.type = type;
     if (type == 's') {
-      this.filteringtype='customers';
+      this.filteringtype = 'customers';
       this.operation = 'المبيعات';
     } else {
-      this.filteringtype='suppliers';
+      this.filteringtype = 'suppliers';
       this.operation = 'المشتريات';
 
     }
@@ -242,23 +237,70 @@ export class InvoiceComponent implements OnInit {
 
   }
 
+  private reset() {
+    this.invoice = {
+      type: "",
+      date: {},
+      data: {},
+      id: 0,
+      shipno: 0,
+      totalprice: 0,
+      entityid: 0,
+      user:0
+
+
+    }
+    this.invoiceitems = [];
+    this.payments = [];
+    this.processinfo = {};
+    this.supp = [];
+    this.cuss = [];
+    this.selecteditem = {
+      id: 0,
+      type: "",
+      fullname: "",
+      data: {},
+      balance: 0
+    };
+    this.invoiceitems = [];
+  }
+
   save() {
+    this.invoice.entityid=this.selecteditem.id;
+    this.invoice.date=Date.now();
+    this.invoice.user=this.user.id;
+    this.invoicedata={
+      payments:this.payments,
+      items:this.invoiceitems
+    };
+    this.invoice.data=JSON.stringify(this.invoicedata);
+    this._hs.post('pursales', this.invoice).subscribe(res => {
+
+      this._ss.setSnackBar("تمت إضافة " + this.invoice + " id :" + res);
+
+    })
+    this.processinfo=null;
+
 
 
   }
 
 
-  sum(x,y){
-    console.log("hello :",x,"y :",y);
-    
-    this.product.totalprice= parseInt(x)*parseInt(y)+"";
+  sum(x, y) {
+    console.log("hello :", x, "y :", y);
+
+    this.product.totalprice = parseInt(x) * parseInt(y) + "";
   }
 
 
   public paymentmethods: Choice[] = [
     { value: 'check', viewValue: 'شيك' },
-    { value: 'chash', viewValue: 'كاش' },
-    { value: 'other', viewValue: 'أخرى' }
+    { value: 'chash', viewValue: 'كاش' }
+  ]
+
+  public checkstatus: Choice[] = [
+    { value: 'clarified', viewValue: 'مظهر' },
+    { value: 'original', viewValue: 'مباشر' }
   ]
 
   public paymenttypes: Choice[] = [
@@ -270,13 +312,22 @@ export class InvoiceComponent implements OnInit {
   ]
 
 
-  selected(item) {
-   console.log('hello');
-  
-    //this.selecteditem = item;
-
+  addpayment() {
+    console.log('hello');
+    this.payment.paymentmethod="";
    
-    // return item.fullname;
+    
+  }
+
+  pushpayment(payment){
+    this.payments.push(payment);
+    console.log(this.payments);
+  }
+
+  selected(item){
+    this.invoice.entityid=item.id;
+    console.log(this.invoice.entityid);
+    
   }
 
   displayFn(val: any) {

@@ -5,10 +5,9 @@
   <br>
   <br>
   <div class="AddLookup" *ngIf="invoice.type!=''">
-    <h1> إصدار فاتورة {{operation}}</h1>
+    <h3> فاتورة {{operation}}</h3>
     {{message}}
-    <br>
-    <br>
+   
     <h3 *ngIf="invoice.type=='s'">بيانات العميل</h3>
 
     <div *ngIf="invoice.type=='p'">
@@ -16,7 +15,7 @@
       <mat-form-field>
         <input matInput required placeholder="رقم الرسالة" name="shipno" [(ngModel)]="invoice.shipno">
       </mat-form-field>
-      <hr>
+      
     </div>
     <h3 *ngIf="invoice.type=='p'">بيانات المورد</h3>
     <mat-form-field *ngIf="invoice.type=='s'">
@@ -31,7 +30,7 @@
         <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <br>
+   
     <!-- <input *ngIf="invoice.type=='s'" type="text" required placeholder="إسم العميل"  matInput
         [formControl]="myControl" [matAutocomplete]="auto">
 
@@ -70,21 +69,15 @@
       </mat-select>
 
     </mat-form-field>
-
-
-
-    رقم الصنف : {{product.id}} <br>
-
-
-
-    <mat-form-field>
+ <mat-form-field>
       <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="product.price" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" العدد" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)" required>
+      <input matInput required placeholder=" العدد" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)"
+        required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" المبلغ" name="total"  [(ngModel)]="product.totalprice"   required [disabled]="true">
+      <input matInput required placeholder=" المبلغ" name="total" [(ngModel)]="product.totalprice" required [disabled]="true">
     </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="إختيار المخزن" [(ngModel)]="product.store" required>
@@ -95,7 +88,7 @@
     </mat-form-field>
 
     <button mat-raised-button (click)="additem(product)">
-      <img src="assets/icnAdd.png" alt="" width="32"  class="btn-img">
+      <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
     </button>
     <table>
       <tr>
@@ -114,7 +107,7 @@
         <td>{{row.totalprice}}</td>
         <td>{{row.store.titlear}}</td>
         <td>
-            <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(row,i)" class="btn-img" matTooltip="حذف">
+          <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(row,i)" class="btn-img" matTooltip="حذف">
         </td>
       </tr>
       <tr>
@@ -122,7 +115,7 @@
         <td></td>
         <td></td>
         <td>المجموع</td>
-        <td>{{invoice.total}}</td>
+        <td>{{invoice.totalprice}}</td>
       </tr>
     </table>
     <hr>
@@ -133,11 +126,44 @@
 
       </select>
     </mat-form-field>
+    <mat-form-field>
+        <input matInput required placeholder=" المتبقي" name="reminder" [(ngModel)]="processinfo.reminder" required>
+      </mat-form-field>
+      <button mat-raised-button (click)="addpayment(payment)">
+          <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
+        </button>
+  
+    <div *ngIf="payment.paymentmethod=='check'">
+      <mat-form-field>
+        <input matInput required placeholder="قيمة الشيك " name="paid" [(ngModel)]="payment.amount" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput required placeholder="رقم الشيك" name="reminder" [(ngModel)]="payment.checkno" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.amount" required>
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput required placeholder="حساب بإسم " name="reminder" [(ngModel)]="processinfo.reminder" required>
+        </mat-form-field>
+      <mat-form-field>
+        <select matNativeControl required class="primary" [(ngModel)]="processinfo.checkstatus" placeholder=" حالة الشيك" (focusout)="pushpayment(payment)">
+          <option *ngFor="let ch of checkstatus" [(value)]="ch.value">{{ch.viewValue}} </option>
 
+        </select>
+      </mat-form-field>
+     
+     
+    </div>
+    <div *ngIf="payment.paymentmethod=='chash'">
+      <mat-form-field>
+        <input matInput required placeholder="المدفوع " name="paid" [(ngModel)]="payment.amount" required (focusout)="pushpayment(payment)">
+      </mat-form-field>
+   
+    </div>
     <br>
-    <br>
-
-    <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
+ 
+    <button mat-raised-button (click)="save()" color="accent">حفظ</button>
 
   </div>
 
