@@ -35,23 +35,26 @@ export class LookupsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.refresh();
+
+
+  }
+  refresh() {
     this._ss.User.subscribe(user => {
       this.user = user;
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
-      } else {
+      }
+      else {
         this._hs.get('lookups', 'filter=isleaf,eq,0')
           .subscribe(res => {
             this.lookups = res.json().lookups;
             console.log(this.lookups);
-
-
-          })
+          });
       }
     });
-
-
   }
+
   setGroup(group) {
     this.visible = true;
     this.data = {
