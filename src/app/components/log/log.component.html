@@ -5,7 +5,7 @@
       <input matInput type="search" placeholder="اسم المستخدم" name="user" id="user" [(ngModel)]="username">
     </mat-form-field>
     <mat-form-field class="loginput">
-      <input matInput [matDatepicker]="fromdate" placeholder="من تاريخ">
+      <input matInput [matDatepicker]="fromdate" placeholder="من تاريخ" >
       <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
       <mat-datepicker #fromdate></mat-datepicker>
     </mat-form-field>
@@ -36,9 +36,14 @@
   </mat-card>
   <mat-card *ngIf="log" class="log-card">
     <div class="log-div">
-      <p *ngFor="let kv of log.row">
-        {{kv.value}} : {{kv.name}}
-      </p>
+      <table>
+        <tr>
+          <th *ngFor="let field of log.row">{{field.name}}</th>
+        </tr>
+        <tr>
+          <td *ngFor="let field of log.row">{{field.value}}</td>
+        </tr>
+      </table>
     </div>
   </mat-card>
 </div>

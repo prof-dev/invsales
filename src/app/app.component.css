@@ -25,8 +25,9 @@ mat-sidenav-content {
   widows: 10px;
 }
 
-.mnu-itm {
-  width: 170px;
+
+a{
+  cursor: pointer;
 }
 
 .mytoolbar {
