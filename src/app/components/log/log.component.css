@@ -3,11 +3,11 @@
     display: flex;
   }
   .logs-card{
-      width:500px;
+      width:40%;
   }
 .log-card{
       margin-right: 10px;
-        width:500px;
+        width:60%;
   }
   .loginput{
     width:120px;
