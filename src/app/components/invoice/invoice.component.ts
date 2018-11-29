@@ -24,13 +24,12 @@ export class InvoiceComponent implements OnInit {
   public user: any;
   public invoice = {
     type: "",
-    date: {},
     data: {},
     id: 0,
     shipno: 0,
     totalprice: 0,
     entityid: 0,
-    user:0
+    user: 0
 
 
   }
@@ -54,7 +53,7 @@ export class InvoiceComponent implements OnInit {
   public check = {
     id: 0,
     checkno: "",
-    bank: "",
+    bankname: "",
     date: "",
     status: "",
     checkowner: "0",
@@ -62,7 +61,8 @@ export class InvoiceComponent implements OnInit {
     amount: 4,
     source: "",
     user: 0,
-    comment: ""
+    comment: "",
+    invoice: 0
   };
 
   public inventory = {
@@ -77,7 +77,7 @@ export class InvoiceComponent implements OnInit {
   stores: any[] = [];
   public storeselect: any[] = [];
   invoicedata: { payments: any[]; items: any[]; };
-  
+
 
 
   constructor(private _hs: HttpService,
@@ -90,7 +90,7 @@ export class InvoiceComponent implements OnInit {
     this.refresh();
     this.getallstores();
 
- 
+
     this.data = {
 
     }
@@ -171,14 +171,14 @@ export class InvoiceComponent implements OnInit {
   additem(item) {
     console.log(item);
     this.invoiceitems.push(item);
-    this.invoice.totalprice = this.invoice.totalprice+ parseInt(item.totalprice);
+    this.invoice.totalprice = this.invoice.totalprice + parseInt(item.totalprice);
     this.product = {};
 
 
   }
 
   remove(item, i) {
-    this.invoice.totalprice =this.invoice.totalprice - parseInt(item.totalprice);
+    this.invoice.totalprice = this.invoice.totalprice - parseInt(item.totalprice);
     this.invoiceitems.splice(i, 1);
     this.product = {};
   }
@@ -238,15 +238,28 @@ export class InvoiceComponent implements OnInit {
   }
 
   private reset() {
+    this.check = {
+      id: 0,
+      checkno: "",
+      bankname: "",
+      date: "",
+      status: "",
+      checkowner: "0",
+      lastholder: "",
+      amount: 4,
+      source: "",
+      user: 0,
+      comment: "",
+      invoice: 0
+    };
     this.invoice = {
       type: "",
-      date: {},
       data: {},
       id: 0,
       shipno: 0,
       totalprice: 0,
       entityid: 0,
-      user:0
+      user: 0
 
 
     }
@@ -266,20 +279,41 @@ export class InvoiceComponent implements OnInit {
   }
 
   save() {
-    this.invoice.entityid=this.selecteditem.id;
-    this.invoice.date=Date.now();
-    this.invoice.user=this.user.id;
-    this.invoicedata={
-      payments:this.payments,
-      items:this.invoiceitems
+    this.invoice.entityid = this.selecteditem.id;
+    this.invoice.user = this.user.id;
+    this.invoicedata = {
+      payments: this.payments,
+      items: this.invoiceitems
     };
-    this.invoice.data=JSON.stringify(this.invoicedata);
+    this.invoice.data = JSON.stringify(this.invoicedata);
+    console.log(this.invoice);
+
     this._hs.post('pursales', this.invoice).subscribe(res => {
 
-      this._ss.setSnackBar("تمت إضافة " + this.invoice + " id :" + res);
+      this.check.invoice = parseInt(res.text());
+      this._ss.setSnackBar("تمت إضافة " + this.invoice + " id :" + res.text);
 
-    })
-    this.processinfo=null;
+    });
+    
+    if(this.payment.bankname!="" && this.payment.checkNo!="" && this.payment.amount !=0){
+      this.check.user = this.user.id;
+   
+      this.check.bankname = this.payment.bankname;
+      this.check.checkowner = this.payment.checkowner;
+      this.check.amount = this.payment.amount;
+      this.check.checkno = this.payment.checkno;
+      this.check.source = "in";
+  
+      this.check.status = this.payment.checkstatus;
+  
+      console.log(this.check);
+  
+      this._hs.post('checks', this.check).subscribe(res2 => {
+        this._ss.setSnackBar("تم حفظ الشيك");
+      })
+
+    }
+
 
 
 
@@ -300,7 +334,7 @@ export class InvoiceComponent implements OnInit {
 
   public checkstatus: Choice[] = [
     { value: 'clarified', viewValue: 'مظهر' },
-    { value: 'original', viewValue: 'مباشر' }
+    { value: 'new', viewValue: 'جديد' }
   ]
 
   public paymenttypes: Choice[] = [
@@ -313,21 +347,21 @@ export class InvoiceComponent implements OnInit {
 
 
   addpayment() {
+
+    this.payment.paymentmethod = "";
     console.log('hello');
-    this.payment.paymentmethod="";
-   
-    
+
   }
 
-  pushpayment(payment){
+  pushpayment(payment) {
     this.payments.push(payment);
     console.log(this.payments);
   }
 
-  selected(item){
-    this.invoice.entityid=item.id;
+  selected(item) {
+    this.invoice.entityid = item.id;
     console.log(this.invoice.entityid);
-    
+
   }
 
   displayFn(val: any) {

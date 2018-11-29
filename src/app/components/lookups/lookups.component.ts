@@ -181,7 +181,7 @@ export class LookupsComponent implements OnInit {
       console.log(item.data);
       this._hs.post('lookups', item).subscribe(res => {
 
-        console.log("تمت إضافة " + this.group.titlear + " id :" + res);
+        console.log("تمت إضافة " + this.group.titlear + " id :" + res.toString());
 
       })
 
@@ -192,7 +192,7 @@ export class LookupsComponent implements OnInit {
 
       this._hs.put('lookups', "id", item).subscribe(res => {
 
-        console.log("تمت تعديل " + this.group.titlear + " id :" + res);
+        console.log("تمت تعديل " + this.group.titlear + " id :" + res.json());
 
       })
     }
