@@ -18,7 +18,9 @@ export class InvoiceComponent implements OnInit {
   suppliers: string[] = [];
   public supp: any[] = [];
   public cuss: any[] = [];
-
+  public productsview: any[] = [];
+  public lookups: any[] = [];
+  public filteringtype="";
   public optionids: any[] = [];
   public filteredOptions: Observable<any[]>;
   public user: any;
@@ -30,7 +32,14 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
-  public selecteditem: any = {};
+  public selecteditem={
+    id: 0,
+    type: "",
+    fullname: "",
+    data: {},
+    balance: 0
+  };
+  public product:any={};
   public check = {
     id: 0,
     checkno: "",
@@ -50,12 +59,7 @@ export class InvoiceComponent implements OnInit {
     data: [],
   }
 
-  public stocks = {
-    item: 0,
-    avail: 0,
-    rsv: 0,
-    coming: 0,
-  }
+  
 
   public operation: string = "";
 
@@ -73,13 +77,17 @@ export class InvoiceComponent implements OnInit {
         this._router.navigateByUrl('/login');
       } else {
         this._hs.get('lookups', 'filter=group,eq,item')
-          .subscribe(res => {
-            this.items = res.json().lookups;
+        .subscribe(res => {
+          this.lookups = res.json().lookups;
+          console.log(this.lookups);
+
+          this.lookups.forEach(element => {
+
+            element.data = JSON.parse(element.data);
             console.log(this.items);
-
-
-
           });
+          this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
+        });
       }
     });
 
@@ -122,34 +130,55 @@ export class InvoiceComponent implements OnInit {
   //
   public _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    if (this.invoice.type == 'p') {
-      this.selecteditem = this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
+    if (this.filteringtype == 'suppliers') {
+      // this.selecteditem = this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
       return this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
-    else if (this.invoice.type == 's') {
+    else if (this.filteringtype== 'customers') {
       console.log(this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue)));
       return this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue));
+    }
+    else if (this.filteringtype== 'items') {
+      //console.log(this.cuss.filter(option => option.titlear.toLowerCase().includes(filterValue)));
+      return this.productsview.filter(option => option.titlear.toLowerCase().includes(filterValue));
     }
 
   }
 
   additem(item) {
+   
     this.showiteminsert = true;
 
 
+  }
+
+  setitem(item){
+    console.log('hello');
+    
+   
+    return item.titlear;
+
+  }
+
+  setfiltertype(){
+    console.log('hello');
+    
+    this.filteringtype='items';
   }
 
   setType(type) {
 
     this.supp = [];
     this.cuss = [];
-    this.selecteditem = {};
+    this.selecteditem;
     this.customers = [];
     this.suppliers = [];
     this.invoice.type = type;
     if (type == 's') {
+      this.filteringtype='customers';
       this.operation = 'المبيعات';
     } else {
+      this.filteringtype='suppliers';
       this.operation = 'المشتريات';
 
     }
@@ -206,14 +235,16 @@ export class InvoiceComponent implements OnInit {
 
 
   selected(item) {
-    console.log('hello');
-    
-    this.selecteditem = item;
-    return item.fullname;
+   console.log('hello');
+  
+    //this.selecteditem = item;
+
+   
+    // return item.fullname;
   }
 
   displayFn(val: any) {
-    return val ? val.name : val;
+    return val ? val.fullname : val;
   }
 }
 
@@ -221,4 +252,5 @@ interface Choice {
   value: string;
   viewValue: string;
 }
+
 
