@@ -11,49 +11,45 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public user = {
-    username: "Troy",
-    pwd: "123",
-  }
   public users=[
     {
       id:1,
       username: "Admin",
       pwd: "123",
-      roles:'admin;',
+      roles:'a;',
       fullname:'Mr Administrator'
     },
     {
       id:2,
       username: "TopAdmin",
       pwd: "123",
-      roles:'topadmin;',
+      roles:'t;',
       fullname:'Mr Top Administrator'
     },
     {
       id:3,
       username: "Stores",
       pwd: "123",
-      roles:'stores;',
+      roles:'s;',
       fullname:'Mr Stores Man'
     },
     {
       id:4,
       username: "Branches",
       pwd: "123",
-      roles:'branches;',
+      roles:'b;',
       fullname:'Mr Branches Man'
     },
     {
       id:1,
       username: "Viewer",
       pwd: "123",
-      roles:'viewer;',
+      roles:'v;',
       fullname:'Mr Viewer Man'
     }
   ];
 
-
+  public user = this.users[0];
   constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router, private _ut: UtilsService) { }
   ngOnInit() {
   }

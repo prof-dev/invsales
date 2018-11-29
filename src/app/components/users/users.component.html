@@ -42,117 +42,113 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card *ngIf="action=='editbranches'">
-    <mat-card-header>
-      <mat-card-title>تعديل الأفرع</mat-card-title>
-      <mat-card-subtitle>تعديل أفرع المستخدم</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <table>
-        <tr>
-          <th>اسم الفرع</th>
-          <th>اضف أو اذل</th>
-        </tr>
-        <tr *ngFor="let one of branches">
-          <td>{{one.titlear}}</td>
-          <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
-            <td>
-              <img src="assets/icnDelete.png" width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
-            </td>
-          </div>
-          <div *ngIf="actionUserBranches.indexOf(one.id)<0">
-            <td>
-              <img src="assets/icnAdd.png" width="32" alt="" (click)="addSB(one)" class="btn-img" matTooltip="Add Branch to user">
-            </td>
-          </div>
-        </tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-  <mat-card *ngIf="action=='editstores'">
-    <mat-card-header>
-      <mat-card-title>تعديل المخازن</mat-card-title>
-      <mat-card-subtitle>تعديل مخازن المستخدم</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <table>
-        <tr>
-          <th>اسم المخزن</th>
-          <th>أضف أو أذل</th>
-        </tr>
-        <tr *ngFor="let one of stores">
-          <td>{{one.titlear}}</td>
-          <div *ngIf="actionUserStores.indexOf(one.id)>=0">
-            <td>
-              <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Store from user">
-            </td>
-          </div>
-          <div *ngIf="actionUserStores.indexOf(one.id)<0">
-            <td>
-              <img src="assets/icnAdd.png" alt="" width="32" (click)="addSB(one)" class="btn-img" matTooltip="Add Store to user">
-            </td>
-          </div>
-        </tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-  <mat-card *ngIf="action=='edituser' ||action=='adduser' ">
+  <div *ngIf="action=='editbranches'">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>تعديل الأفرع</mat-card-title>
+        <mat-card-subtitle>تعديل أفرع المستخدم</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <table>
+          <tr>
+            <th>اسم الفرع</th>
+            <th>اضف أو اذل</th>
+          </tr>
+          <tr *ngFor="let one of branches">
+            <td>{{one.titlear}}</td>
+            <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
+              <td>
+                <img src="assets/icnDelete.png" width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
+              </td>
+            </div>
+            <div *ngIf="actionUserBranches.indexOf(one.id)<0">
+              <td>
+                <img src="assets/icnAdd.png" width="32" alt="" (click)="addSB(one)" class="btn-img" matTooltip="Add Branch to user">
+              </td>
+            </div>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="action=='editstores'">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>تعديل المخازن</mat-card-title>
+        <mat-card-subtitle>تعديل مخازن المستخدم</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <table>
+          <tr>
+            <th>اسم المخزن</th>
+            <th>أضف أو أذل</th>
+          </tr>
+          <tr *ngFor="let one of stores">
+            <td>{{one.titlear}}</td>
+            <div *ngIf="actionUserStores.indexOf(one.id)>=0">
+              <td>
+                <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Store from user">
+              </td>
+            </div>
+            <div *ngIf="actionUserStores.indexOf(one.id)<0">
+              <td>
+                <img src="assets/icnAdd.png" alt="" width="32" (click)="addSB(one)" class="btn-img" matTooltip="Add Store to user">
+              </td>
+            </div>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="action=='edituser' ||action=='adduser' ">
+    <mat-card>
 
-    <mat-card-header>
-      <div *ngIf="action=='edituser'">
-        <mat-card-title>تعديل بيانات المستخدمين</mat-card-title>
-        <mat-card-subtitle>تعديل المستخدم : {{actionUser.fullname}}</mat-card-subtitle>
-      </div>
-      <div *ngIf="action=='adduser'">
-        <mat-card-title>إضافة المستخدمين</mat-card-title>
-        <mat-card-subtitle>إضافة مستخدم جديد</mat-card-subtitle>
-      </div>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field>
-        <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.fullname">
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput placeholder="اسم الدخول" name="username" [(ngModel)]="actionUser.username">
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput placeholder="رقم الهاتف" name="phone" [(ngModel)]="actionUser.phone" type="phone">
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput placeholder="رصيد المستخدم" name="balance" [(ngModel)]="actionUser.balance" readonly>
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput placeholder="إدوار المستخدم" name="roles" [(ngModel)]="actionUser.roles">
-      </mat-form-field>
-      <br>
-      <img *ngIf="actionUser.locked==1" src="assets/icnLocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
-        class="btn-img" matTooltip="Unlock this user">
-      <img *ngIf="actionUser.locked==0" src="assets/icnUnlocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
-        class="btn-img" matTooltip="Lock this user">
-      <br>
-      <button mat-raised-button color="primary" (click)="saveUser()">حفظ</button>
-    </mat-card-content>
-  </mat-card>
-  <mat-card *ngIf="action=='deleteuser'">
-    <mat-card-header>
-      <mat-card-title>حذف مستخدم</mat-card-title>
-      <mat-card-subtitle>Deleting user {{actionUser.fullname}} id: {{actionUser.id}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <h1>هل أنت متأكد أنك تريد حذف المستخدم  {{actionUser.fullname}} من النظام؟؟</h1>
-      <br>
-      <button mat-raised-button color="primary" (click)="deleteUser()">نعم احذفه من النظام</button>
-      <br>
-      <br>
-      <p>
-        {{deleteMsg}}
-      </p>
-    </mat-card-content>
-  </mat-card>
-
-
+      <mat-card-header>
+        <div *ngIf="action=='edituser'">
+          <mat-card-title>تعديل بيانات المستخدمين</mat-card-title>
+          <mat-card-subtitle>تعديل المستخدم : {{actionUser.fullname}}</mat-card-subtitle>
+        </div>
+        <div *ngIf="action=='adduser'">
+          <mat-card-title>إضافة المستخدمين</mat-card-title>
+          <mat-card-subtitle>إضافة مستخدم جديد</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.fullname">
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <input matInput placeholder="اسم الدخول" name="username" [(ngModel)]="actionUser.username">
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <input matInput placeholder="رقم الهاتف" name="phone" [(ngModel)]="actionUser.phone" type="phone">
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <input matInput placeholder="رصيد المستخدم" name="balance" [(ngModel)]="actionUser.balance" readonly>
+        </mat-form-field>
+        <br>
+        <span>محظور أو مسموح</span>
+        <img *ngIf="actionUser.locked==1" src="assets/icnLocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
+          class="btn-img" matTooltip="Unlock this user">
+        <img *ngIf="actionUser.locked==0" src="assets/icnUnlocked.png" width="32" alt="" (click)="actionUser.locked=!actionUser.locked"
+          class="btn-img" matTooltip="Lock this user">
+        <br>
+        <hr>
+        الصلاحيات المتاحه للمستخدم
+        <br>
+        <mat-checkbox (click)="role('t')" [checked]='actionUser.roles.indexOf("t")>=0'>مدير أعلى</mat-checkbox>
+        <mat-checkbox (click)="role('a')" [checked]='actionUser.roles.indexOf("a")>=0'>مدير</mat-checkbox>
+        <mat-checkbox (click)="role('s')" [checked]='actionUser.roles.indexOf("s")>=0'>مخازن</mat-checkbox>
+        <mat-checkbox (click)="role('b')" [checked]='actionUser.roles.indexOf("b")>=0'>فروع بيع</mat-checkbox>
+        <mat-checkbox (click)="role('u')" [checked]='actionUser.roles.indexOf("u")>=0'>مستخدم</mat-checkbox>
+        <mat-checkbox (click)="role('v')" [checked]='actionUser.roles.indexOf("v")>=0'>مشاهد</mat-checkbox>
+        <hr>
+        <br>
+        <button mat-raised-button color="primary" (click)="saveUser()">حفظ</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
