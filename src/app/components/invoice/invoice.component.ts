@@ -301,13 +301,28 @@ export class InvoiceComponent implements OnInit {
     this._hs.post('pursales', this.invoice).subscribe(res => {
       //confirm(res.text());
       this.insertchecks(parseInt(res.text()));
+      if(this.processinfo.reminder!=0){
+        this.updatecustomeraccount();
+      }
       this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
     });
+   
 
 
 
   }
 
+  private updatecustomeraccount(){
+    if(this.invoice.type=='s'){
+      this.selecteditem.balance = this.selecteditem.balance-this.processinfo.reminder;
+    }else{
+      this.selecteditem.balance = this.selecteditem.balance+this.processinfo.reminder;
+    }
+    this.selecteditem.data=JSON.stringify(this.selecteditem.data);
+    this._hs.put('suppcus',"id", this.selecteditem).subscribe(res2 => {
+      this._ss.setSnackBar("تم  تعديل رصيد العميل أو المورد");
+    });
+  }
 
   private insertchecks(invoiceid) {
     confirm(invoiceid);
