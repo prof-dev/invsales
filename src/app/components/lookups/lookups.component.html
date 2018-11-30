@@ -1,6 +1,6 @@
 <h1>شاشة ضبط النظام</h1>
 <div class="container ar" dir="rtl">
-    
+
     <mat-card>
         <mat-card-content>
             <button mat-raised-button color="warn" (click)="addnewlookup()">إضافة ضبط الجديد</button>
@@ -20,13 +20,14 @@
                     {{row.titlear}}
                 </td>
                 <td>
-                    <button mat-raised-button color="primary" (click)="setGroup(row)" >عرض الفروع</button>
+                    <button mat-raised-button color="primary" (click)="setGroup(row)">عرض الفروع</button>
                 </td>
                 <td>
                     <img src="assets/icnAdd.png" width="32" alt="" (click)="addnewitem(row)" class="btn-img" matTooltip="اضافة الى">
                 </td>
                 <td>
-                    <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteitem(row)" class="btn-img" matTooltip="حذف">
+                    <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteitem(row)" class="btn-img"
+                        matTooltip="حذف">
                 </td>
             </tr>
 
@@ -35,7 +36,7 @@
     </mat-card>
 
     <mat-card *ngIf="lookupitems.length>0 && visible" id="datatable">
-            <h3> {{group.titlear}}</h3>
+        <h3> {{group.titlear}}</h3>
         <table class="responsive">
             <tr>
                 <th>Id</th>
@@ -53,7 +54,8 @@
                     <button mat-raised-button color="primary" (click)="modify(item)">Modify</button>
                 </td>
                 <td>
-                    <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteitem(item)" class="btn-img" matTooltip="حذف">
+                    <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteitem(item)" class="btn-img"
+                        matTooltip="حذف">
                 </td>
             </tr>
         </table>
@@ -62,39 +64,45 @@
 
 
     <mat-card *ngIf="form">
-            <div class="AddLookup">
-                <h1>العملية :{{operation}}</h1><h3> {{group.titlear}}</h3>
-                    <hr>
-                    <br>
-                    <br>
-                    <div class="the-container">
-                        <mat-form-field>
-                            <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.titlear">
-                        </mat-form-field>
-                        <mat-form-field>
-                            <input matInput required placeholder="المجموعة" name="group" [(ngModel)]="bank.group">
-                        </mat-form-field>
-                        <span class="filler"></span>
-                        <mat-form-field *ngIf="bank.parent!=0">
-                            <input matInput placeholder="العنوان" name="add" [(ngModel)]="data.address">
-                        </mat-form-field>
-                        <mat-form-field required *ngIf="bank.group=='banks'  || bank.group=='tresuries'">
-                            <input matInput placeholder="الرصيد" name="balance" [(ngModel)]="data.balance" >
-                        </mat-form-field>
-                        <mat-form-field *ngIf="bank.group=='item'">
-                            <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="data.price">
-                        </mat-form-field>
-                        <select matNativeControl required class="primary" [(ngModel)]="bank.isleaf">
-                            <option *ngFor="let ch of leaf" [(value)]="ch.value">{{ch.viewValue}} </option>
+        <div class="AddLookup">
+            <h1>العملية :{{operation}}</h1>
+            <h3> {{group.titlear}}</h3>
+            <hr>
+            <br>
+            <br>
+            <div class="the-container">
+                <mat-form-field>
+                    <select matNativeControl required class="primary" [(ngModel)]="processinfo.objecttype" (change)="setgroupname(processinfo.objecttype)">
+                        <option *ngFor="let ch of leaf" [(value)]="ch.value">{{ch.viewValue}} </option>
 
 
-                        </select>
-                        <br>
-                        <br>
-                    </div>
-                    <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
-                
+                    </select>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+
+                    <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.titlear">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="المجموعة" name="group" [disabled]="!opengroup" [(ngModel)]="bank.group">
+                </mat-form-field>
+                <span class="filler"></span>
+                <mat-form-field>
+                    <input matInput placeholder="الوصف /العنوان" name="add" [(ngModel)]="data.address">
+                </mat-form-field>
+                <mat-form-field required *ngIf="bank.group=='banks'  || bank.group=='tresuries'">
+                    <input matInput placeholder="الرصيد" name="balance" [(ngModel)]="data.balance">
+                </mat-form-field>
+                <mat-form-field *ngIf="bank.group=='item'">
+                    <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="data.price">
+                </mat-form-field>
+
+                <br>
+                <br>
             </div>
+            <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
+
+        </div>
     </mat-card>
 
 </div>

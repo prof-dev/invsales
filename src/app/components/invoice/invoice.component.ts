@@ -26,7 +26,7 @@ export class InvoiceComponent implements OnInit {
     type: "",
     data: {},
     id: 0,
-    shipno: 0,
+    shipno: "",
     totalprice: 0,
     entityid: 0,
     user: 0
@@ -209,17 +209,26 @@ export class InvoiceComponent implements OnInit {
     if (type == 's') {
       this.filteringtype = 'customers';
       this.operation = 'المبيعات';
+      this.invoice.shipno='no';
     } else {
       this.filteringtype = 'suppliers';
       this.operation = 'المشتريات';
 
     }
+    this.getsupcusinfo();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
+  }
+
+  private getsupcusinfo() {
     this._hs.get('suppcus')
       .subscribe(res => {
         // this.suppcus = res.json().suppcus;
         console.log(res.json());
-
-
         res.json().suppcus.forEach(element => {
           element.data = JSON.parse(element.data);
           if (element.type == 'c') {
@@ -230,17 +239,8 @@ export class InvoiceComponent implements OnInit {
             this.supp.push(element);
             console.log("supplier is :", element.fullname);
           }
-
-
-
         });
       });
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
-
   }
 
   private reset() {
@@ -262,7 +262,7 @@ export class InvoiceComponent implements OnInit {
       type: "",
       data: {},
       id: 0,
-      shipno: 0,
+      shipno: "",
       totalprice: 0,
       entityid: 0,
       user: 0
@@ -337,6 +337,7 @@ export class InvoiceComponent implements OnInit {
           this.check.checkno = element.checkno;
           if (this.invoice.type == 's') {
             this.check.source = "in";
+
           }
           else {
             this.check.source = "out";

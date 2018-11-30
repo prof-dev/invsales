@@ -19,8 +19,12 @@ export class LookupsComponent implements OnInit {
   public visible: boolean;
   public operation: string = "new";
   public form: boolean = false;
+  public processinfo = {
+    objecttype: 0
 
+  };
 
+public opengroup:boolean;
   public bank: any;
 
   public data: any;
@@ -30,7 +34,7 @@ export class LookupsComponent implements OnInit {
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
-    private _router: Router,private _ut : UtilsService) { }
+    private _router: Router, private _ut: UtilsService) { }
 
 
 
@@ -60,19 +64,19 @@ export class LookupsComponent implements OnInit {
     this.data = {
       address: "", balance: 0, price: 0
     };
-    if(group==null){
-    this.bank = {
-      group:"",
-      id: null,
-      parent: 0,
-      isleaf: 0,
-      titleen: "",
-      titlear: "",
-      data: null
-    };
-    this.group = this.bank;
-    this.group.data=this.data;
-    }else{
+    if (group == null) {
+      this.bank = {
+        group: "",
+        id: null,
+        parent: 0,
+        isleaf: 0,
+        titleen: "",
+        titlear: "",
+        data: null
+      };
+      this.group = this.bank;
+      this.group.data = this.data;
+    } else {
       this.bank = {
         group: group.group,
         id: null,
@@ -83,27 +87,27 @@ export class LookupsComponent implements OnInit {
         data: null
       };
       this.group = group;
-      this.group.data=this.data;
-       this.form = false;
-       if(group.id==null){
+      this.group.data = this.data;
+      this.form = false;
+      if (group.id == null) {
         this.filterby = 0;
-       }
-       else{
+      }
+      else {
         this.filterby = group.id;
-       }
-      
-        this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
-      .subscribe(res => {
-        this.lookupitems = res.json().lookups;
+      }
 
-      })
+      this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
+        .subscribe(res => {
+          this.lookupitems = res.json().lookups;
 
-    this.visible = true;
-    console.log("group is set to:", group.group);
+        })
+
+      this.visible = true;
+      console.log("group is set to:", group.group);
 
 
     }
-    
+
   }
 
   modify(item) {
@@ -132,7 +136,7 @@ export class LookupsComponent implements OnInit {
       if (res.json() == 1) {
 
         this._ss.setSnackBar("تم الحذف بنجاااح");
-      
+
       }
     });
 
@@ -142,11 +146,11 @@ export class LookupsComponent implements OnInit {
 
 
   addnewlookup() {
-   this.setGroup(null);
+    this.setGroup(null);
     this.form = true;
     this.operation = "إدخال جديد";
     this.bank.titlear = "";
-    this.bank.group="";
+    this.bank.group = "";
     this.data.address = "";
     this.data.balance = 0;
     this.data.price = 0;
@@ -158,7 +162,10 @@ export class LookupsComponent implements OnInit {
   }
 
   addnewitem(parent) {
-   this.setGroup(parent);
+    this.processinfo = {
+      objecttype: 0
+    };
+    this.setGroup(parent);
     this.visible = false;
     this.form = true;
     this.operation = "إدخال جديد";
@@ -167,7 +174,7 @@ export class LookupsComponent implements OnInit {
     this.data.balance = 0;
     this.data.price = 0;
     this.bank.titleen = "";
-    
+
     this.visible = false;
 
 
@@ -177,6 +184,9 @@ export class LookupsComponent implements OnInit {
   save(item, d) {
 
     if (item.id == null) {
+      if (this.processinfo.objecttype != 0) {
+        this.bank.isleaf = 1;
+      }
       this.bank.data = JSON.stringify(d);
       console.log(item.data);
       this._hs.post('lookups', item).subscribe(res => {
@@ -204,6 +214,23 @@ export class LookupsComponent implements OnInit {
 
   }
 
+  setgroupname(id) {
+    console.log(id);
+    if(id==2){
+      this.bank.group='item';
+      this.opengroup=false;
+    }
+    else
+    if(id==3){
+      this.bank.group='spending';
+      this.opengroup=false;
+    }
+    else{
+      this.bank.group='';
+      this.opengroup=true;
+    }
+  }
+
   deleteitem(item) {
 
     this._ut.messageBox('confirm', 'تأكيد احذف', 'هل أنت متأكد من حذف العنصر؟')
@@ -212,12 +239,14 @@ export class LookupsComponent implements OnInit {
         if (result == 'ok') {
           console.log('res: ', this._ut.thedata.result);
           this.dodelete(item);
-         
+
         }
       });
   }
   public leaf: Choice[] = [
     { value: '1', viewValue: 'فرع نهائي' },
+    { value: '2', viewValue: 'بضاعة ' },
+    { value: '3', viewValue: ' بنود صرف' },
     { value: '0', viewValue: 'قسم رئيسي / أو فرعي' }]
 
 
