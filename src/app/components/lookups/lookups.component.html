@@ -68,8 +68,7 @@
             <h1>العملية :{{operation}}</h1>
             <h3> {{group.titlear}}</h3>
             <hr>
-            <br>
-            <br>
+            
             <div class="the-container">
                 <mat-form-field *ngIf="operation!='تعديل'">
                     <select matNativeControl required class="primary" [(ngModel)]="processinfo.objecttype" (change)="setgroupname(processinfo.objecttype)">

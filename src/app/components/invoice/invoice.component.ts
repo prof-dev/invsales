@@ -94,6 +94,8 @@ export class InvoiceComponent implements OnInit {
 
     this.refresh();
     this.getallstores();
+    console.log(this.user.id);
+    
 
 
     this.data = {
@@ -176,15 +178,15 @@ export class InvoiceComponent implements OnInit {
   additem(item) {
     console.log(item);
     this.invoiceitems.push(item);
-    this.invoice.totalprice = this.invoice.totalprice + parseInt(item.totalprice);
+    this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
     this.product = {};
-    this.processinfo.reminder += parseInt(item.totalprice);
+    this.processinfo.reminder += Number(item.totalprice);
 
 
   }
 
   remove(item, i) {
-    this.invoice.totalprice = this.invoice.totalprice - parseInt(item.totalprice);
+    this.invoice.totalprice = this.invoice.totalprice - Number(item.totalprice);
     this.invoiceitems.splice(i, 1);
     this.product = {};
   }
@@ -300,9 +302,10 @@ export class InvoiceComponent implements OnInit {
 
     this._hs.post('pursales', this.invoice).subscribe(res => {
       //confirm(res.text());
-      this.insertchecks(parseInt(res.text()));
+      this.insertchecks(Number(res.text()));
       if(this.processinfo.reminder!=0){
         this.updatecustomeraccount();
+        this.updateuserbalance();
       }
       this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
     });
@@ -310,6 +313,19 @@ export class InvoiceComponent implements OnInit {
 
 
 
+  }
+
+  updateuserbalance(){
+    this.payments.forEach(element => {
+      if (element.paymentmethod == "cash") {
+        this.user.balance =Number(this.user.balance) + Number(element.amount);
+      }}
+    );
+    console.log(this.user);
+    
+    this._hs.put('users',"id", this.user).subscribe(res2 => {
+      this._ss.setSnackBar("تم  تعديل رصيد المستخدم  ");
+    });
   }
 
   private updatecustomeraccount(){
@@ -356,13 +372,13 @@ export class InvoiceComponent implements OnInit {
   sum(x, y) {
     console.log("hello :", x, "y :", y);
 
-    this.product.totalprice = parseInt(x) * parseInt(y) + "";
+    this.product.totalprice = Number(x) * Number(y) + "";
   }
 
 
   public paymentmethods: Choice[] = [
     { value: 'check', viewValue: 'شيك' },
-    { value: 'chash', viewValue: 'كاش' }
+    { value: 'cash', viewValue: 'كاش' }
   ]
 
   public checkstatus: Choice[] = [
@@ -391,7 +407,7 @@ export class InvoiceComponent implements OnInit {
     if (payment.amount > 0) {
       this.payments.push(payment);
       this.payments.forEach(element => {
-        this.paid = this.paid + parseInt(element.amount);
+        this.paid = this.paid + Number(element.amount);
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);

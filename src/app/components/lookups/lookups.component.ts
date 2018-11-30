@@ -166,7 +166,8 @@ public opengroup:boolean;
 
   addnewitem(parent) {
     this.processinfo = {
-      objecttype: 0
+      objecttype: 0,
+      processtype:true
     };
     this.setGroup(parent);
     this.visible = false;

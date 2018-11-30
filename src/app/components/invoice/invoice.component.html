@@ -155,7 +155,7 @@
      
      
     </div>
-    <div *ngIf="payment.paymentmethod=='chash'">
+    <div *ngIf="payment.paymentmethod=='cash'">
       <mat-form-field>
         <input matInput required placeholder="المدفوع " name="paid" [(ngModel)]="payment.amount" required (focusout)="pushpayment(payment)">
       </mat-form-field>
