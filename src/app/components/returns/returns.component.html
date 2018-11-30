@@ -26,9 +26,9 @@
                 <br>
             </mat-form-field>
             <a mat-raised-button (click)="fetch()" color="primary">جلب الفاتوره أو طلب الرد</a>&nbsp;
-            <a mat-raised-button (click)="save()" color="primary">حفظ</a>&nbsp;
-            <a mat-raised-button (click)="delivered()" color="primary">تأكيد الاستلام</a>&nbsp;
-            <a mat-raised-button (click)="delete()" color="primary">حذف الطلب</a>&nbsp;
+            <a mat-raised-button (click)="save()" color="primary" [disabled]="retOb.row.locked==1">حفظ</a>&nbsp;
+            <a mat-raised-button (click)="delivered()" color="primary" [disabled]="retOb.row.locked==1 || user.roles.indexOf('s')<0">تأكيد الاستلام</a>&nbsp;
+            <a mat-raised-button (click)="delete()" color="primary" [disabled]="retOb.row.locked==1">حذف الطلب</a>&nbsp;
             <a mat-raised-button (click)="print()" color="primary">طباعه</a>&nbsp;
             <div id="printdiv" class="mat">
                 <table>
@@ -43,7 +43,7 @@
                         <td>{{one.name}}</td>
                         <td>{{one.qty}}</td>
                         <td>
-                            <input type="text" required placeholder="" [value]="one.return">
+                            <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">
                         </td>
                     </tr>
                 </table>

@@ -176,9 +176,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-
-
-
   refreshUsers() {
     this._ss.setAppIsBusy(true);
     if (this.loggedInUser && this.loggedInUser.roles.indexOf('t') >= 0) {
