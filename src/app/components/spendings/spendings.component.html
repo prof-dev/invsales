@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-form-field>
+    <!-- <mat-autocomplete role="combobox" #auto="matAutocomplete" [(ngModel)]="spending.type">
+      <mat-option *ngFor="let item of lookups | async " [value]="item">
+        <span>{{item.titlear}}</span>
+      </mat-option>
+    </mat-autocomplete> -->
+
+      <mat-select placeholder="بند الصرف " [(ngModel)]="spending.type" >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let item of spendingtype" [value]="item">{{item.titlear}}</mat-option>
+        </mat-select>
+    
+  </mat-form-field>
+  <mat-form-field>
+      <mat-select placeholder="إختيار الخزينة " [(ngModel)]="spending.tresury" >
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let item of treasuries" [value]="item">{{item.titlear}}</mat-option>
+        </mat-select>
+    
+    </mat-form-field>
+
+</mat-card>

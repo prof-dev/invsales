@@ -25,6 +25,7 @@ import { ReturnsComponent } from './components/returns/returns.component';
 import { LogComponent } from './components/log/log.component';
 import { SadadComponent } from './components/sadad/sadad.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
+import { SpendingsComponent } from './components/spendings/spendings.component';
 
 
 @NgModule({
@@ -38,7 +39,7 @@ import { InventoryComponent } from './components/inventory/inventory.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent
     
 
   ],
