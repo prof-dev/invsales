@@ -20,7 +20,8 @@ export class LookupsComponent implements OnInit {
   public operation: string = "new";
   public form: boolean = false;
   public processinfo = {
-    objecttype: 0
+    objecttype: 0,
+    processtype:true
 
   };
 
@@ -111,6 +112,7 @@ public opengroup:boolean;
   }
 
   modify(item) {
+    this.processinfo.processtype=false;
     this.visible = false;
     this.operation = "تعديل";
     this.form = true;
@@ -146,6 +148,7 @@ public opengroup:boolean;
 
 
   addnewlookup() {
+    this.processinfo.processtype=true;
     this.setGroup(null);
     this.form = true;
     this.operation = "إدخال جديد";
