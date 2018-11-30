@@ -21,28 +21,19 @@ export class LookupsComponent implements OnInit {
   public form: boolean = false;
   public processinfo = {
     objecttype: 0,
-    processtype:true
+    processtype: true
 
   };
 
-public opengroup:boolean;
+  public opengroup: boolean;
   public bank: any;
-
   public data: any;
-
   filterby: any;
-
-
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router, private _ut: UtilsService) { }
-
-
-
   ngOnInit() {
     this.refresh();
-
-
   }
   public refresh() {
     this._ss.User.subscribe(user => {
@@ -61,6 +52,10 @@ public opengroup:boolean;
   }
 
   setGroup(group) {
+    this.processinfo = {
+      objecttype: 0,
+      processtype: true
+    };
     this.visible = true;
     this.data = {
       address: "", balance: 0, price: 0
@@ -112,7 +107,7 @@ public opengroup:boolean;
   }
 
   modify(item) {
-    this.processinfo.processtype=false;
+    this.processinfo.processtype = false;
     this.visible = false;
     this.operation = "تعديل";
     this.form = true;
@@ -148,7 +143,7 @@ public opengroup:boolean;
 
 
   addnewlookup() {
-    this.processinfo.processtype=true;
+    this.processinfo.processtype = true;
     this.setGroup(null);
     this.form = true;
     this.operation = "إدخال جديد";
@@ -165,10 +160,7 @@ public opengroup:boolean;
   }
 
   addnewitem(parent) {
-    this.processinfo = {
-      objecttype: 0,
-      processtype:true
-    };
+   
     this.setGroup(parent);
     this.visible = false;
     this.form = true;
@@ -220,19 +212,19 @@ public opengroup:boolean;
 
   setgroupname(id) {
     console.log(id);
-    if(id==2){
-      this.bank.group='item';
-      this.opengroup=false;
+    if (id == 2) {
+      this.bank.group = 'item';
+      this.opengroup = false;
     }
     else
-    if(id==3){
-      this.bank.group='spending';
-      this.opengroup=false;
-    }
-    else{
-      this.bank.group='';
-      this.opengroup=true;
-    }
+      if (id == 3) {
+        this.bank.group = 'spending';
+        this.opengroup = false;
+      }
+      else {
+        this.bank.group = '';
+        this.opengroup = true;
+      }
   }
 
   deleteitem(item) {
