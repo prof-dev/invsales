@@ -82,6 +82,7 @@ export class InvoiceComponent implements OnInit {
   invoicedata: { payments: any[]; items: any[]; };
   public invoiceid = 0;
   public paid = 0;
+  suppcussdata: string;
 
 
 
@@ -94,10 +95,6 @@ export class InvoiceComponent implements OnInit {
 
     this.refresh();
     this.getallstores();
-    console.log(this.user.id);
-    
-
-
     this.data = {
 
     }
@@ -334,10 +331,12 @@ export class InvoiceComponent implements OnInit {
     }else{
       this.selecteditem.balance = this.selecteditem.balance+this.processinfo.reminder;
     }
-    this.selecteditem.data=JSON.stringify(this.selecteditem.data);
+    this.suppcussdata=JSON.stringify(this.selecteditem.data);
+    this.selecteditem.data=this.suppcussdata;
     this._hs.put('suppcus',"id", this.selecteditem).subscribe(res2 => {
       this._ss.setSnackBar("تم  تعديل رصيد العميل أو المورد");
     });
+    this.selecteditem.data=JSON.parse(this.suppcussdata);
   }
 
   private insertchecks(invoiceid) {

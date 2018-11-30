@@ -20,7 +20,8 @@
 
  
 .mat-card {
-    width: 500px;
-    margin-right: 10px;
+    /* width: 40%; */
+    margin-right: 10%;
+    margin-left: 10%;
   }
   

@@ -1,7 +1,4 @@
-table{
-    padding-left: 10%;
-    padding-right: 10%;
-}
+
 
 /* .mat-dialog-content{
     width: 500px;
@@ -24,11 +21,12 @@ th {
 }
 
 
-mat-card{
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+.mat-card {
+ 
+  
+    margin-left: 15%;
+    margin-right: 15%;
 }
 mat-form-field{
-    width:33%;
+    margin-right: 5px;
 }

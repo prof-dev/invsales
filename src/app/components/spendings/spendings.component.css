@@ -9,4 +9,6 @@ mat-form-field{
     margin-right: 5px;
 }
 
-
+textarea{
+    width:200%;
+}

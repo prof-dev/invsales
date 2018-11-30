@@ -8,16 +8,27 @@
 
       <mat-select placeholder="بند الصرف " [(ngModel)]="spending.type" >
           <mat-option>None</mat-option>
-          <mat-option *ngFor="let item of spendingtype" [value]="item">{{item.titlear}}</mat-option>
+          <mat-option *ngFor="let item of spendingtype" [value]="item.id">{{item.titlear}}</mat-option>
         </mat-select>
     
   </mat-form-field>
   <mat-form-field>
-      <mat-select placeholder="إختيار الخزينة " [(ngModel)]="spending.tresury" >
+      <input matInput required placeholder="المبلغ " name="paid" [(ngModel)]="spending.amount" required >
+  </mat-form-field>
+  <mat-form-field>
+    <textarea  matInput required placeholder="التعليق " name="paid" [(ngModel)]="data.desc" required ></textarea>
+      
+  </mat-form-field>
+  
+  <mat-form-field *ngIf="canselect">
+      <mat-select placeholder="إختيار الخزينة " [(ngModel)]="data.tresury" >
           <mat-option>None</mat-option>
-          <mat-option *ngFor="let item of treasuries" [value]="item">{{item.titlear}}</mat-option>
+          <mat-option *ngFor="let item of treasuries" [value]="item.id">{{item.titlear}}</mat-option>
         </mat-select>
     
     </mat-form-field>
+    <br>
+    <button mat-raised-button color="accent" (click)="save()">حفظ</button>
+    
 
 </mat-card>
