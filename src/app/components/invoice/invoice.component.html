@@ -1,52 +1,105 @@
-<br><br>
-<button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
-<button mat-raised-button color="primary" (click)="setType('p')">فاتورة مشتريات</button>
-<br>
-<br>
-
-<div *ngIf="invoice.type!=''">
-  <mat-card>
-
-      <div class="AddLookup">
-        <h1> إصدار فاتورة   {{operation}}</h1>
-
-          <br>
-          <br>
-          <input *ngIf="invoice.type=='s'" type="text" required placeholder="إسم العميل" aria-label="Number"
-            matInput [formControl]="myControl" [matAutocomplete]="auto" >
-          
-
-          <input *ngIf="invoice.type=='p'" type="text" required placeholder="إسم المورد" aria-label="Number"
-            matInput [formControl]="myControl" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-autocomplete>
-          <div class="the-container">
-
-            <button mat-raised-button color="primary" (click)="additem()">إضافة عنصر </button>
-            <br>
-            <br>
 
 
-            <mat-form-field>
-              <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="item.price">
-            </mat-form-field>
-            <label>طريق الدفع</label>
-            <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod">
-              <option *ngFor="let ch of paymentmethods" [(value)]="ch.value">{{ch.viewValue}} </option>
+
+<mat-card >
+    <br><br>
+    <button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
+    <button mat-raised-button color="primary" (click)="setType('p')">فاتورة مشتريات</button>
+    <br>
+    <br>
+  <div class="AddLookup"  *ngIf="invoice.type!=''">
+    <h1> إصدار فاتورة {{operation}}</h1>
+    {{message}}
+    <br>
+    <br>
+    <h3 *ngIf="invoice.type=='s'">بيانات العميل</h3>
+    <h3 *ngIf="invoice.type=='p'">بيانات المورد</h3>
+    <mat-form-field *ngIf="invoice.type=='s'">
+
+      <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let op of cuss" [value]="op">{{op.fullname}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="invoice.type=='p'">
+      <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <!-- <input *ngIf="invoice.type=='s'" type="text" required placeholder="إسم العميل"  matInput
+        [formControl]="myControl" [matAutocomplete]="auto">
 
 
-            </select>
-            <br>
-            <br>
-          </div>
-          <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
-     
-      </div>
+      <input *ngIf="invoice.type=='p'" type="text" required placeholder="إسم المورد"  matInput
+        [formControl]="myControl" [matAutocomplete]="auto" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="selected(option)">
+          {{option.fullname}}
+        </mat-option>
+      </mat-autocomplete>
+ -->
 
-  </mat-card>
+    <mat-form-field>
+      <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.fullname">
+    </mat-form-field>
 
 
-</div>
+
+
+    <mat-form-field>
+      <input matInput required placeholder=" رصيد العميل" [(ngModel)]="selecteditem.balance">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required placeholder=" تلفون العميل" [(ngModel)]="selecteditem.data.phone">
+    </mat-form-field>
+
+    <hr>
+    <h2>الأصناف</h2>
+    <mat-form-field>
+
+      <mat-select placeholder="إختيار الصنف" [(ngModel)]="product">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let op of productsview" [value]="op">{{op.titlear}}</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+
+
+    <br>{{product.titlear}} <br>
+
+
+
+    <mat-form-field>
+      <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="product.price">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput required placeholder=" العدد" name="price" [(ngModel)]="product.count">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput required placeholder=" المبلغ" name="price" [(ngModel)]="product.total" [value]="product.count*product.price">
+    </mat-form-field>
+    <!-- <mat-form-field>
+        <input src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img">
+    </mat-form-field> -->
+    <br>
+    <hr>
+    <h3> الدفع</h3>
+    <mat-form-field>
+      <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod" placeholder="طريقة الدفع">
+        <option *ngFor="let ch of paymentmethods" [(value)]="ch.value">{{ch.viewValue}} </option>
+
+      </select>
+    </mat-form-field>
+
+    <br>
+    <br>
+
+    <button mat-raised-button (click)="save(bank,data)" color="primary">حفظ</button>
+
+  </div>
+
+</mat-card>

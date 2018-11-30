@@ -13,10 +13,38 @@
 mat-sidenav {
   width: 200px;
   height: 100%;
+  padding-top: 100px;
 }
-mat-sidenav-content{
-  height: 800px;
+
+mat-sidenav-content {
+  min-height: 700px;
+  padding-top: 100px;
 }
-.sd-btn{
-    widows: 10px;
+
+.sd-btn {
+  widows: 10px;
+}
+
+
+a{
+  cursor: pointer;
+}
+
+.mytoolbar {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+}
+
+.prog-bar {
+  position: fixed;
+  top: 64px;
+  z-index: 999;
+  width: 100%;
+}
+
+.main-div {
+  width: 100%;
+  height: 100%;
 }

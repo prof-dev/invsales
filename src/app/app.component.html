@@ -1,30 +1,55 @@
+      <!-- <p>نظام إدارة المبيعات والمشتروات</p> -->
+
+<mat-toolbar color="primary" class="mat-elevation-z4 mytoolbar">
+  <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
+  <span>
+    &nbsp;
+    <p>
+      Google Developer
+    </p>
+  </span>
+  <span class="filler">
+  </span>
+  <div *ngIf="user.id>0; else elseBlock">
+    <span>{{user.fullname}} &nbsp;</span>
+    <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
+
+  </div>
+  <ng-template #elseBlock>
+    <span>
+      <button width="32" type="button" class="right" mat-button (click)="routeTo('/login')"> Login
+      </button>
+    </span>
+  </ng-template>
+  
+</mat-toolbar>
+<div [hidden]="!appIsBusy" class="prog-bar">
+  <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+</div>
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="mode.value">
-    <p>
-      <mat-radio-group class="example-radio-group" [formControl]="mode">
-        <mat-radio-button value="over">Ov</mat-radio-button>
-        <mat-radio-button value="side">Si</mat-radio-button>
-        <mat-radio-button value="push">Pu</mat-radio-button>
-      </mat-radio-group>
-    </p>
-    <p>
-        <button mat-raised-button routerLink="/lookups" class="sd-btn"> ضبط النظام</button><br>
-        <button mat-raised-button routerLink="/invoice"class="sd-btn">الفواتير</button><br>
-        <button mat-raised-button routerLink="/checks" class="sd-btn">الشيكات</button><br>
-        <button mat-raised-button routerLink="/userforms" class="sd-btn">المستخدمين</button><br>
-        <button mat-raised-button routerLink="/supcus" class="sd-btn">العملاء والموردين</button><br>
-    </p>
+    <span>
+      <img src="assets/logo.jpg" alt="">
+    </span><br>
+
+    <a  (click)="goto('/')" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
+    <a  (click)="goto('/log')" class="sd-btn" (click)="sidenav.toggle()">المراقبه</a><br>
+    <hr>
+    <a  (click)="goto('/lookups')" class="sd-btn" (click)="sidenav.toggle()">ضبط النظام</a><br>
+    <a  (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">الفواتير</a><br>
+    <a  (click)="goto('/checks')" class="sd-btn" (click)="sidenav.toggle()">الشيكات</a><br>
+    <a  (click)="goto('/users')" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</a><br>
+    <a  (click)="goto('/inventory')" class="sd-btn" (click)="sidenav.toggle()">المخازن</a><br>
+   
+    <a  (click)="goto('/supcus')" class="sd-btn" (click)="sidenav.toggle()">العملاء
+      والموردين</a><br>
+    <hr>
+    <a  (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">المردودات</a><br>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-        <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
-        <span>
-        نظام إدارة المبيعات
-      </span>
-    </mat-toolbar>
-    <span class="filler">
-    </span>
-    <router-outlet></router-outlet>
+    <div class="main-div">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,15 @@
+.container {
+    margin-top: 20px;
+    display: flex;
+  }
+  .logs-card{
+      width:40%;
+  }
+.log-card{
+      margin-right: 10px;
+        width:60%;
+  }
+  .loginput{
+    width:120px;
+    margin-right: 5px;
+  }

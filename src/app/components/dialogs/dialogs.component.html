@@ -1,0 +1,38 @@
+<div *ngIf="data.type=='input'">
+  <h3>{{data.message}}</h3>
+  <h5>{{data.submessage}}</h5>
+  <br>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.result" placeholder="{{data.placeholder}}">
+  </mat-form-field>
+  <br><br><br>
+  <button mat-raised-button color="primary" (click)="ok()">نعم</button>&nbsp;&nbsp;
+  <button mat-raised-button color="primary" (click)="cancel()">الغاء</button>
+</div>
+
+<div *ngIf="data.type=='confirm'">
+  <h3>{{data.message}}</h3>
+  <h5>{{data.submessage}}</h5>
+  <br><br><br>
+  <button mat-raised-button color="primary" (click)="ok()">نعم</button>&nbsp;&nbsp;
+  <button mat-raised-button color="primary" (click)="cancel()">لا</button>
+</div>
+<div *ngIf="data.type=='info'">
+  <h3>{{data.message}}</h3>
+  <h5>{{data.submessage}}</h5>
+  <br><br><br>
+  <button mat-raised-button color="info" (click)="ok()">حسناً</button>
+</div>
+<div *ngIf="data.type=='warn'">
+  <h3>{{data.message}}</h3>
+  <h5>{{data.submessage}}</h5>
+  <br><br><br>
+  <button mat-raised-button color="warn" (click)="ok()">حسناً</button>
+</div>
+
+<div *ngIf="data.type=='error'">
+  <h3>{{data.message}}</h3>
+  <h5>{{data.submessage}}</h5>
+  <br><br><br>
+  <button mat-raised-button color="error" (click)="ok()">Ok</button>
+</div>

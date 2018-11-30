@@ -16,8 +16,13 @@ export class InvoiceComponent implements OnInit {
   myControl = new FormControl();
   customers: string[] = [];
   suppliers: string[] = [];
+  public supp: any[] = [];
+  public cuss: any[] = [];
+  public productsview: any[] = [];
+  public lookups: any[] = [];
+  public filteringtype="";
   public optionids: any[] = [];
-  public filteredOptions: Observable<string[]>;
+  public filteredOptions: Observable<any[]>;
   public user: any;
   public invoice: any;
   public data: any;
@@ -27,7 +32,34 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
-  public items:any[]=[];
+  public selecteditem={
+    id: 0,
+    type: "",
+    fullname: "",
+    data: {},
+    balance: 0
+  };
+  public product:any={};
+  public check = {
+    id: 0,
+    checkno: "",
+    bank: "",
+    date: "",
+    status: "",
+    checkowner: "0",
+    lastholder: "",
+    amount: 4,
+    source: "",
+    user: 0,
+    comment: ""
+  };
+
+  public inventory = {
+    id: 0,
+    data: [],
+  }
+
+  
 
   public operation: string = "";
 
@@ -38,19 +70,24 @@ export class InvoiceComponent implements OnInit {
 
 
   ngOnInit() {
-   
+
     this._ss.User.subscribe(user => {
       this.user = user;
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
       } else {
-        // this._hs.get('lookups', 'filter=isleaf,eq,0')
-        //   .subscribe(res => {
-        //     this.lookups = res.json().lookups;
-        //     console.log(this.lookups);
+        this._hs.get('lookups', 'filter=group,eq,item')
+        .subscribe(res => {
+          this.lookups = res.json().lookups;
+          console.log(this.lookups);
 
+          this.lookups.forEach(element => {
 
-        //   })
+            element.data = JSON.parse(element.data);
+            console.log(this.items);
+          });
+          this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
+        });
       }
     });
 
@@ -91,61 +128,89 @@ export class InvoiceComponent implements OnInit {
   }
 
   //
-  public _filter(value: string): string[] {
+  public _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    if(this.invoice.type =='presales'){
-      return this.suppliers.filter(option => option.toLowerCase().includes(filterValue));
+    if (this.filteringtype == 'suppliers') {
+      // this.selecteditem = this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
+      return this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
-    else if(this.invoice.type =='sales'){
-      return this.customers.filter(option => option.toLowerCase().includes(filterValue));
+    else if (this.filteringtype== 'customers') {
+      console.log(this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue)));
+      return this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
- 
+    else if (this.filteringtype== 'items') {
+      //console.log(this.cuss.filter(option => option.titlear.toLowerCase().includes(filterValue)));
+      return this.productsview.filter(option => option.titlear.toLowerCase().includes(filterValue));
+    }
+
   }
 
   additem(item) {
+   
     this.showiteminsert = true;
 
 
   }
 
-  setType(type) {
+  setitem(item){
+    console.log('hello');
     
+   
+    return item.titlear;
 
-    this.customers=[];
-    this.suppliers=[];
+  }
+
+  setfiltertype(){
+    console.log('hello');
+    
+    this.filteringtype='items';
+  }
+
+  setType(type) {
+
+    this.supp = [];
+    this.cuss = [];
+    this.selecteditem;
+    this.customers = [];
+    this.suppliers = [];
     this.invoice.type = type;
-    if(type=='s'){
-      this.operation='المبيعات';
-    }else{
-      this.operation='المشتريات';
+    if (type == 's') {
+      this.filteringtype='customers';
+      this.operation = 'المبيعات';
+    } else {
+      this.filteringtype='suppliers';
+      this.operation = 'المشتريات';
 
     }
     this._hs.get('suppcus')
-    .subscribe(res => {
-      this.suppcus = res.json().suppcus;
-      console.log(res.json());
-    })
-    
-    this.suppcus.forEach(element => {
-      element.data=JSON.parse(element.data);
-     if(element.type =='c'){
-      console.log("customeris :",element.name);
-      this.customers.push(element.fullname+","+element.id+","+element.data.phone);
-     }
-      else if(element.type =='s'){
-        console.log("supplier is :",element.name);
-        this.suppliers.push(element.fullname+","+element.id+","+element.data.phone);
-      }
+      .subscribe(res => {
+        // this.suppcus = res.json().suppcus;
+        console.log(res.json());
+
+
+        res.json().suppcus.forEach(element => {
+          element.data = JSON.parse(element.data);
+          if (element.type == 'c') {
+            console.log("customeris :", element.fullname);
+            this.cuss.push(element);
+            this.customers.push(element.fullname + "," + element.id + "," + element.data.phone);
+          }
+          else if (element.type == 's') {
+            this.supp.push(element);
+            console.log("supplier is :", element.fullname);
+            this.suppliers.push(element.fullname + "," + element.id + "," + element.data.phone);
+          }
 
 
 
-    });
+        });
+      });
     this.filteredOptions = this.myControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-    
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
   }
 
   save() {
@@ -169,10 +234,23 @@ export class InvoiceComponent implements OnInit {
   ]
 
 
+  selected(item) {
+   console.log('hello');
+  
+    //this.selecteditem = item;
+
+   
+    // return item.fullname;
+  }
+
+  displayFn(val: any) {
+    return val ? val.fullname : val;
+  }
 }
 
 interface Choice {
   value: string;
   viewValue: string;
 }
+
 

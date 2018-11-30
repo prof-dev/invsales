@@ -11,14 +11,33 @@ export class ShareService {
   }
 
   //User
-  private user = new BehaviorSubject({id:0});
-  
+  private user = new BehaviorSubject({ id: 0 });
+
   public User = this.user.asObservable();
   setUser(user) {
-    console.log("user in share serrv:",user);
-    
+    this._hs.currentUser=user.username;
     this.user.next(user);
   }
-  //End User
 
+  //SnackBar
+  private snackBar = new BehaviorSubject({});
+  public SnackBar = this.snackBar.asObservable();
+  setSnackBar(message) {
+    this.snackBar.next(message);
+  }
+
+  //Screen
+  private screen = new BehaviorSubject({});
+  public Screen = this.screen.asObservable();
+  setScreen(screen) {
+    this._hs.currentScreen=screen;
+    this.screen.next(screen);
+  }
+
+  //appIsBusy
+  private appIsBusy = new BehaviorSubject({});
+  public AppIsBusy = this.appIsBusy.asObservable();
+  setAppIsBusy(value) {
+    this.appIsBusy.next(value);
+  }
 }

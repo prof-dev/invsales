@@ -12,3 +12,15 @@
 .filler{
     width: 5%;
 }
+
+.container {
+    margin-top: 20px;
+    display: flex;
+  }
+
+ 
+.mat-card {
+    width: 500px;
+    margin-right: 10px;
+  }
+  

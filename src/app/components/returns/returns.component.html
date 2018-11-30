@@ -1,0 +1,53 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <div *ngIf="retOb.type=='s'">
+                <h1>مردودات المبيعات</h1>
+            </div>
+            <div *ngIf="retOb.type=='p'">
+                <h1>مردودات المشتروات</h1>
+            </div>
+        </mat-card-title>
+        <mat-card-subtitle>مردودات المبيعات والمشتروات</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field>
+            <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type">
+                <mat-option value="s">مردودات المبيعات</mat-option>
+                <mat-option value="p">مردودات المشتروات</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <div *ngIf="retOb.type==='p'">
+        </div>
+        <div *ngIf="retOb.type==='s'">
+            <mat-form-field>
+                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم الفاتوره أو طلب الرد">
+                <br>
+            </mat-form-field>
+            <a mat-raised-button (click)="fetch()" color="primary">جلب الفاتوره أو طلب الرد</a>&nbsp;
+            <a mat-raised-button (click)="save()" color="primary" [disabled]="retOb.row.locked==1">حفظ</a>&nbsp;
+            <a mat-raised-button (click)="delivered()" color="primary" [disabled]="retOb.row.locked==1 || user.roles.indexOf('s')<0">تأكيد الاستلام</a>&nbsp;
+            <a mat-raised-button (click)="delete()" color="primary" [disabled]="retOb.row.locked==1">حذف الطلب</a>&nbsp;
+            <a mat-raised-button (click)="print()" color="primary">طباعه</a>&nbsp;
+            <div id="printdiv" class="mat">
+                <table>
+                    <tr>
+                        <th>رقم النوع</th>
+                        <th>التفاصيل</th>
+                        <th>الكميه</th>
+                        <th>المردود</th>
+                    </tr>
+                    <tr *ngFor="let one of retOb.row.data">
+                        <td>{{one.id}}</td>
+                        <td>{{one.name}}</td>
+                        <td>{{one.qty}}</td>
+                        <td>
+                            <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

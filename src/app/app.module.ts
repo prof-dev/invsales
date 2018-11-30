@@ -12,18 +12,19 @@ import { HttpService } from './services/http.service';
 import { ShareService } from './services/share.service';
 import { SuppcusComponent } from './components/suppcus/suppcus.component';
 import { HomeComponent } from './components/home/home.component';
-import { MainmenuComponent } from './components/mainmenu/mainmenu.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { UsersComponent } from './components/users/users.component';
-import { GeneralComponent } from './components/general/general.component';
 import { SigninComponent } from './components/signin/signin.component';
-import { LookupsComponent, LookupsComponentDialog } from './components/lookups/lookups.component';
+import { LookupsComponent } from './components/lookups/lookups.component';
 import { FormsModule,FormControl, ReactiveFormsModule} from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { ChecksComponent } from './components/checks/checks.component';
-
+import { DialogsComponent } from "./components/dialogs/dialogs.component";
+import { ReturnsComponent } from './components/returns/returns.component';
+import { LogComponent } from './components/log/log.component';
+import { SadadComponent } from './components/sadad/sadad.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 
 @NgModule({
@@ -33,14 +34,11 @@ import { ChecksComponent } from './components/checks/checks.component';
     SettingsComponent,
     SuppcusComponent,
     HomeComponent,
-    MainmenuComponent,
-    NavigationComponent,
     UsersComponent,
-    GeneralComponent,
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,LookupsComponentDialog,
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent
     
 
   ],
@@ -56,8 +54,8 @@ import { ChecksComponent } from './components/checks/checks.component';
 
   ],
   providers: [HttpService, ShareService,{provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}],
-  bootstrap: [AppComponent,LookupsComponentDialog],
-  entryComponents: [LookupsComponent,LookupsComponentDialog]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogsComponent]
 })
 export class AppModule { }
 

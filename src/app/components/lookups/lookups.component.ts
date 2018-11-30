@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { HttpService } from 'src/app/services/http.service';
-import { ShareService } from 'src/app/services/share.service';
+import { HttpService } from '../../services/http.service';
+import { ShareService } from '../../services/share.service';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { UtilsService } from '../../services/utils.service';
 
 
 @Component({
@@ -30,35 +30,39 @@ export class LookupsComponent implements OnInit {
 
   constructor(private _hs: HttpService,
     private _ss: ShareService,
-    private _router: Router, public dialog: MatDialog) { }
+    private _router: Router,private _ut : UtilsService) { }
 
 
 
   ngOnInit() {
+    this.refresh();
+
+
+  }
+  refresh() {
     this._ss.User.subscribe(user => {
       this.user = user;
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
-      } else {
+      }
+      else {
         this._hs.get('lookups', 'filter=isleaf,eq,0')
           .subscribe(res => {
             this.lookups = res.json().lookups;
             console.log(this.lookups);
-
-
-          })
+          });
       }
     });
-
-
   }
+
   setGroup(group) {
-    // this.visible = true;
+    this.visible = true;
     this.data = {
       address: "", balance: 0, price: 0
     };
+    if(group==null){
     this.bank = {
-      group: group.group,
+      group:"",
       id: null,
       parent: 0,
       isleaf: 0,
@@ -66,16 +70,29 @@ export class LookupsComponent implements OnInit {
       titlear: "",
       data: null
     };
-
-    this.form = false;
-    this.group = group;
-    if (group.group == "new") {
-      this.filterby = 0;
-    }
-    else {
-      this.filterby = group.id;
-    }
-    this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
+    this.group = this.bank;
+    this.group.data=this.data;
+    }else{
+      this.bank = {
+        group: group.group,
+        id: null,
+        parent: 0,
+        isleaf: 0,
+        titleen: "",
+        titlear: "",
+        data: null
+      };
+      this.group = group;
+      this.group.data=this.data;
+       this.form = false;
+       if(group.id==null){
+        this.filterby = 0;
+       }
+       else{
+        this.filterby = group.id;
+       }
+      
+        this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
       .subscribe(res => {
         this.lookupitems = res.json().lookups;
 
@@ -85,6 +102,8 @@ export class LookupsComponent implements OnInit {
     console.log("group is set to:", group.group);
 
 
+    }
+    
   }
 
   modify(item) {
@@ -106,20 +125,28 @@ export class LookupsComponent implements OnInit {
     this.visible = false;
 
   }
-  delete(item): void {
-    const dialogRef = this.dialog.open(LookupsComponentDialog, {
-      width: '250px',
-      data: { id: item.id, name: item.group }
+
+
+  dodelete(item): void {
+    this._hs.delete('lookups', item.id).subscribe(res => {
+      if (res.json() == 1) {
+
+        this._ss.setSnackBar("تم الحذف بنجاااح");
+      
+      }
     });
+
+
   }
 
 
 
-  addnew() {
-    this.bank.id = null;
+  addnewlookup() {
+   this.setGroup(null);
     this.form = true;
     this.operation = "إدخال جديد";
     this.bank.titlear = "";
+    this.bank.group="";
     this.data.address = "";
     this.data.balance = 0;
     this.data.price = 0;
@@ -127,40 +154,39 @@ export class LookupsComponent implements OnInit {
     this.visible = false;
 
 
-    this.bank.parent = this.group.id;
+    this.bank.parent = 0;
+  }
+
+  addnewitem(parent) {
+   this.setGroup(parent);
+    this.visible = false;
+    this.form = true;
+    this.operation = "إدخال جديد";
+    this.bank.titlear = "";
+    this.data.address = "";
+    this.data.balance = 0;
+    this.data.price = 0;
+    this.bank.titleen = "";
+    
+    this.visible = false;
+
+
+    this.bank.parent = parent.id;
   }
 
   save(item, d) {
 
     if (item.id == null) {
-      if (this.group.group == 'new') {
-        item.parent = 0;
-
-      }
-      item.parent = this.group.id;
       this.bank.data = JSON.stringify(d);
-
       console.log(item.data);
-
       this._hs.post('lookups', item).subscribe(res => {
 
         console.log("تمت إضافة " + this.group.titlear + " id :" + res);
 
       })
 
-
-
     }
     else {
-
-      if (this.group.group != 'new') {
-        item.parent = this.group.id;
-      } else {
-        item.parent = this.group.id;
-      }
-
-
-
       item.data = JSON.stringify(d);
       console.log(item.selected);
 
@@ -178,9 +204,18 @@ export class LookupsComponent implements OnInit {
 
   }
 
+  deleteitem(item) {
 
-
-
+    this._ut.messageBox('confirm', 'تأكيد احذف', 'هل أنت متأكد من حذف العنصر؟')
+      .afterClosed()
+      .subscribe(result => {
+        if (result == 'ok') {
+          console.log('res: ', this._ut.thedata.result);
+          this.dodelete(item);
+         
+        }
+      });
+  }
   public leaf: Choice[] = [
     { value: '1', viewValue: 'فرع نهائي' },
     { value: '0', viewValue: 'قسم رئيسي / أو فرعي' }]
@@ -189,49 +224,10 @@ export class LookupsComponent implements OnInit {
 
 }
 
+
+
 interface Choice {
   value: string;
   viewValue: string;
 }
 
-
-
-@Component({
-  selector: 'lookups.component.dialog',
-  templateUrl: './lookups.component.dialog.html',
-})
-
-
-
-export class LookupsComponentDialog {
-
-  constructor(private _hs: HttpService, private _router: Router,
-    public dialogRef: MatDialogRef<LookupsComponentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-
-  godelete(id) {
-
-    this._hs.delete('lookups', id).subscribe(res => {
-      console.log("deletion result:" + res);
-
-      if (res.status == 200) {
-        this.dialogRef.close();
-        this._router.navigateByUrl('/lookups');
-        //this.setGroup(this.group);
-      }
-
-    });
-  }
-
-}
-
-
-export interface DialogData {
-  name: string;
-  id: number;
-}
