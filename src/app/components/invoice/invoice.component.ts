@@ -41,7 +41,10 @@ export class InvoiceComponent implements OnInit {
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
-  public processinfo = {};
+  public processinfo = {
+    reminder: 0,
+    status: ""
+  };
   public selecteditem = {
     id: 0,
     type: "",
@@ -78,6 +81,7 @@ export class InvoiceComponent implements OnInit {
   public storeselect: any[] = [];
   invoicedata: { payments: any[]; items: any[]; };
   public invoiceid = 0;
+  public paid = 0;
 
 
 
@@ -174,6 +178,7 @@ export class InvoiceComponent implements OnInit {
     this.invoiceitems.push(item);
     this.invoice.totalprice = this.invoice.totalprice + parseInt(item.totalprice);
     this.product = {};
+    this.processinfo.reminder += parseInt(item.totalprice);
 
 
   }
@@ -266,7 +271,10 @@ export class InvoiceComponent implements OnInit {
     }
     this.invoiceitems = [];
     this.payments = [];
-    this.processinfo = {};
+    this.processinfo = {
+      reminder: 0,
+      status: ""
+    };
     this.supp = [];
     this.cuss = [];
     this.selecteditem = {
@@ -312,10 +320,10 @@ export class InvoiceComponent implements OnInit {
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
           this.check.checkno = element.checkno;
-          if(this.invoice.type='s'){
+          if (this.invoice.type == 's') {
             this.check.source = "in";
           }
-          else{
+          else {
             this.check.source = "out";
           }
           this.check.status = element.checkstatus;
@@ -357,14 +365,33 @@ export class InvoiceComponent implements OnInit {
 
   addpayment() {
 
-    this.payment={};
+    this.payment = {};
     console.log('hello');
 
   }
 
   pushpayment(payment) {
-    this.payments.push(payment);
-    console.log(this.payments);
+    this.paid = 0;
+    if (payment.amount > 0) {
+      this.payments.push(payment);
+      this.payments.forEach(element => {
+        this.paid = this.paid + parseInt(element.amount);
+        console.log(element.amount);
+
+        console.log("المدفووووووووووع :", this.paid);
+
+      });
+      if (this.paid != 0) {
+        this.processinfo.reminder = this.invoice.totalprice - this.paid;
+      }
+
+      console.log(this.payments);
+      this.paid = 0;
+    }
+    else{
+      this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
+    }
+
   }
 
   selected(item) {
