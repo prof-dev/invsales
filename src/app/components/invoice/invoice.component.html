@@ -147,7 +147,7 @@
           <input matInput required placeholder="حساب بإسم " name="reminder" [(ngModel)]="payment.checkowner" required>
         </mat-form-field>
       <mat-form-field>
-        <select matNativeControl required class="primary" [(ngModel)]="processinfo.checkstatus" placeholder=" حالة الشيك" (focusout)="pushpayment(payment)">
+        <select matNativeControl required class="primary" [(ngModel)]="payment.checkstatus" placeholder=" حالة الشيك" (focusout)="pushpayment(payment)">
           <option *ngFor="let ch of checkstatus" [(value)]="ch.value">{{ch.viewValue}} </option>
 
         </select>

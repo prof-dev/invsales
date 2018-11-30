@@ -77,6 +77,7 @@ export class InvoiceComponent implements OnInit {
   stores: any[] = [];
   public storeselect: any[] = [];
   invoicedata: { payments: any[]; items: any[]; };
+  public invoiceid = 0;
 
 
 
@@ -104,7 +105,7 @@ export class InvoiceComponent implements OnInit {
     }
 
     this.payment = {
-      paymentmethod: "شيك",
+      paymentmethod: "",
       amount: 0.0,
       paymenttype: 5,
       checkNo: "0000",
@@ -279,6 +280,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   save() {
+
     this.invoice.entityid = this.selecteditem.id;
     this.invoice.user = this.user.id;
     this.invoicedata = {
@@ -289,36 +291,43 @@ export class InvoiceComponent implements OnInit {
     console.log(this.invoice);
 
     this._hs.post('pursales', this.invoice).subscribe(res => {
-
-      this.check.invoice = parseInt(res.text());
-      this._ss.setSnackBar("تمت إضافة " + this.invoice + " id :" + res.text);
-
+      //confirm(res.text());
+      this.insertchecks(parseInt(res.text()));
+      this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
     });
-    
-    if(this.payment.bankname!="" && this.payment.checkNo!="" && this.payment.amount !=0){
-      this.check.user = this.user.id;
-   
-      this.check.bankname = this.payment.bankname;
-      this.check.checkowner = this.payment.checkowner;
-      this.check.amount = this.payment.amount;
-      this.check.checkno = this.payment.checkno;
-      this.check.source = "in";
-  
-      this.check.status = this.payment.checkstatus;
-  
-      console.log(this.check);
-  
-      this._hs.post('checks', this.check).subscribe(res2 => {
-        this._ss.setSnackBar("تم حفظ الشيك");
-      })
-
-    }
-
 
 
 
   }
 
+
+  private insertchecks(invoiceid) {
+    confirm(invoiceid);
+    this.payments.forEach(element => {
+      if (element.paymentmethod == "check") {
+        if (element.bankname != "" && element.checkNo != "" && element.amount != 0) {
+          this.check.user = this.user.id;
+          this.check.invoice = invoiceid;
+          this.check.bankname = element.bankname;
+          this.check.checkowner = element.checkowner;
+          this.check.amount = element.amount;
+          this.check.checkno = element.checkno;
+          if(this.invoice.type='s'){
+            this.check.source = "in";
+          }
+          else{
+            this.check.source = "out";
+          }
+          this.check.status = element.checkstatus;
+          this.check.status = element.checkstatus;
+          console.log(this.check);
+          this._hs.post('checks', this.check).subscribe(res2 => {
+            this._ss.setSnackBar("تم حفظ الشيك");
+          });
+        }
+      }
+    });
+  }
 
   sum(x, y) {
     console.log("hello :", x, "y :", y);
@@ -348,7 +357,7 @@ export class InvoiceComponent implements OnInit {
 
   addpayment() {
 
-    this.payment.paymentmethod = "";
+    this.payment={};
     console.log('hello');
 
   }
