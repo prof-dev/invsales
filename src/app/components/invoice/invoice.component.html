@@ -2,8 +2,13 @@
   <br><br>
   <button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
   <button mat-raised-button color="primary" (click)="setType('p')">أوامر الطلبيات</button>
-  <br>
-  <br>
+  <span class="filler"></span>
+  <mat-form-field>
+    <input matInput required placeholder="رقم الفاتورة" name="shipno">
+  </mat-form-field>
+  <button mat-raised-button color="accent">إسترجاع</button>
+
+
   <div class="AddLookup" *ngIf="invoice.type!=''">
     <h3> فاتورة {{operation}}</h3>
     {{message}}
@@ -188,7 +193,7 @@
 
 
     <button mat-raised-button (click)="save()" color="accent">حفظ</button>
-    <button mat-raised-button (click)="print()"  color="accent" *ngIf="processinfo.status=='print'">طباعة</button>
+    <button mat-raised-button (click)="print()" color="accent" *ngIf="processinfo.status=='print'"> إذن الإستلام</button>
 
   </div>
   <div id="printdiv" class="mat" hidden="true">

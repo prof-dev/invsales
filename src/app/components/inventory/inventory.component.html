@@ -1,7 +1,5 @@
-
-
 <div class="container">
- 
+
   <mat-card>
     <h2>المخازن</h2>
     <table>
@@ -30,8 +28,19 @@
     <div *ngIf="entrytype=='add'">
       <h2> الإضافة إلى مخزن {{display}}</h2>
       <mat-form-field>
+        <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="processinfo.parent" (change)="getitemsbyclass()">
+          <option *ngFor="let option of classes " [value]="option.id">
+            {{option.titlear}}
+          </option>
+
+        </select>
+      </mat-form-field>
+      <mat-form-field>
         <select matNativeControl required class="primary" placeholder="إختيار الصنف" [(ngModel)]="item.id">
-          <option *ngFor="let option of productsview " [value]="option.id">
+            <option  [value]="0">
+                إختيار الصنف
+              </option>
+          <option *ngFor="let option of list " [value]="option.id">
             {{option.titlear}}
           </option>
 
@@ -50,7 +59,7 @@
       <button mat-raised-button (click)="additemtolist(item)" color="primary">حفظ</button>
     </div>
     <div *ngIf="entrytype=='show'">
-      <h1>مخزن  {{display}}</h1>
+      <h1>مخزن {{display}}</h1>
       <table>
         <tr>
           <th>الصنف </th>
