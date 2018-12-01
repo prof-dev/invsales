@@ -151,8 +151,8 @@
 
         </select>
       </mat-form-field>
-       </div>
-  
+    </div>
+
     <div *ngIf="payment.paymentmethod=='cash'">
       <mat-form-field>
         <input matInput required placeholder="المدفوع " name="paid" [(ngModel)]="payment.amount" required (focusout)="pushpayment(payment)">
@@ -160,8 +160,8 @@
 
     </div>
     <button mat-raised-button (click)="addpayment(payment)">
-        <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
-      </button>
+      <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
+    </button>
     <br>
     <div>
       <h4>ملخص الدفع</h4>
@@ -188,7 +188,42 @@
 
 
     <button mat-raised-button (click)="save()" color="accent">حفظ</button>
+    <button mat-raised-button (click)="print()"  color="accent" *ngIf="processinfo.status=='print'">طباعة</button>
 
   </div>
+  <div id="printdiv" class="mat" hidden="true">
+    <table>
+      <tr>
+        <td>
+          فاتورة رقم: {{invoice.id}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          إسم العميل : {{selecteditem.fullname}}
+        </td>
+      </tr>
+      <tr>
+        <table>
+          <tr>
+            <td>الصنف</td>
+            <td>الكمية</td>
+            <td>المخزن</td>
+            <td>تعليق</td>
+          </tr>
+          <tr *ngFor="let row of invoiceitems">
+            <td>{{row.titlear}}</td>
+            <td>{{row.count}}</td>
+            <td>{{row.store.titlear}}</td>
+            <td></td>
+          </tr>
+        </table>
+      </tr>
+
+
+    </table>
+  </div>
+
+
 
 </mat-card>

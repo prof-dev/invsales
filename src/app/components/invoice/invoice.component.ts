@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { fadeInItems, DateAdapter } from '@angular/material';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-invoice',
@@ -87,7 +88,7 @@ export class InvoiceComponent implements OnInit {
 
 
   constructor(private _hs: HttpService,
-    private _ss: ShareService,
+    private _ss: ShareService,private _ut: UtilsService,
     private _router: Router) { }
 
 
@@ -287,29 +288,43 @@ export class InvoiceComponent implements OnInit {
   }
 
   save() {
-
-    this.invoice.entityid = this.selecteditem.id;
-    this.invoice.user = this.user.id;
-    this.invoicedata = {
-      payments: this.payments,
-      items: this.invoiceitems
-    };
-    this.invoice.data = JSON.stringify(this.invoicedata);
-    console.log(this.invoice);
-
-    this._hs.post('pursales', this.invoice).subscribe(res => {
-      //confirm(res.text());
-      this.insertchecks(Number(res.text()));
-      if(this.processinfo.reminder!=0){
-        this.updatecustomeraccount();
+    if(this.processinfo.status!="print"){
+      this.invoice.entityid = this.selecteditem.id;
+      this.invoice.user = this.user.id;
+      this.invoicedata = {
+        payments: this.payments,
+        items: this.invoiceitems
+      };
+      this.invoice.data = JSON.stringify(this.invoicedata);
+      console.log(this.invoice);
+  
+      this._hs.post('pursales', this.invoice).subscribe(res => {
+        this.invoice.id=Number(res.text());
+        //confirm(res.text());
+        this.insertchecks(this.invoice.id);
+        if(this.processinfo.reminder!=0){
+          this.updatecustomeraccount();
+         
+        }
         this.updateuserbalance();
-      }
-      this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
-    });
+        this.processinfo.status="print";
+        this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
+  
+      });
+
+    }
+    else{
+      this._ss.setSnackBar("تم إصدار هذه الفاتورة من قبل رقم الفاتورة هو :"+this.invoice.id);
+    }
+
+   
    
 
+  }
 
-
+  print() {
+    this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
+    this._ut.showReport('إذن  إستلام بضاعة', 'printdiv');
   }
 
   updateuserbalance(){

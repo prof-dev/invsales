@@ -80,12 +80,13 @@ export class SuppcusComponent implements OnInit {
                 "phone": "",
                 "whatsapp": "",
                 "email": "",
-                "phone2": ""
-                // "location" "4555,55555"
+                "phone2": "",
+                 "location":null
             }
         }
     }
     save(form) {
+        this.form.data.location=this.location;
         if (form.id != 0) {
             form.data = JSON.stringify(form.data);
             console.log(form.data);

@@ -9,9 +9,7 @@
             <button mat-raised-button color="primary" (click)="setType('s')">إدخال مورد</button>
             <br>
             <h1 mat-dialog-title> إدخال بيانات {{formtype}}</h1>
-            <br>
-            <label class="message">{{message}}</label>
-            <br>
+           
             <div mat-dialog-content>
         
                 <mat-form-field>
@@ -34,6 +32,9 @@
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput required placeholder=" رقم الواتساب" [(ngModel)]="form.data.whatsapp">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="العنوان على الخريطة" [(ngModel)]="form.data.location" [value]="location">
                 </mat-form-field>
                 <br>
                 <!-- capture the location from the map save it to form.data.location -->
