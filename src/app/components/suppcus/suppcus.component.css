@@ -1,32 +1,10 @@
-
-
-/* .mat-dialog-content{
-    width: 500px;
-} */
-
-th {
-    padding-left: 10px;
-    text-align: center;
-    border: 1px solid black;
-}
-  td {
-    padding-left: 10px;
-    text-align: right;
-    border: 1px solid black;
+mat-expansion-panel {
+  position: absolute;
+  top:65px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
-.message{
-    color: red;
-    background-color: aqua;
-}
-
-
-.mat-card {
- 
-  
-    margin-left: 15%;
-    margin-right: 15%;
-}
-mat-form-field{
-    margin-right: 5px;
+mat-form-field {
+  margin-right: 5px;
 }
