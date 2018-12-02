@@ -16,7 +16,7 @@
             <th>اسم الدخول</th>
             <th>الاسم الكامل</th>
           </tr>
-          <tr *ngFor="let user of users">
+          <tr *ngFor="let user of page">
             <td>{{user.username}}</td>
             <td>{{user.fullname}}</td>
             <td>
@@ -39,6 +39,10 @@
             </td>
           </tr>
         </table>
+        <mat-paginator [length]="users.length"
+              [pageSize]="5"
+              [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = setPage($event)">
+        </mat-paginator>
       </div>
     </mat-card-content>
   </mat-card>
