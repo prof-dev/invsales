@@ -129,7 +129,7 @@ export class ReturnsComponent implements OnInit {
       .subscribe(dialog => {
         if (dialog == 'ok') {
           this._ss.setAppIsBusy(true);
-          this._hs.delete('pursalesret', this.retOb.row.id).subscribe(res => {
+          this._hs.delete('pursalesret', this.retOb.row.id, this.retOb.row).subscribe(res => {
             if (res.json() == 1) {
               this._ss.setSnackBar('تمت عمليه حذف طلب الرد بنجاح');
               this.retOb.reset();

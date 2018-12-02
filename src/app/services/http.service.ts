@@ -16,7 +16,7 @@ export class HttpService {
     if (environment.production) {
       this.APISERVER = 'http://www.prof-dev.com/';
     }else{
-      this.APISERVER = 'http://localhost:83/';
+      this.APISERVER = 'http://localhost/invsales/';
     }
     this.HOST=this.APISERVER+'api.php/';
   }
@@ -34,8 +34,9 @@ export class HttpService {
     return this._http.put(this.HOST + table + '/' + body[int_auto_primarykey_field], body);
   }
  
-  delete(table, id) {
-    this._http.post(this.HOST+'log',{user:this.currentUser,table:table,cud:'d',screen:this.currentScreen,body: id}).subscribe(res=>{
+  //table: the table tp delete from, id: the primary ket VALUE, body: the record as JSON to be logged correctly.
+  delete(table, id, body) {
+    this._http.post(this.HOST+'log',{user:this.currentUser,table:table,cud:'d',screen:this.currentScreen,body: JSON.stringify(body)}).subscribe(res=>{
     });
     return this._http.delete(this.HOST + table + '/' + id);
   }

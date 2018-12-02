@@ -5,7 +5,7 @@ import {
   MatListModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule, MatMenuModule,
   MatInputModule, MatFormFieldModule, MatChipsModule, MatButtonToggleModule, MatDialogModule, MatSliderModule,
    MatProgressBarModule, MatOptionModule, MatSelectModule, MatTooltipModule,
-    MatExpansionModule, MatCheckboxModule, MatAutocompleteModule,MatSnackBarModule, MatDatepickerModule, MatNativeDateModule
+    MatExpansionModule, MatCheckboxModule, MatAutocompleteModule,MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatBadgeModule
 } from '@angular/material';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
@@ -22,7 +22,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
     MatButtonToggleModule, MatDialogModule, MatSliderModule, MatSlideToggleModule,
     MatProgressBarModule, MatOptionModule, MatSelectModule, MatTooltipModule,
     MatExpansionModule, MatCheckboxModule,MatRadioModule, MatAutocompleteModule,MatSnackBarModule, 
-    MatDatepickerModule, MatNativeDateModule
+    MatDatepickerModule, MatNativeDateModule, MatBadgeModule
   ],
   exports: [
     MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule,
@@ -32,7 +32,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
     MatButtonToggleModule, MatDialogModule, MatSliderModule, MatSlideToggleModule,
     MatProgressBarModule, MatOptionModule, MatSelectModule, MatTooltipModule,
     MatExpansionModule,MatCheckboxModule,MatRadioGroup, MatRadioButton,MatAutocompleteModule,MatSnackBarModule,
-    MatDatepickerModule,MatNativeDateModule
+    MatDatepickerModule,MatNativeDateModule, MatBadgeModule
   ],
   declarations: [],
  
