@@ -129,7 +129,7 @@ export class LookupsComponent implements OnInit {
 
 
   dodelete(item): void {
-    this._hs.delete('lookups', item.id).subscribe(res => {
+    this._hs.delete('lookups', item.id, item).subscribe(res => {
       if (res.json() == 1) {
 
         this._ss.setSnackBar("تم الحذف بنجاااح");

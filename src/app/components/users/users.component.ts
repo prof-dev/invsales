@@ -145,7 +145,7 @@ export class UsersComponent implements OnInit {
       .subscribe(dialog => {
         if (dialog == 'ok') {
           this._ss.setAppIsBusy(true);
-          this._hs.delete('users', user.id).subscribe(res => {
+          this._hs.delete('users', user.id, user).subscribe(res => {
             if (res.json() == 1) {
               this._ss.setSnackBar("تم حذف المستخدم بنجاح أرجو تحديث المستخدمين لكي يتلاشى من القائمه");
             }

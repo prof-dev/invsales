@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { ShareService } from 'src/app/services/share.service';
@@ -10,18 +10,22 @@ import { MatDatepicker } from '@angular/material';
   styleUrls: ['./log.component.css']
 })
 export class LogComponent implements OnInit {
-  public logs: any[];
-  public log: any;
-  public username:string='';
+  public logs: any[] = [];
+  public page: any[] = [];
+  public log: any = {};
+  public username: string = '';
   @ViewChild('fromdate')
-  public fromdate:any;
+  public fromdate: any;
   @ViewChild('todate')
-  public todate:any;
+  public todate: any;
 
   constructor(private _hs: HttpService, private _ut: UtilsService, private _ss: ShareService) { }
 
   ngOnInit() {
-    this._hs.get('log').subscribe(res => { this.logs = res.json().log });
+    this._hs.get('log').subscribe(res => {
+      this.logs = res.json().log;
+      this.page = this.logs.slice(0,5);
+    });
   }
 
   details(log) {
@@ -29,25 +33,25 @@ export class LogComponent implements OnInit {
       return;
     this.log = log;
     this.log.body = JSON.parse(this.log.body);
-    console.log(this.log.body);
-    
     this.log.row = [];
     for (var k in this.log.body) {
       this.log.row.push({ name: k, value: this.log.body[k] })
     }
   }
-  
+  setPage(ev) {
+    this.page= this.logs.slice(ev.pageIndex*ev.pageSize,(ev.pageIndex+1)*ev.pageSize);
+  }
   refresh() {
-    var from=(new Date(this.fromdate._selected)).toISOString().split('T')[0];
-    var to=(new Date(this.todate._selected)).toISOString().split('T')[0];
-    var where ='';
-    if (from.length>0 && to.length>0){
-      where+='filter[]=date,bt,'+from+','+to+'&'
+    var from = (new Date(this.fromdate._selected)).toISOString().split('T')[0];
+    var to = (new Date(this.todate._selected)).toISOString().split('T')[0];
+    var where = '';
+    if (from.length > 0 && to.length > 0) {
+      where += 'filter[]=date,bt,' + from + ',' + to + '&'
     }
-    if (this.username.length>0){
-      where+='filter[]=user,eq,'+this.username+'&'
+    if (this.username.length > 0) {
+      where += 'filter[]=user,eq,' + this.username + '&'
     }
-    this._hs.get('log',where).subscribe(res => { this.logs = res.json().log });
+    this._hs.get('log', where).subscribe(res => { this.logs = res.json().log });
 
   }
 }

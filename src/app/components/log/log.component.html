@@ -5,7 +5,7 @@
       <input matInput type="search" placeholder="اسم المستخدم" name="user" id="user" [(ngModel)]="username">
     </mat-form-field>
     <mat-form-field class="loginput">
-      <input matInput [matDatepicker]="fromdate" placeholder="من تاريخ" >
+      <input matInput [matDatepicker]="fromdate" placeholder="من تاريخ">
       <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
       <mat-datepicker #fromdate></mat-datepicker>
     </mat-form-field>
@@ -24,7 +24,7 @@
         <th>العمليه</th>
       </tr>
 
-      <tr *ngFor="let log of logs">
+      <tr *ngFor="let log of page">
         <td>{{log.user}}</td>
         <td>{{log.date}}</td>
         <td>{{log.table}}</td>
@@ -33,9 +33,14 @@
         </td>
       </tr>
     </table>
+    <mat-paginator [length]="logs.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent =setPage($event)">
+    </mat-paginator>
   </mat-card>
   <mat-card *ngIf="log" class="log-card">
     <div class="log-div">
+      <h3 *ngIf="log.cud=='c'">تمت اضافه هذا السجل</h3>
+      <h3 *ngIf="log.cud=='u'">تم تعديل هذا السجل</h3>
+      <h3 *ngIf="log.cud=='d'">تم حذف هذا السجل</h3>
       <table>
         <tr>
           <th *ngFor="let field of log.row">{{field.name}}</th>
