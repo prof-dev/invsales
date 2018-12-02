@@ -1,0 +1,49 @@
+<mat-card>
+  <mat-form-field>
+    <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="item.parent">
+      <option *ngFor="let option of classes " [value]="option.id">
+        {{option.titlear}}
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput required placeholder="الإسم العربي" name="email" [(ngModel)]="item.arname">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput required placeholder="الإسم الإنجليزي" name="email" [(ngModel)]="item.engname">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput required placeholder="الباركود" name="email" [(ngModel)]="item.barcode">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput required placeholder="السعر" name="email" [(ngModel)]="data.price">
+  </mat-form-field>
+  <br>
+ 
+   <label>صورة المنتج</label> 
+   <input  required  type="file" #file (change)="print($event)">
+
+   <button  mat-raised-button color="accent" (click)="insertitem()">حفظ</button>
+ 
+
+   <div>
+     <table>
+       <tr>
+         <th>الرقم</th>
+         <th>باركود</th>
+         <th>الصنف</th>
+         <th>السعر</th>
+         <th>الصورة</th>
+       </tr>
+       <tr *ngFor="let row of productsview">
+         <td>{{row.id}}</td>
+         <td>{{row.barcode}}</td>
+         <td>{{row.arname}}</td>
+         <td>{{row.data.price}}</td>
+         <td><img src={{row.data.image}} width="50" height="50"></td>
+         
+       </tr>
+     </table>
+   </div>
+
+</mat-card>

@@ -13,6 +13,7 @@ import { LogComponent } from '../components/log/log.component';
 import { InventoryComponent } from '../components/inventory/inventory.component';
 import { SadadComponent } from '../components/sadad/sadad.component';
 import { SpendingsComponent } from '../components/spendings/spendings.component';
+import { ItemsComponent } from '../components/items/items.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -27,7 +28,8 @@ const routes: Routes = [
   {path:'log',component:LogComponent},
   {path:'inventory',component:InventoryComponent},
   {path:'sadad',component:SadadComponent},
-  {path:'spending',component:SpendingsComponent}
+  {path:'spending',component:SpendingsComponent},
+  {path:'items',component:ItemsComponent}
 ];
 
 @NgModule({
