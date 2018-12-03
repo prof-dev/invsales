@@ -15,7 +15,7 @@ export class ReportsComponent implements OnInit {
 
   ngOnInit() {
     this._ar.params.subscribe(p => {
-      this.report = new ReportObject(p.table, this._hs);
+      this.report = new ReportObject(p.table, this._hs, this._ut);
     });
   }
 }
@@ -42,7 +42,7 @@ export class ReportObject {
   public title: string;
   public ready: number;
   
-  constructor(table: string, private _hs: HttpService) {
+  constructor(table: string, private _hs: HttpService, private _ut:UtilsService) {
     this.ready = 0;
     this.table = table;
     this.searchfields = [];
@@ -99,6 +99,6 @@ export class ReportObject {
     });
   }
   print(){
-
+      this._ut.showReport(this.title, 'printdiv');
   }
 }
