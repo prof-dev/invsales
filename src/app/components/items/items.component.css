@@ -1,12 +1,21 @@
+
 .mat-card {
- 
-    
-    margin-left: 15%;
-    margin-right: 15%;
+    width: 40%;
+    margin-right: 10px;
   }
+  
   mat-form-field{
       margin-right: 5px;
   }
 .filler{
     width: 60%;
 }
+
+.container {
+    margin-top: 20px;
+    display: flex;
+  }
+
+  .tab2{
+      width:300px;
+  }

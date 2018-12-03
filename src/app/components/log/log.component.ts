@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { ShareService } from 'src/app/services/share.service';
-import { MatDatepicker } from '@angular/material';
 
 @Component({
   selector: 'app-log',
@@ -39,6 +38,7 @@ export class LogComponent implements OnInit {
     }
   }
   setPage(ev) {
+    
     this.page= this.logs.slice(ev.pageIndex*ev.pageSize,(ev.pageIndex+1)*ev.pageSize);
   }
   refresh() {

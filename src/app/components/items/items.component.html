@@ -1,49 +1,79 @@
-<mat-card>
-  <mat-form-field>
-    <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="item.parent">
-      <option *ngFor="let option of classes " [value]="option.id">
-        {{option.titlear}}
-      </option>
-    </select>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput required placeholder="الإسم العربي" name="email" [(ngModel)]="item.arname">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput required placeholder="الإسم الإنجليزي" name="email" [(ngModel)]="item.engname">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput required placeholder="الباركود" name="email" [(ngModel)]="item.barcode">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput required placeholder="السعر" name="email" [(ngModel)]="data.price">
-  </mat-form-field>
-  <br>
- 
-   <label>صورة المنتج</label> 
-   <input  required  type="file" #file (change)="print($event)">
+<div class="container ar" dir="rtl">
+    <mat-card>
+        <mat-form-field>
+          <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="item.parent">
+            <option *ngFor="let option of classes " [value]="option.id">
+              {{option.titlear}}
+            </option>
+          </select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="الإسم العربي" name="email" [(ngModel)]="item.arname">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="الإسم الإنجليزي" name="email" [(ngModel)]="item.engname">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="الباركود" name="email" [(ngModel)]="item.barcode">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput required placeholder="السعر" name="email" [(ngModel)]="data.price">
+        </mat-form-field>
+        <br>
+      
+        <label>صورة المنتج</label>
+        <input required type="file" #file (change)="upload($event)">
+      
+        <button mat-raised-button color="accent" (click)="insertitem()">حفظ</button>
+      
+      
+        <div>
+          <table>
+            <tr>
+              <th>الرقم</th>
+              <th>باركود</th>
+              <th>الصنف</th>
+              <th>السعر</th>
+              <th>الصورة</th>
+              <th>العمليات</th>
+            </tr>
+            <tr *ngFor="let row of productsview">
+              <td>{{row.id}}</td>
+              <td>{{row.barcode}}</td>
+              <td>{{row.arname}}</td>
+              <td>{{row.data.price}}</td>
+              <td><img src={{row.data.image}} width="50" height="50"></td>
+              <td>
+                  
+                <img src="assets/icnEdit.png" alt="" (click)="edit(row)" class="btn-img" matTooltip="Edit user data">
+                <img src="assets/icnDelete.png" alt="" (click)="delete(row)" class="btn-img" matTooltip="delete user data">
+              
+              </td>
+      
+            </tr>
+          </table>
+        </div>
+      
+      </mat-card>
+      
+      <mat-card class="tab2">
+        <table class="tab2">
+          <tr>
+            <th>الصنف : {{item.arname}}</th>
+            
+          </tr>
+          <tr>
+            <td>
+                <img src={{data.image}} width="300" height="300">
+            </td>
+          </tr>
+          <tr>
+            <th>السعر :  {{data.price}}</th>
+            
+          </tr>
+        </table>
+      
+      </mat-card>
 
-   <button  mat-raised-button color="accent" (click)="insertitem()">حفظ</button>
- 
+</div>
 
-   <div>
-     <table>
-       <tr>
-         <th>الرقم</th>
-         <th>باركود</th>
-         <th>الصنف</th>
-         <th>السعر</th>
-         <th>الصورة</th>
-       </tr>
-       <tr *ngFor="let row of productsview">
-         <td>{{row.id}}</td>
-         <td>{{row.barcode}}</td>
-         <td>{{row.arname}}</td>
-         <td>{{row.data.price}}</td>
-         <td><img src={{row.data.image}} width="50" height="50"></td>
-         
-       </tr>
-     </table>
-   </div>
-
-</mat-card>
