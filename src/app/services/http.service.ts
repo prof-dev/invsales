@@ -15,8 +15,8 @@ export class HttpService {
   doenv() {
     if (environment.production) {
       this.APISERVER = 'http://www.prof-dev.com/';
-    } else {
-      this.APISERVER = 'http://localhost/invsales/';
+    }else{
+      this.APISERVER = 'http://localhost:83/';
     }
     this.HOST = this.APISERVER + 'api.php/';
   }

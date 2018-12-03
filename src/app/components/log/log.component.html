@@ -33,7 +33,7 @@
         </td>
       </tr>
     </table>
-    <mat-paginator [length]="logs.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent =setPage($event)">
+    <mat-paginator [length]="logs.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" (page)="setPage($event)">
     </mat-paginator>
   </mat-card>
   <mat-card *ngIf="log" class="log-card">

@@ -18,7 +18,11 @@
         </td>
       </tr>
       <tr>
-        <img *ngIf="touched.length>0" src="assets/icnSave.png" alt="" width="32" (click)="save()" class="btn-img"
+          <img src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img"
+            matTooltip="إضافة البضاعة إلى المخزن">
+        </tr>
+      <tr>
+        <img *ngIf="touched.length>0 || new.length>0" src="assets/icnSave.png" alt="" width="32" (click)="save()" class="btn-img"
           matTooltip="هنالك تغيرات الرجاء الحفظ">
       </tr>
     </table>
@@ -28,7 +32,18 @@
     <div *ngIf="entrytype=='add'">
       <h2> الإضافة إلى مخزن {{display}}</h2>
       <mat-form-field>
-        <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="processinfo.parent" (change)="getitemsbyclass()">
+          <select matNativeControl required class="primary" placeholder="إختيار المخزن" [(ngModel)]="processinfo.store">
+            <option [value]="0">
+             ... إختيار 
+            </option>
+            <option *ngFor="let option of stores " [value]="option.id">
+              {{option.titlear}}
+            </option>
+          </select>
+        </mat-form-field>
+      <mat-form-field>
+        <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="processinfo.parent"
+          (change)="getitemsbyclass()">
           <option *ngFor="let option of classes " [value]="option.id">
             {{option.titlear}}
           </option>
@@ -37,9 +52,9 @@
       </mat-form-field>
       <mat-form-field>
         <select matNativeControl required class="primary" placeholder="إختيار الصنف" [(ngModel)]="item.id">
-            <option  [value]="0">
-                إختيار الصنف
-              </option>
+          <option [value]="0">
+            إختيار ...
+          </option>
           <option *ngFor="let option of list " [value]="option.id">
             {{option.titlear}}
           </option>
@@ -55,7 +70,10 @@
       </mat-form-field>
       <mat-form-field>
         <input matInput required placeholder="الكمية المطلوبة" name="email" [(ngModel)]="item.com">
-      </mat-form-field><br>
+      </mat-form-field>
+     
+
+      <br>
       <button mat-raised-button (click)="additemtolist(item)" color="primary">حفظ</button>
     </div>
     <div *ngIf="entrytype=='show'">
@@ -67,20 +85,17 @@
           <th>المحجوز</th>
           <th>بضاعة قادمة</th>
         </tr>
-        <tr *ngFor="let r of items">
+        <tr *ngFor="let r of items;let i = index;">
 
           <td>{{getproductname(r.id)}}</td>
           <td>{{r.avb}}</td>
           <td>{{r.rsv}}</td>
           <td>{{r.com}}</td>
           <td>
-            <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(r)" class="btn-img" matTooltip="Edit user data">
+            <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(r,i,actionstore)" class="btn-img" matTooltip="Edit user data">
           </td>
         </tr>
-        <tr>
-          <img src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img"
-            matTooltip="إضافة البضاعة إلى المخزن">
-        </tr>
+       
 
 
 

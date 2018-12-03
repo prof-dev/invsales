@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-inventory',
@@ -14,6 +15,7 @@ export class InventoryComponent implements OnInit {
   public display = "";
   public entrytype = "";
   public touched: number[] = [];
+  public new: number[] = [];
   public actionstore = 0;
   public storeselect: any[] = [];
   public lookups: any[] = [];
@@ -25,8 +27,12 @@ export class InventoryComponent implements OnInit {
     rsv: 0,
     com: 0
   };
+  // public inv:{
+  //   storeid:0,
+  //   data:[]
+  // }
   public inventroy = {
-    storeid: 0,
+    storeid: 0.00,
     data: null
   }
   public stores: any[] = [];
@@ -34,14 +40,18 @@ export class InventoryComponent implements OnInit {
   public inventories: any[] = [];
   public store: any = {};
   public goodsobj: any = {};
-  public selectedclass:any={};
+  public selectedclass: any = {};
   result: string;
   istouched: boolean;
   isexist: boolean;
-  public processinfo={
-    parent:0
+  storeexist: boolean;
+  public processinfo = {
+    parent: 0,
+    store: 0
+
   }
-  public list:any[]=[];
+  public list: any[] = [];
+  
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router) { }
@@ -52,11 +62,11 @@ export class InventoryComponent implements OnInit {
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
       }
-     
-      ////   retrieve from inventroy to list items in each stock
-      this.getinventories();
 
-      this.getallitems();
+      ////   retrieve from inventroy to list items in each stock
+      this.getInventories();
+
+      this.getAllItems();
       this.getallclasses();
 
 
@@ -82,7 +92,7 @@ export class InventoryComponent implements OnInit {
     });
   }
 
-  private getinventories() {
+  private getInventories() {
     this._hs.get('inventory')
       .subscribe(res => {
         this.inventories = res.json().inventory;
@@ -95,17 +105,17 @@ export class InventoryComponent implements OnInit {
       });
   }
 
-  private getallitems() {
-    this._hs.get('lookups', 'filter=group,eq,item')
+  private getAllItems() {
+    this._hs.get('items')
       .subscribe(res => {
-        this.lookups = res.json().lookups;
+        this.lookups = res.json().items;
         console.log(this.lookups);
         this.lookups.forEach(element => {
           element.data = JSON.parse(element.data);
           console.log(this.items);
         });
-        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price ,parent:lookup.parent}));
-      this.list=this.productsview;
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
+        this.list = this.productsview;
       });
   }
 
@@ -118,62 +128,89 @@ export class InventoryComponent implements OnInit {
           .subscribe(res => {
             this.classes = res.json().lookups;
             console.log(this.classes);
-            
+
           });
       });
   }
 
-  getitemsbyclass(){
-    if(this.processinfo.parent!=0){
+  getitemsbyclass() {
+    if (this.processinfo.parent != 0) {
       console.log(this.processinfo.parent);
       console.log(this.productsview);
-      
+
       console.log(this.list);
-      
-      this.list=this.productsview.filter(option => option.parent==this.processinfo.parent);
+
+      this.list = this.productsview.filter(option => option.parent == this.processinfo.parent);
       console.log(this.list);
     }
-   
-    
+
+
   }
 
 
   additemtolist(item) {
     console.log(item.id);
-    
-    console.log(this.items.length);
-    this.isexist = false;
-    this.items.forEach(element => {
+    this.storeexist = false;
+    this.inventories.forEach(el => {
+      if (el.storeid == this.processinfo.store) {
+        console.log(el.data);
 
-      if (element.id == item.id) {
-        this.isexist = true;
-        element.avb = element.avb + parseInt(item.avb);
-        element.rsv = element.rsv + parseInt(item.rsv);
-        element.com = element.com + parseInt(item.com);
-      }
+        this.storeexist = true;
+        this.isexist = false;
+        el.data.forEach(element => {
+          console.log("element.id :", element.id, ":", element);
 
-    });
-    if (!this.isexist) {
-      item.avb = parseInt(item.avb);
-      item.id = parseInt(item.id);
-      item.rsv = parseInt(item.rsv);
-      item.com = parseInt(item.com);
-      this.items.push(item);
-    }
-    this.inventories.forEach(element => {
-      if (element.storeid == this.actionstore) {
-        element.data = this.items;
+          if (element.id == item.id) {
+            this.isexist = true;
+            element.avb = element.avb + parseInt(item.avb);
+            element.rsv = element.rsv + parseInt(item.rsv);
+            element.com = element.com + parseInt(item.com);
+          }
+        });
+        if (!this.isexist) {
+          item.avb = parseInt(item.avb);
+          item.id = parseInt(item.id);
+          item.rsv = parseInt(item.rsv);
+          item.com = parseInt(item.com);
+          el.data.push(item);
+        }
       }
     });
+    if (!this.storeexist) {
+      this.items=[];
+      console.log("not exisit");
+      // this.new.push(this.processinfo.store);
+
+      this.inventroy.storeid = Number(this.processinfo.store);
+      // [{ avb: number; id: number; rsv: number; com: number; }]
+      console.log(this.inventroy);
+      this.new.push(this.processinfo.store);
+      this.item.avb = parseInt(item.avb);
+      this.item.id = parseInt(item.id);
+      this.item.rsv = parseInt(item.rsv);
+      this.item.com = parseInt(item.com);
+      this.items.push(this.item);
+      this.inventroy.data=JSON.stringify(this.items); console.log('inv.data  :' + this.inventroy);
+      console.log(this.inventroy);
+      this._hs.post('inventory', this.inventroy).subscribe(res => {
+
+        this._ss.setSnackBar('inserted page is refreshed for you');
+        this.getInventories();
+       
+      });
+       }
+   
     this.istouched = false;
     this.touched.forEach(element => {
-      if (element == this.actionstore) {
+      if (element == this.processinfo.store && (this.storeexist == true)) {
         this.istouched = true;
       }
     });
     if (!this.istouched) {
-      this.touched.push(this.actionstore);
+      this.touched.push(this.processinfo.store);
     }
+
+
 
     this.item = {
       id: 0,
@@ -238,14 +275,21 @@ export class InventoryComponent implements OnInit {
           this._hs.put('inventory', 'storeid', inner).subscribe(res => {
 
             this._ss.setSnackBar('inserted page is refreshed for you');
+            this.getInventories();
           });
         }
       });
     });
 
     this.touched = [];
-    this.ngOnInit();
+   
 
+  }
+
+  remove(item, i,actionstore) {
+    this.items.splice(i, 1);
+    this.touched.push(actionstore);
+    
   }
 
 }
@@ -255,8 +299,3 @@ export interface Item {
   rsv: number,
   com: number
 }
-// export interface Data{
-//   price:number,
-//   address:string,
-//   balance:number
-// }

@@ -27,6 +27,7 @@ import { SadadComponent } from './components/sadad/sadad.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { SpendingsComponent } from './components/spendings/spendings.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { ItemsComponent } from './components/items/items.component';
 
 
 @NgModule({
@@ -40,9 +41,7 @@ import { ReportsComponent } from './components/reports/reports.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent
-    
-
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent
   ],
   imports: [
     BrowserModule,
