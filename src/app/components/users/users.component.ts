@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  public users: any;
+  public users: any[]=[];
+  public page: any[]=[];
   public loggedInUser: any = null;
   public actionUser: any;
   public actionUserStores: any;
@@ -30,6 +31,19 @@ export class UsersComponent implements OnInit {
     });
     if (this.loggedInUser == null || this.loggedInUser.id == 0 || this.loggedInUser.roles.indexOf('t') < 0) {
       this._router.navigateByUrl('/login');
+    }
+  }
+  setPage(ev){
+    this.page = this.users.slice(ev.pageIndex*ev.pageSize,(ev.pageIndex+1)*ev.pageSize);
+  }
+  refreshUsers() {
+    this._ss.setAppIsBusy(true);
+    if (this.loggedInUser && this.loggedInUser.roles.indexOf('t') >= 0) {
+      this._hs.get('users').subscribe(res => {
+        this.users = res.json().users;
+        this.page = this.users.slice(0,5);
+        this._ss.setAppIsBusy(false);
+      });
     }
   }
   setBranches(user) {
@@ -176,15 +190,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  refreshUsers() {
-    this._ss.setAppIsBusy(true);
-    if (this.loggedInUser && this.loggedInUser.roles.indexOf('t') >= 0) {
-      this._hs.get('users').subscribe(res => {
-        this.users = res.json().users;
-        this._ss.setAppIsBusy(false);
 
-      });
-    }
-  }
 
 }
