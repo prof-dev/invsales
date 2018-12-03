@@ -1,0 +1,37 @@
+<div *ngIf="report.ready==3">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{report.title}}</mat-card-title>
+      <mat-card-subtitle>تقارير هيفن الديناميكيه</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <button mat-raised-button color="primary" (click)="report.search()">اجر البحث</button>
+      <button mat-raised-button color="primary" (click)="report.print()">طباعه</button> <span> </span>
+      <br><br>
+      <div id="printdiv">
+        <div *ngFor="let field of report.searchfields">
+          <div *ngIf="field.type=='string' || field.type=='number' ">
+            <mat-form-field>
+              <input matInput placeholder="{{field.placeholder}}" [(ngModel)]="field.value">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <table>
+          <tr>
+            <th *ngFor="let field of report.itemfields">{{field}}</th>
+          </tr>
+          <tr *ngFor="let item of report.items">
+            <td *ngFor="let field of report.itemfields">
+              {{item[field]}}
+            </td>
+          </tr>
+          <tr *ngFor="let field of report.aggrefields">
+            <th>{{field.title}}</th>
+            <td>{{field.value}}</td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
