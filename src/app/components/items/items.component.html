@@ -42,7 +42,7 @@
               <td>{{row.barcode}}</td>
               <td>{{row.arname}}</td>
               <td>{{row.data.price}}</td>
-              <td><img src={{row.data.image}} width="50" height="50"></td>
+              <td><img src={{row.data.image}} (click)="edit(row)" width="50" height="50"></td>
               <td>
                   
                 <img src="assets/icnEdit.png" alt="" (click)="edit(row)" class="btn-img" matTooltip="Edit user data">
