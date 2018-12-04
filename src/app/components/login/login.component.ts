@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
       username: "Admin",
       pwd: "123",
       roles:'a;',
-      fullname:'Mr Administrator'
+      fullname:'Mr Administrator',
     },
     {
       id:2,

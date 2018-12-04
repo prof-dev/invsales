@@ -35,6 +35,7 @@ export class SuppcusComponent implements OnInit {
 
     public operation = 0;
     location: any;
+    temp: any;
 
     constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
     ngOnInit() {
@@ -54,6 +55,9 @@ export class SuppcusComponent implements OnInit {
         });
         this.map.on('singleclick', (ev)=>{
             this.location = ol.proj.toLonLat(ev.coordinate);
+            this.temp=this.location[0];
+            this.location[0]=this.location[1];
+            this.location[1]=this.temp;
             console.log('location: ', ev.coordinate)
         });
         this.operation = 0;

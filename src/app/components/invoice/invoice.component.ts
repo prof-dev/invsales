@@ -324,7 +324,7 @@ export class InvoiceComponent implements OnInit {
 
   print() {
     this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
-    this._ut.showReport('إذن  إستلام بضاعة', 'printdiv');
+    this._ut.showReport('إذن  إستلام بضاعة');
   }
 
   updateuserbalance(){
