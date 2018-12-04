@@ -1,4 +1,4 @@
-      <!-- <p>نظام إدارة المبيعات والمشتروات</p> -->
+<!-- <p>نظام إدارة المبيعات والمشتروات</p> -->
 
 <mat-toolbar color="primary" class="mat-elevation-z4 mytoolbar">
   <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
@@ -21,7 +21,7 @@
       </button>
     </span>
   </ng-template>
-  
+
 </mat-toolbar>
 <div [hidden]="!appIsBusy" class="prog-bar">
   <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
@@ -32,26 +32,38 @@
       <img src="assets/logo.jpg" alt="">
     </span><br>
 
-    <a  (click)="goto('/')" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
-    <a  (click)="goto('/log')" class="sd-btn" (click)="sidenav.toggle()">المراقبه</a><br>
+    <a (click)="goto('/')" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
     <hr>
-    <a  (click)="goto('/lookups')" class="sd-btn" (click)="sidenav.toggle()">ضبط النظام</a><br>
-    <a  (click)="goto('/items')" class="sd-btn" (click)="sidenav.toggle()"> إدارة الأصناف</a><br>
+    <h4>شاشات اعدادات النظام</h4>
+    <hr>
+    <a (click)="goto('/log')" class="sd-btn" (click)="sidenav.toggle()">المراقبه</a><br>
+    <a (click)="goto('/lookups')" class="sd-btn" (click)="sidenav.toggle()">ضبط النظام</a><br>
+    <a (click)="goto('/items')" class="sd-btn" (click)="sidenav.toggle()"> إدارة الأصناف</a><br>
+    <a (click)="goto('/users')" class="sd-btn" (click)="sidenav.toggle()">إدارة المستخدمين</a><br>
+    <a (click)="goto('/supcus')" class="sd-btn" (click)="sidenav.toggle()">إدارة العملاء والموردين</a><br>
 
-    <a  (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">الفواتير</a><br>
-    <a  (click)="goto('/checks')" class="sd-btn" (click)="sidenav.toggle()">الشيكات</a><br>
-    <a  (click)="goto('/users')" class="sd-btn" (click)="sidenav.toggle()">المستخدمين</a><br>
-    <a  (click)="goto('/inventory')" class="sd-btn" (click)="sidenav.toggle()">المخازن</a><br>
-    <a  (click)="goto('/spending')" class="sd-btn" (click)="sidenav.toggle()">المصروفات</a><br>
+    <hr>
+    <h4>شاشات الأفرع</h4>
+    <hr>
+    <a (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">طلبات الشراء والفواتير</a><br>
+    <a (click)="goto('/checks')" class="sd-btn" (click)="sidenav.toggle()">تحرير الشيكات</a><br>
+    <a (click)="goto('/spending')" class="sd-btn" (click)="sidenav.toggle()">تحرير المصروفات</a><br>
+    <a (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
    
-    <a  (click)="goto('/supcus')" class="sd-btn" (click)="sidenav.toggle()">العملاء
-      والموردين</a><br>
-      <a  (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">المردودات</a><br>
-      <hr>
-      <h4>التقارير</h4>
-      <hr>
-      <a  [routerLink]="['reports/pursales']" class="sd-btn" (click)="sidenav.toggle()">المشتروات والمبيعات</a><br>
-      <a  [routerLink]="['reports/suppcus']" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</a><br>
+    <hr>
+    <h4>شاشات المخازن</h4>
+    <hr>
+
+    <a (click)="goto('/inventory')" class="sd-btn" (click)="sidenav.toggle()">تحرير المخازن</a><br>
+    <a (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
+    <hr>
+    <h4>التقارير</h4>
+    <hr>
+    <a [routerLink]="['reports/pursales']" class="sd-btn" (click)="sidenav.toggle()">المشتروات والمبيعات</a><br>
+    <a [routerLink]="['reports/suppcus']" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</a><br>
+    <a [routerLink]="['reports/pursalesret']" class="sd-btn" (click)="sidenav.toggle()">المردودات</a><br>
+    <a [routerLink]="['reports/users']" class="sd-btn" (click)="sidenav.toggle()">المستخدمون</a><br>
+    <a [routerLink]="['reports/spending']" class="sd-btn" (click)="sidenav.toggle()">المصروفات</a><br>
   </mat-sidenav>
 
   <mat-sidenav-content>

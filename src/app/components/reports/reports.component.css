@@ -6,3 +6,6 @@ mat-card{
 button{
     margin-left: 5px;
 }
+.hide{
+    display: none;
+}

@@ -8,15 +8,36 @@
       <button mat-raised-button color="primary" (click)="report.search()">اجر البحث</button>
       <button mat-raised-button color="primary" (click)="report.print()">طباعه</button> <span> </span>
       <br><br>
-      <div id="printdiv">
-        <div *ngFor="let field of report.searchfields">
-          <div *ngIf="field.type=='string' || field.type=='number' ">
-            <mat-form-field>
-              <input matInput placeholder="{{field.placeholder}}" [(ngModel)]="field.value">
-            </mat-form-field>
-          </div>
+      <div *ngFor="let field of report.searchfields">
+        <div *ngIf="field.type=='string' || field.type=='number' ">
+          <mat-form-field>
+            <input matInput placeholder="{{field.placeholder}}" [(ngModel)]="field.value">
+          </mat-form-field>
         </div>
+        <div *ngIf="field.type=='date' ">
+          <mat-form-field>
+            <input matInput [matDatepicker]="fromdate" placeholder="من تاريخ" [(ngModel)]="report.fromdate">
+            <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+            <mat-datepicker #fromdate></mat-datepicker>
+          </mat-form-field>&nbsp;&nbsp;
+          <mat-form-field>
+              <input matInput [matDatepicker]="todate" placeholder="إلى تاريخ" [(ngModel)]="report.todate">
+              <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+              <mat-datepicker #todate></mat-datepicker>
+            </mat-form-field>
+        </div>
+      </div>
+      <br><br>
 
+      <div class="printdiv hide">
+        <table>
+          <tr *ngFor="let field of report.searchfields">
+            <th>{{field.placeholder}}</th>
+            <td>{{field.value}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="printdiv">
         <table>
           <tr>
             <th *ngFor="let field of report.itemfields">{{field}}</th>
