@@ -39,17 +39,17 @@ export class ReturnsComponent implements OnInit {
     this.retOb.reset();
     this._ss.setAppIsBusy(true);
     this._hs.get('pursalesret', 'filter[]=id,eq,' + this.retOb.id + '&filter[]=type,eq,' + this.retOb.type + '&satisfy=all')
-      .subscribe(res => {
-        if (res.json().pursalesret.length == 1) {
-          this.retOb.row = res.json().pursalesret[0];
+      .subscribe(res1 => {
+        if (res1.json().pursalesret.length == 1) {
+          this.retOb.row = res1.json().pursalesret[0];
           this.retOb.inrets = true;
           this.prepareRetOb();
           this._ss.setAppIsBusy(false);
         } else {
           this._hs.get('pursales', 'filter[]=id,eq,' + this.retOb.id + '&filter[]=type,eq,' + this.retOb.type + '&satisfy=all')
-            .subscribe(res3 => {
-              if (res3.json().pursales.length == 1) {
-                this.retOb.row = res3.json().pursales[0];
+            .subscribe(res2 => {
+              if (res2.json().pursales.length == 1) {
+                this.retOb.row = res2.json().pursales[0];
                 this.prepareRetOb();
               } else {
                 this._ss.setSnackBar('لا يوجد هذا الرقم في النظام')
@@ -117,7 +117,7 @@ export class ReturnsComponent implements OnInit {
   }
   print() {
     this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
-    this._ut.showReport('طلب مردودات المبيعات', 'printdiv');
+    this._ut.showReport('طلب مردودات المبيعات');
   }
   delete() {
     if (this.retOb.row.locked == 1) {

@@ -30,7 +30,7 @@
             <a mat-raised-button (click)="delivered()" color="primary" [disabled]="retOb.row.locked==1 || user.roles.indexOf('s')<0">تأكيد الاستلام</a>&nbsp;
             <a mat-raised-button (click)="delete()" color="primary" [disabled]="retOb.row.locked==1">حذف الطلب</a>&nbsp;
             <a mat-raised-button (click)="print()" color="primary">طباعه</a>&nbsp;
-            <div id="printdiv" class="mat">
+            <div class="printdiv">
                 <table>
                     <tr>
                         <th>رقم النوع</th>

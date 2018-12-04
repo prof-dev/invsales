@@ -1,0 +1,38 @@
+<div *ngIf="user.id>0">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>تعديل إعداداتي الخاصه</mat-card-title>
+      <mat-card-subtitle>منطقه تعديل بيانات المستخدم</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="user.photo.length>0">
+        <img src="{{user.photo}}" alt="">
+      </div>
+      <div *ngIf="user.photo.length==0">
+        <img src="assets/user.png" alt="">
+      </div>
+      <mat-form-field>
+        <input matInput [(ngModel)]="user.username" readonly placeholder="اسم المستخدم">
+      </mat-form-field><br>
+      <mat-form-field>
+        <input matInput [(ngModel)]="user.fullname" readonly placeholder="الاسم الكامل">
+      </mat-form-field><br>
+      <mat-form-field>
+        <input matInput [(ngModel)]="user.photo" placeholder="رابط الصوره">
+      </mat-form-field><br>
+      <mat-form-field>
+        <input matInput [(ngModel)]="userExtra.pwdcu" type="password" placeholder="كلمه المرور الحاليه">
+      </mat-form-field><br>
+      <mat-form-field>
+        <input matInput [(ngModel)]="userExtra.pwdnu" type="password" placeholder="كلمه المرور الجديده">
+      </mat-form-field><br>
+      <mat-form-field>
+        <input matInput [(ngModel)]="userExtra.pwdco" type="password" placeholder="تأكيد كلمه المرور الجديده">
+      </mat-form-field><br>
+
+      <button mat-raised-button (click)="save()" color="primary">حفظ الاإعدادات</button>
+
+    </mat-card-content>
+
+  </mat-card>
+</div>

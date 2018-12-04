@@ -11,7 +11,8 @@
   <span class="filler">
   </span>
   <div *ngIf="user.id>0; else elseBlock">
-    <span>{{user.fullname}} &nbsp;</span>
+    <span>{{user.fullname}} &nbsp;</span> &nbsp;&nbsp;
+    <span><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
     <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
 
   </div>
@@ -31,8 +32,8 @@
     <span>
       <img src="assets/logo.jpg" alt="">
     </span><br>
-
     <a (click)="goto('/')" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
+    <a (click)="goto('/profile')" class="sd-btn" (click)="sidenav.toggle()">إعداداتي الخاصه</a><br>
     <hr>
     <h4>شاشات اعدادات النظام</h4>
     <hr>

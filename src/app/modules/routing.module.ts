@@ -15,6 +15,7 @@ import { SadadComponent } from '../components/sadad/sadad.component';
 import { SpendingsComponent } from '../components/spendings/spendings.component';
 import { ReportsComponent } from '../components/reports/reports.component';
 import { ItemsComponent } from '../components/items/items.component';
+import { ProfileComponent } from '../components/profile/profile.component';
 
 const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path:'sadad',component:SadadComponent},
   {path:'reports/:table',component:ReportsComponent},
   {path:'spending',component:SpendingsComponent},
+  {path:'profile',component:ProfileComponent},
   {path:'items',component:ItemsComponent}
 ];
 
