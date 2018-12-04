@@ -9,6 +9,14 @@ import { HttpService } from 'src/app/services/http.service';
   styleUrls: ['./sadad.component.css']
 })
 export class SadadComponent implements OnInit {
+  public cuss: any[] = [];
+  public supp: any[] = [];
+  public supcus:any;
+  public sadad:any={};
+  public payment: any;
+  public payments: any[] = [];
+  public suppcus: any[] = [];
+
   public user: any;
   public check = {
     id: 0,
@@ -22,11 +30,7 @@ export class SadadComponent implements OnInit {
     source: "",
     user: 0,
     comment: ""
-  }
-  suppcus: any;
-  public sadad={
-    
-  }
+  };
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router) { }
@@ -38,6 +42,8 @@ export class SadadComponent implements OnInit {
         this._router.navigateByUrl('/login');
       }
     });
+    this.getsupcusinfo();
+    this.reset();
   }
 
 
@@ -74,5 +80,57 @@ export class SadadComponent implements OnInit {
     }
     );
   }
+  private getsupcusinfo() {
+    this._hs.get('suppcus')
+      .subscribe(res => {
+        // this.suppcus = res.json().suppcus;
+        console.log(res.json());
+        res.json().suppcus.forEach(element => {
+          element.data = JSON.parse(element.data);
+          if (element.type == 'c') {
+            console.log("customeris :", element.fullname);
+            this.cuss.push(element);
+          }
+          else if (element.type == 's') {
+            this.supp.push(element);
+            console.log("supplier is :", element.fullname);
+          }
+        });
+      });
+  }
+  private reset(){
+    this.payment = {
+      paymentmethod: "",
+      amount: 0.0,
+      paymenttype: 5,
+      checkNo: "0000",
+      amountUSD: 0.00,
+      rate: 0.00,
+      date:""
+    }
+  }
 
+  // save old balance + new balance
+
+  public paymenttypes: Choice[] = [
+    { value: 'prepayment', viewValue: 'مقدم' },
+    { value: 'postpayment', viewValue: 'مؤخر' },
+    { value: 'internal', viewValue: 'ترحيل خارجي' },
+    { value: 'transport', viewValue: 'ترحيل داخلي' },
+    { value: 'customs', viewValue: 'جمارك' }
+  ];
+  public paymentmethods: Choice[] = [
+    { value: 'check', viewValue: 'شيك' },
+    { value: 'cash', viewValue: 'كاش' }
+  ];
+
+  public checkstatus: Choice[] = [
+    { value: 'clarified', viewValue: 'مظهر' },
+    { value: 'new', viewValue: 'جديد' }
+  ];
+
+}
+interface Choice {
+  value: string;
+  viewValue: string;
 }

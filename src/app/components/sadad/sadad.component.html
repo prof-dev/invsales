@@ -1,3 +1,25 @@
-<p>
-  sadad works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>علمية السداد والدفعيات</mat-card-title>
+  </mat-card-header>
+  <h3></h3>
+  <mat-card-content>
+    <button mat-raised-button color="primary" (click)="forsuppliers()">الدفع للموردين </button>&nbsp;
+    <button mat-raised-button color="primary" (click)="fromcustomers()"> إستلام دفعيات العملاء</button>
+    <br>
+    <mat-form-field>
+      <mat-select placeholder="إختيار العميل" [(ngModel)]="supcus" (change)="selected($event.value)">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let op of cuss" [value]="op">{{op.fullname}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput required placeholder="المبلغ " name="paid" [(ngModel)]="sadad.amount" required>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput required placeholder="التعليق " name="paid" [(ngModel)]="sadad.desc" required></textarea>
+    </mat-form-field>
+
+
+  </mat-card-content>
+</mat-card>
