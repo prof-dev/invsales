@@ -146,6 +146,11 @@
       <mat-form-field>
         <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.bankname" required>
       </mat-form-field>
+      <mat-form-field >
+          <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك">
+          <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+          <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
       <mat-form-field>
         <input matInput required placeholder="حساب بإسم " name="reminder" [(ngModel)]="payment.checkowner" required>
       </mat-form-field>

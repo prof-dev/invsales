@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
@@ -31,9 +31,9 @@ export class InvoiceComponent implements OnInit {
     totalprice: 0,
     entityid: 0,
     user: 0
-
-
   }
+  @ViewChild('date')
+  public date: any;
   public invoiceitems: any[] = [];
   public data: any;
   public items: any[] = [];
@@ -365,6 +365,8 @@ export class InvoiceComponent implements OnInit {
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
           this.check.checkno = element.checkno;
+          this.check.date=(new Date(this.date._selected)).toISOString();
+
           if (this.invoice.type == 's') {
             this.check.source = "in";
 
