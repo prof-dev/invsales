@@ -358,7 +358,7 @@ export class InvoiceComponent implements OnInit {
     confirm(invoiceid);
     this.payments.forEach(element => {
       if (element.paymentmethod == "check") {
-        if (element.bankname != "" && element.checkNo != "" && element.amount != 0) {
+        if (element.bankname != "" && element.checkNo != "" && element.amount != 0 && element.date!="") {
           this.check.user = this.user.id;
           this.check.invoice = invoiceid;
           this.check.bankname = element.bankname;
@@ -381,6 +381,9 @@ export class InvoiceComponent implements OnInit {
             this._ss.setSnackBar("تم حفظ الشيك");
           });
         }
+      }
+      else{
+        this._ss.setSnackBar("الرجاء مراجعة بيانات الشيك");
       }
     });
   }
@@ -409,7 +412,14 @@ export class InvoiceComponent implements OnInit {
     { value: 'transport', viewValue: 'ترحيل داخلي' },
     { value: 'customs', viewValue: 'جمارك' }
   ]
-
+  editPayment(row){
+    this.payment=row;
+    
+  }
+  deletePayment(index,row){
+    this.processinfo.reminder=Number(this.processinfo.reminder)+Number(row.amount);
+    this.payments.splice(index,1);
+  }
 
   addpayment() {
 
