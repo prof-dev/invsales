@@ -12,42 +12,58 @@
     </mat-card-header>
     <mat-card-content>
         <mat-form-field>
-            <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type">
+            <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type" (click)="typeChanged()">
                 <mat-option value="s">مردودات المبيعات</mat-option>
                 <mat-option value="p">مردودات المشتروات</mat-option>
             </mat-select>
         </mat-form-field>
         <br>
         <div *ngIf="retOb.type==='p'">
-        </div>
-        <div *ngIf="retOb.type==='s'">
+            <table>
+                <tr>
+                    <th>اسم المورد</th>
+                    <td>{{retOb.suppcusname}}</td>
+                </tr>
+            </table>
             <mat-form-field>
-                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم الفاتوره أو طلب الرد">
+                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم طلب الشراء">
                 <br>
             </mat-form-field>
-            <a mat-raised-button (click)="fetch()" color="primary">جلب الفاتوره أو طلب الرد</a>&nbsp;
-            <a mat-raised-button (click)="save()" color="primary" [disabled]="retOb.row.locked==1">حفظ</a>&nbsp;
-            <a mat-raised-button (click)="delivered()" color="primary" [disabled]="retOb.row.locked==1 || user.roles.indexOf('s')<0">تأكيد الاستلام</a>&nbsp;
-            <a mat-raised-button (click)="delete()" color="primary" [disabled]="retOb.row.locked==1">حذف الطلب</a>&nbsp;
-            <a mat-raised-button (click)="print()" color="primary">طباعه</a>&nbsp;
-            <div class="printdiv">
-                <table>
-                    <tr>
-                        <th>رقم النوع</th>
-                        <th>التفاصيل</th>
-                        <th>الكميه</th>
-                        <th>المردود</th>
-                    </tr>
-                    <tr *ngFor="let one of retOb.row.data">
-                        <td>{{one.id}}</td>
-                        <td>{{one.name}}</td>
-                        <td>{{one.qty}}</td>
-                        <td>
-                            <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">
-                        </td>
-                    </tr>
-                </table>
-            </div>
+        </div>
+        <div *ngIf="retOb.type==='s'" class="printdiv">
+            <table>
+                <tr>
+                    <th>اسم العميل</th>
+                    <td>{{retOb.suppcusname}}</td>
+                </tr>
+            </table>
+            <mat-form-field>
+                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم الفاتوره">
+                <br>
+            </mat-form-field>
+        </div>
+        <a mat-raised-button (click)="fetch()" color="primary">احضار البيانات</a>&nbsp;
+        <a mat-raised-button (click)="delivered()" color="primary" [disabled]="retOb.row.locked==1 || user.roles.indexOf('s')<0">تم التسليم والاستلام</a>&nbsp;
+        <a mat-raised-button (click)="save()" color="primary" [disabled]="retOb.row.locked==1">حفظ التعديلات</a>&nbsp;
+        <a mat-raised-button (click)="delete()" color="primary" [disabled]="retOb.row.locked==1">حذف الطلب</a>&nbsp;
+        <a mat-raised-button (click)="print()" color="primary">طباعة الطلب</a>&nbsp;
+        <div class="printdiv">
+            <table>
+                <tr>
+                    <th>رقم النوع</th>
+                    <th>التفاصيل</th>
+                    <th>الكميه</th>
+                    <th>المردود</th>
+                </tr>
+                <tr *ngFor="let one of retOb.row.data">
+                    <td>{{one.id}}</td>
+                    <td>{{one.name}}</td>
+                    <td>{{one.qty}}</td>
+                    <td>
+                        <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">
+                    </td>
+                </tr>
+            </table>
         </div>
     </mat-card-content>
 </mat-card>
