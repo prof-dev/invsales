@@ -7,18 +7,18 @@
         <th>المخزن</th>
 
       </tr>
-      <tr *ngFor="let row of inventories">
+      <tr *ngFor="let row of inventories;let i = index;">
         <td>
           {{getstorename(row.storeid)}}
 
         </td>
 
         <td>
-          <img src="assets/icnBranches.png" alt="" width="32" (click)="openinsertitem(row.data,row.storeid,'show')">
+          <img src="assets/icnBranches.png" alt="" width="32" (click)="viewItems(row.data,row.storeid,'show',i)">
         </td>
       </tr>
       <tr>
-          <img src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem(items,'','add')" class="btn-img"
+          <img src="assets/icnAdd.png" alt="" width="32" (click)="openinsertitem('add')" class="btn-img"
             matTooltip="إضافة البضاعة إلى المخزن">
         </tr>
       <tr>
@@ -30,7 +30,7 @@
 
   <mat-card>
     <div *ngIf="entrytype=='add'">
-      <h2> الإضافة إلى مخزن {{display}}</h2>
+      <h2> الإضافة إلى مخزن {{getstorename(processinfo.store)}}</h2>
       <mat-form-field>
           <select matNativeControl required class="primary" placeholder="إختيار المخزن" [(ngModel)]="processinfo.store">
             <option [value]="0">

@@ -15,6 +15,7 @@ export class InventoryComponent implements OnInit {
   public display = "";
   public entrytype = "";
   public touched: number[] = [];
+  public deleted: any[] = [];
   public new: number[] = [];
   public actionstore = 0;
   public storeselect: any[] = [];
@@ -27,6 +28,7 @@ export class InventoryComponent implements OnInit {
     rsv: 0,
     com: 0
   };
+  public actionindex = 0;
   // public inv:{
   //   storeid:0,
   //   data:[]
@@ -51,7 +53,7 @@ export class InventoryComponent implements OnInit {
 
   }
   public list: any[] = [];
-  
+
   constructor(private _hs: HttpService,
     private _ss: ShareService,
     private _router: Router) { }
@@ -112,7 +114,7 @@ export class InventoryComponent implements OnInit {
         console.log(this.lookups);
         this.lookups.forEach(element => {
           element.data = JSON.parse(element.data);
-          console.log(this.items);
+          // console.log(this.items);
         });
         this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
@@ -138,10 +140,9 @@ export class InventoryComponent implements OnInit {
       console.log(this.processinfo.parent);
       console.log(this.productsview);
 
-      console.log(this.list);
 
       this.list = this.productsview.filter(option => option.parent == this.processinfo.parent);
-      console.log(this.list);
+
     }
 
 
@@ -177,7 +178,7 @@ export class InventoryComponent implements OnInit {
       }
     });
     if (!this.storeexist) {
-      this.items=[];
+      this.items = [];
       console.log("not exisit");
       // this.new.push(this.processinfo.store);
 
@@ -190,16 +191,16 @@ export class InventoryComponent implements OnInit {
       this.item.rsv = parseInt(item.rsv);
       this.item.com = parseInt(item.com);
       this.items.push(this.item);
-      this.inventroy.data=JSON.stringify(this.items); console.log('inv.data  :' + this.inventroy);
+      this.inventroy.data = JSON.stringify(this.items); console.log('inv.data  :' + this.inventroy);
       console.log(this.inventroy);
       this._hs.post('inventory', this.inventroy).subscribe(res => {
 
         this._ss.setSnackBar('inserted page is refreshed for you');
         this.getInventories();
-       
+
       });
-       }
-   
+    }
+
     this.istouched = false;
     this.touched.forEach(element => {
       if (element == this.processinfo.store && (this.storeexist == true)) {
@@ -219,21 +220,30 @@ export class InventoryComponent implements OnInit {
       com: 0
     };
 
-    console.log(this.items);
+
 
   }
 
-  openinsertitem(list: any[], storeid, type) {
+  viewItems(list: any[], storeid, type, index) {
     this.items = [];
     this.items = list;
     this.entrytype = type;
     if (storeid != "") {
       this.display = this.getstorename(storeid);
       this.actionstore = storeid;
+      this.actionindex = index;
     }
 
 
-    console.log(this.display);
+    // console.log(this.display);
+
+  }
+
+  openinsertitem(type) {
+    this.items = [];
+
+    this.entrytype = type;
+
 
   }
 
@@ -242,7 +252,7 @@ export class InventoryComponent implements OnInit {
     this.result = "";
     this.storeselect.forEach(element => {
       if (element.id == id) {
-        console.log("je");
+
 
         this.result = element.titlear;
 
@@ -257,7 +267,7 @@ export class InventoryComponent implements OnInit {
     this.result = "";
     this.productsview.forEach(element => {
       if (element.id == id) {
-        console.log(element.titlear);
+
 
         this.result = element.titlear;
 
@@ -281,15 +291,29 @@ export class InventoryComponent implements OnInit {
       });
     });
 
+    this.deleted.forEach(outer => {
+      this._hs.delete('inventory',outer.storeid, outer).subscribe(res => {
+        this._ss.setSnackBar('inserted page is refreshed for you');
+        this.getInventories();
+      });
+    });
+
+this.touched=[];
+
     this.touched = [];
-   
+
 
   }
 
-  remove(item, i,actionstore) {
+  remove(item, i, actionstore) {
     this.items.splice(i, 1);
     this.touched.push(actionstore);
-    
+    if (this.items.length == 0) {
+      this.deleted.push(this.inventories.find(obj => obj.storeid == actionstore));
+      this.inventories.splice(this.actionindex, 1);
+      console.log(this.deleted);
+
+    }
   }
 
 }

@@ -12,8 +12,8 @@
   </span>
   <div *ngIf="user.id>0; else elseBlock">
     <span>{{user.fullname}} &nbsp;</span> &nbsp;&nbsp;
-    <span *ngIf="user.photo.length>0"><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
-    <span *ngIf="user.photo.length==0"><img src="assets/user.png" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
+    <!-- <span *ngIf="user.photo.length>0"><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
+    <span *ngIf="user.photo.length==0"><img src="assets/user.png" alt="" class="profile-avatar"></span>&nbsp;&nbsp;  -->
     <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
 
   </div>
@@ -49,6 +49,7 @@
     <hr>
     <a (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">طلبات الشراء والفواتير</a><br>
     <a (click)="goto('/checks')" class="sd-btn" (click)="sidenav.toggle()">تحرير الشيكات</a><br>
+    <a (click)="goto('/sadad')" class="sd-btn" (click)="sidenav.toggle()">السداد و الدفعيات </a><br>
     <a (click)="goto('/spending')" class="sd-btn" (click)="sidenav.toggle()">تحرير المصروفات</a><br>
     <a (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
    
