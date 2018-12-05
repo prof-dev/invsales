@@ -18,15 +18,26 @@
     <mat-form-field>
       <input matInput required placeholder="نوع الشيك" name="group" [(ngModel)]="check.source" [disabled]="true">
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field > 
+        <input matInput required placeholder="حالة الشيك " name="group" [value]="getStatusArabic(check.status)" [disabled]="true">
+      </mat-form-field>
+    <mat-form-field *ngIf="check.status!='paid'">
       <select matNativeControl required class="primary" [(ngModel)]="check.status" placeholder="حالة الشيك">
         <option *ngFor="let ch of statuses" [(value)]="ch.value">{{ch.viewValue}} </option>
       </select>
     </mat-form-field><br>
+ 
     <mat-form-field>
       <textarea matInput required placeholder="تعليق" name="group" [(ngModel)]="check.comment"></textarea>
     </mat-form-field>
 
+    <mat-form-field *ngIf="check.status=='paid'">
+        <select matNativeControl required class="primary" [(ngModel)]="moenyto" placeholder="ايداع ببنك" >
+          <option *ngFor="let ch of banks" [(value)]="ch.id">{{ch.titlear}} </option>
+  
+        </select>
+      </mat-form-field>
+   
     <br>
     <br>
 
@@ -65,7 +76,7 @@
           <td>{{check.date | date : 'dd/MM/yyyy'}}</td>
           <td>{{check.checkowner}}</td>
           <td>
-            {{check.status}}
+            {{getStatusArabic(check.status)}}
           </td>
           <td><button mat-raised-button color="warn" (click)="update(check)">تحديث حالة</button></td>
         </tr>

@@ -35,17 +35,16 @@ export class ChecksComponent implements OnInit {
     source: "",
     user: 0,
     comment: ""
-  }
-
-
-
-
-
+  };
+  public moenyto: 0;
   public sourceese: Choice[] = [
     { value: 'in', viewValue: 'وارد' },
     { value: 'out', viewValue: 'صادر' }
 
   ]
+  public banks: any[] = [];
+  banktoupdate: any;
+  arname: string;
 
 
 
@@ -60,6 +59,7 @@ export class ChecksComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getallBanks();
 
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
@@ -76,17 +76,8 @@ export class ChecksComponent implements OnInit {
             console.log(res.json());
 
             this.checks = res.json().checks;
-
-
             this.checks.forEach(check => {
               this.check = check;
-              this.statuses.forEach(element => {
-                if (check.status == element.value) {
-
-                  this.check.status = element.viewValue;
-
-                }
-              })
               this.sourceese.forEach(element => {
                 if (check.source == element.value) {
                   this.check.source = element.viewValue;
@@ -95,9 +86,6 @@ export class ChecksComponent implements OnInit {
               })
               this.checkes.push(this.check);
             });
-
-
-
           });
       }
     });
@@ -107,6 +95,19 @@ export class ChecksComponent implements OnInit {
 
   }
 
+  getStatusArabic(name): string {
+    this.arname = "";
+    this.statuses.forEach(element => {
+      if (name == element.value) {
+
+        this.arname = element.viewValue;
+
+      }
+
+    });
+    return this.arname;
+  }
+
 
   public statuses: Choice[] = [
     { value: 'clarified', viewValue: 'مظهر' },
@@ -114,17 +115,17 @@ export class ChecksComponent implements OnInit {
     { value: 'partially', viewValue: 'سداد جزئي' },
     { value: 'resolved', viewValue: 'تسوية' },
     { value: 'law', viewValue: 'الشؤون القانونية' },
-    { value: 'payed', viewValue: 'تم السداد' }]
-
-
+    { value: 'paid', viewValue: 'تم السداد' }]
 
   update(check) {
     this.check = check;
+    console.log(check.status);
+
   }
 
   save(check) {
-    check.user=this.user.id;
-    
+    check.user = this.user.id;
+
     if (check.id != 0) {
       this._hs.put('checks', "id", check).subscribe(res => {
 
@@ -136,20 +137,50 @@ export class ChecksComponent implements OnInit {
 
 
       });
+      if (this.check.status == 'paid') {
+        this.updateBank();
+
+
+      }
+
     }
     else {
       console.log(check.data);
       this._hs.post('checks', check).subscribe(res => {
 
-        this._ss.setSnackBar('تم حفظ  ' +  check.checkno + ' بنجاح');
-       
+        this._ss.setSnackBar('تم حفظ  ' + check.checkno + ' بنجاح');
+
 
 
       });
     }
   }
 
+  private updateBank() {
+    console.log(this.moenyto);
+    this.banktoupdate = this.banks.find(obj => obj.id == this.moenyto);
+    console.log(this.banktoupdate);
+    this.banktoupdate.data.balance = Number(this.banktoupdate.data.balance) + Number(this.check.amount);
+    this.banktoupdate.data = JSON.stringify(this.banktoupdate.data);
+    this._hs.put('lookups', "id", this.banktoupdate).subscribe(res => {
+      this._ss.setSnackBar('تمت تعديل رصيد البنك :' + this.banktoupdate.titlear);
+    });
+  }
 
+
+
+  private getallBanks() {
+    this._hs.get('lookups', 'filter[]=group,eq,banks&filter[]=isleaf,eq,1')
+      .subscribe(res => {
+        this.banks = res.json().lookups;
+        console.log(this.banks);
+
+        this.banks.forEach(element => {
+          element.data = JSON.parse(element.data);
+
+        });
+      });
+  }
 
 
 }
