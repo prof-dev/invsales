@@ -62,7 +62,7 @@ export class UtilsService {
     var divs = document.getElementsByClassName('printdiv');
     for (var i = 0; i < divs.length; i++) {
       var ele = divs.item(i);
-      w.document.write(ele.innerHTML+'<br>');
+      w.document.write(ele.innerHTML + '<br>');
     }
     w.document.write(this.REPORTFOOTER);
     w.document.close();
@@ -182,8 +182,8 @@ export class ReportObject {
       if (field.type == 'date') {
         from = this.fromdate.toISOString().split('T')[0];
         to = this.todate.toISOString().split('T')[0];
-        field.placeholder='التاريخ :';
-        field.value=' من تاريخ '+from+' الى تاريخ '+to;
+        field.placeholder = 'التاريخ :';
+        field.value = ' من تاريخ ' + from + ' الى تاريخ ' + to;
         console.log('from to: ', from, to);
 
         where += 'filter[]=' + field.fieldname + ',bt,' + from + ',' + to + '&'
@@ -214,4 +214,70 @@ export class ReportObject {
   print() {
     this._ut.showReport(this.title);
   }
+}
+
+export class ReturnsObject {
+  public id: number;
+  public type: string;
+  public name: string;
+  public row: any = {};
+  private itemsids: number[];
+  public inrets: boolean;
+  public ready: boolean;
+  public suppcusname: string;
+  constructor(private _ht: HttpService) {
+    this.id = 0;
+    this.type = 's';
+    this.row = {};
+    this.name = '';
+    this.suppcusname = '';
+    this.itemsids = [0];
+    this.inrets = false;
+    this.ready = false;
+  }
+  reset() {
+    this.suppcusname='';
+    this.row = {};
+    this.itemsids = [0];
+    this.inrets = false;
+    this.ready = false;
+  }
+  buildItemsIds() {
+    this.row.data.forEach(itm => {
+      this.itemsids.push(itm.id);
+    });
+  }
+  getItems() {
+    this._ht.get('suppcus', 'filter=id,eq,' + this.row.entityid).subscribe(res => {
+      this.suppcusname = res.json().suppcus[0].name;
+    });
+    return this._ht.get('lookups', 'filter[]=group,eq,item&filter[]=id,in,' + this.itemsids + '&satisfy=all')
+  }
+
+  saveApplication() {
+    let therow: any = JSON.parse(JSON.stringify(this.row));
+    therow.locked = 0;
+    therow.data.forEach(itm => {
+      delete itm.name;
+    });
+    therow.data = JSON.stringify(therow.data);
+    if (this.ready) {
+      if (this.inrets) {
+        return this._ht.put('pursalesret', 'id', therow);
+      } else {
+        return this._ht.post('pursalesret', therow);
+      }
+    }
+  }
+
+  fixItems(items: any[]) {
+    this.row.data.forEach(rec => {
+      var recitem: any = items.find(el => { return rec.id == el.id });
+      if (recitem)
+        rec.name = recitem.titlear;
+    });
+    this.ready = true;
+    console.log('this.ready:', this.ready);
+  }
+
 }

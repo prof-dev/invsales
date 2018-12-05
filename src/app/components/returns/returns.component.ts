@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { UtilsService, ReturnsObject } from 'src/app/services/utils.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -66,7 +66,10 @@ export class ReturnsComponent implements OnInit {
       this.retOb.fixItems(res.json().lookups);
     });
   }
-
+  typeChanged(){
+    console.log('type changed: ');
+    this.retOb.reset();
+  }
 
   save() {
     if (this.retOb.row.locked == 1) {
@@ -139,66 +142,4 @@ export class ReturnsComponent implements OnInit {
         }
       });
   }
-}
-
-export class ReturnsObject {
-  public id: number;
-  public type: string;
-  public name:string;
-  public row: any = {};
-  private itemsids: number[];
-  public inrets: boolean;
-  public ready: boolean;
-  constructor(private _ht: HttpService) {
-    this.id = 0;
-    this.type = 's';
-    this.row = {};
-    this.name='';
-    this.itemsids = [0];
-    this.inrets = false;
-    this.ready = false;
-  }
-  reset() {
-    this.row = {};
-    this.itemsids = [0];
-    this.inrets = false;
-    this.ready = false;
-  }
-  buildItemsIds() {
-    this.row.data.forEach(itm => {
-      this.itemsids.push(itm.id);
-    });
-  }
-  getItems() {
-    return this._ht.get('lookups', 'filter[]=group,eq,item&filter[]=id,in,' + this.itemsids + '&satisfy=all')
-  }
-
-  saveApplication() {
-    let therow: any = JSON.parse(JSON.stringify(this.row));
-    therow.locked = 0;
-    therow.data.forEach(itm => {
-      delete itm.name;
-    });
-
-    therow.data = JSON.stringify(therow.data);
-    if (this.ready) {
-      if (this.inrets) {
-        return this._ht.put('pursalesret', 'id', therow);
-      } else {
-        delete therow.id;
-        return this._ht.post('pursalesret', therow);
-      }
-    }
-  }
-
-  fixItems(items: any[]) {
-    this.row.data.forEach(rec => {
-      var recitem: any = items.find(el => { return rec.id == el.id });
-      if (recitem)
-        rec.name = recitem.titlear;
-    });
-    this.ready = true;
-    console.log('this.ready:', this.ready);
-  }
-
 }
