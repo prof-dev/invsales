@@ -86,6 +86,36 @@
       <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
     </button>
 
+    <div>
+        <h4>ملخص الدفع</h4>
+        <table>
+          <tr>
+            <th>
+              الملبلغ
+            </th>
+            <th>
+              طريقة الدفع
+            </th>
+            <th>
+              رقم الشيك
+            </th>
+  
+            <th>
+              العمليات
+            </th>
+          </tr>
+          <tr *ngFor="let row of payments;let i=index;">
+            <td>{{row.amount}}</td>
+            <td>{{row.paymentmethod}}</td>
+            <td>{{row.checkno}}</td>
+            <td>
+                <img src="assets/icnEdit.png" alt="" width="32" class="btn-img" (click)="editPayment(row)">
+                <img src="assets/icnDelete.png" alt="" width="32" class="btn-img" (click)="deletePayment(index,row)">
+            </td>
+          </tr>
+        </table>
+  
+      </div>
 
   </mat-card-content>
 </mat-card>

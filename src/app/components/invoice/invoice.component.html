@@ -65,12 +65,21 @@
     </mat-form-field>
 
     <hr>
-    <h2>الأصناف</h2>
+    <!-- <h2>الأصناف</h2> -->
+    <mat-form-field>
+        <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="processinfo.parent"
+          (change)="getitemsbyclass()">
+          <option *ngFor="let option of classes " [value]="option.id">
+            {{option.titlear}}
+          </option>
+
+        </select>
+      </mat-form-field>
     <mat-form-field>
 
       <mat-select placeholder="إختيار الصنف" [(ngModel)]="product" required>
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let op of productsview" [value]="op">{{op.titlear}}</mat-option>
+        <mat-option *ngFor="let op of list" [value]="op">{{op.titlear}}</mat-option>
       </mat-select>
 
     </mat-form-field>

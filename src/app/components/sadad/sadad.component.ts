@@ -164,6 +164,16 @@ export class SadadComponent implements OnInit {
       balance: 0
     };
   }
+
+  editPayment(row){
+    this.payment=row;
+    
+  }
+  deletePayment(index,row){
+    this.paid=Number(this.paid)-Number(row.amount);
+    this.payments.splice(index,1);
+    this.payment={};
+  }
   pushpayment(payment) {
     this.paid = 0;
     if (payment.amount > 0) {

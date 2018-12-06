@@ -7,6 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { fadeInItems, DateAdapter } from '@angular/material';
 import { UtilsService } from 'src/app/services/utils.service';
+import { Item } from '../inventory/inventory.component';
 
 @Component({
   selector: 'app-invoice',
@@ -43,6 +44,7 @@ export class InvoiceComponent implements OnInit {
   public payments: any[] = [];
   public suppcus: any[] = [];
   public processinfo = {
+    parent:0,
     reminder: 0,
     status: ""
   };
@@ -68,11 +70,8 @@ export class InvoiceComponent implements OnInit {
     comment: "",
     invoice: 0
   };
-
-  public inventory = {
-    id: 0,
-    data: [],
-  }
+  public classes: any[] = [];
+  public list: any[] = [];
 
 
 
@@ -84,11 +83,25 @@ export class InvoiceComponent implements OnInit {
   public invoiceid = 0;
   public paid = 0;
   suppcussdata: string;
+  public inventories: any[] = [];
+
+  public inventory = {
+    storeid: 0,
+    data: null
+  }
+  public invitems: Item[] = [];
+  public invitem = {
+    id: 0,
+    avb: 0,
+    rsv: 0,
+    com: 0
+  };
+  goodsobj: any;
 
 
 
   constructor(private _hs: HttpService,
-    private _ss: ShareService,private _ut: UtilsService,
+    private _ss: ShareService, private _ut: UtilsService,
     private _router: Router) { }
 
 
@@ -96,6 +109,8 @@ export class InvoiceComponent implements OnInit {
 
     this.refresh();
     this.getallstores();
+    this.getInventories();
+    this.getallclasses();
     this.data = {
 
     }
@@ -119,6 +134,33 @@ export class InvoiceComponent implements OnInit {
 
 
   }
+  private getallclasses() {
+    this._hs.get('lookups', 'filter=group,eq,goods')
+      .subscribe(res => {
+        this.goodsobj = res.json().lookups[0];
+        // console.log(this.goodsobj);
+        this._hs.get('lookups', 'filter[]=parent,eq,' + this.goodsobj.id)
+          .subscribe(res => {
+            this.classes = res.json().lookups;
+            console.log(this.classes);
+
+          });
+      });
+  }
+
+
+  private getInventories() {
+    this._hs.get('inventory')
+      .subscribe(res => {
+        this.inventories = res.json().inventory;
+        console.log(this.inventories);
+        this.inventories.forEach(element => {
+          this.items = JSON.parse(element.data);
+          element.data = this.items;
+          console.log(this.items);
+        });
+      });
+  }
 
   private getallstores() {
     this._hs.get('lookups', 'filter=group,eq,stores')
@@ -141,20 +183,36 @@ export class InvoiceComponent implements OnInit {
         this._router.navigateByUrl('/login');
       }
       else {
-        this._hs.get('lookups', 'filter=group,eq,item')
-          .subscribe(res => {
-            this.lookups = res.json().lookups;
-            console.log(this.lookups);
-            this.lookups.forEach(element => {
-              element.data = JSON.parse(element.data);
-              console.log(this.items);
-            });
-            this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.titlear, price: lookup.data.price }));
-          });
+        this.getAllItems();
       }
     });
   }
 
+  private getAllItems() {
+    this._hs.get('items')
+      .subscribe(res => {
+        this.lookups = res.json().items;
+        console.log(this.lookups);
+        this.lookups.forEach(element => {
+          element.data = JSON.parse(element.data);
+          console.log(this.items);
+        });
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
+      this.list=this.productsview;
+      });
+  }
+  getitemsbyclass() {
+    if (this.processinfo.parent != 0) {
+      console.log(this.processinfo.parent);
+      // console.log(this.productsview);
+
+
+      this.list = this.productsview.filter(option => option.parent == this.processinfo.parent);
+
+    }
+
+
+  }
   //
   public _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
@@ -173,12 +231,37 @@ export class InvoiceComponent implements OnInit {
 
   }
 
+
   additem(item) {
     console.log(item);
-    this.invoiceitems.push(item);
-    this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
-    this.product = {};
-    this.processinfo.reminder += Number(item.totalprice);
+    // console.log(this.inventories);
+
+    this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
+
+    if (this.inventory != null) {
+      this.inventory.data.forEach(element => {
+        console.log(this.inventory.data);
+
+        if ((!((Number(element.avb)-Number(element.rsv))< Number(item.count))) && element.id == item.id) {
+          console.log(item);
+          this.invoiceitems.push(item);
+          this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
+          this.product = {};
+          this.processinfo.reminder += Number(item.totalprice);
+
+        }
+        else {
+          this._ss.setSnackBar('عذرا الكمية بالمخزن غير كافية');
+        }
+      });
+
+    }
+    else {
+      this._ss.setSnackBar('عذرا لا تتوفر أصناف بالمخزن المختار');
+    }
+
+
+
 
 
   }
@@ -209,7 +292,7 @@ export class InvoiceComponent implements OnInit {
     if (type == 's') {
       this.filteringtype = 'customers';
       this.operation = 'المبيعات';
-      this.invoice.shipno='no';
+      this.invoice.shipno = 'no';
     } else {
       this.filteringtype = 'suppliers';
       this.operation = 'المشتريات';
@@ -272,6 +355,7 @@ export class InvoiceComponent implements OnInit {
     this.invoiceitems = [];
     this.payments = [];
     this.processinfo = {
+      parent:0,
       reminder: 0,
       status: ""
     };
@@ -288,7 +372,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   save() {
-    if(this.processinfo.status!="print"){
+    if (this.processinfo.status != "print") {
       this.invoice.entityid = this.selecteditem.id;
       this.invoice.user = this.user.id;
       this.invoicedata = {
@@ -297,28 +381,28 @@ export class InvoiceComponent implements OnInit {
       };
       this.invoice.data = JSON.stringify(this.invoicedata);
       console.log(this.invoice);
-  
+
       this._hs.post('pursales', this.invoice).subscribe(res => {
-        this.invoice.id=Number(res.text());
+        this.invoice.id = Number(res.text());
         //confirm(res.text());
         this.insertchecks(this.invoice.id);
-        if(this.processinfo.reminder!=0){
+        if (this.processinfo.reminder != 0) {
           this.updatecustomeraccount();
-         
+
         }
         this.updateuserbalance();
-        this.processinfo.status="print";
+        this.processinfo.status = "print";
         this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
-  
+
       });
 
     }
-    else{
-      this._ss.setSnackBar("تم إصدار هذه الفاتورة من قبل رقم الفاتورة هو :"+this.invoice.id);
+    else {
+      this._ss.setSnackBar("تم إصدار هذه الفاتورة من قبل رقم الفاتورة هو :" + this.invoice.id);
     }
 
-   
-   
+
+
 
   }
 
@@ -327,45 +411,47 @@ export class InvoiceComponent implements OnInit {
     this._ut.showReport('إذن  إستلام بضاعة');
   }
 
-  updateuserbalance(){
+  updateuserbalance() {
     this.payments.forEach(element => {
       if (element.paymentmethod == "cash") {
-        this.user.balance =Number(this.user.balance) + Number(element.amount);
-      }}
+        this.user.balance = Number(this.user.balance) + Number(element.amount);
+      }
+    }
     );
     console.log(this.user);
-    
-    this._hs.put('users',"id", this.user).subscribe(res2 => {
+
+    this._hs.put('users', "id", this.user).subscribe(res2 => {
       this._ss.setSnackBar("تم  تعديل رصيد المستخدم  ");
     });
   }
 
-  private updatecustomeraccount(){
-    if(this.invoice.type=='s'){
-      this.selecteditem.balance = this.selecteditem.balance-this.processinfo.reminder;
-    }else{
-      this.selecteditem.balance = this.selecteditem.balance+this.processinfo.reminder;
+  private updatecustomeraccount() {
+    if (this.invoice.type == 's') {
+      this.selecteditem.balance = this.selecteditem.balance - this.processinfo.reminder;
+    } else {
+      this.selecteditem.balance = this.selecteditem.balance + this.processinfo.reminder;
     }
-    this.suppcussdata=JSON.stringify(this.selecteditem.data);
-    this.selecteditem.data=this.suppcussdata;
-    this._hs.put('suppcus',"id", this.selecteditem).subscribe(res2 => {
+    this.suppcussdata = JSON.stringify(this.selecteditem.data);
+    this.selecteditem.data = this.suppcussdata;
+    this._hs.put('suppcus', "id", this.selecteditem).subscribe(res2 => {
       this._ss.setSnackBar("تم  تعديل رصيد العميل أو المورد");
     });
-    this.selecteditem.data=JSON.parse(this.suppcussdata);
+    this.selecteditem.data = JSON.parse(this.suppcussdata);
   }
 
   private insertchecks(invoiceid) {
-    confirm(invoiceid);
+    console.log("invoice id :", invoiceid);
+
     this.payments.forEach(element => {
       if (element.paymentmethod == "check") {
-        if (element.bankname != "" && element.checkNo != "" && element.amount != 0 && element.date!="") {
+        if (element.bankname != "" && element.checkNo != "" && element.amount != 0 && element.date != "") {
           this.check.user = this.user.id;
           this.check.invoice = invoiceid;
           this.check.bankname = element.bankname;
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
           this.check.checkno = element.checkno;
-          this.check.date=(new Date(this.date._selected)).toISOString();
+          this.check.date = (new Date(this.date._selected)).toISOString();
 
           if (this.invoice.type == 's') {
             this.check.source = "in";
@@ -382,7 +468,7 @@ export class InvoiceComponent implements OnInit {
           });
         }
       }
-      else{
+      else {
         this._ss.setSnackBar("الرجاء مراجعة بيانات الشيك");
       }
     });
@@ -412,13 +498,15 @@ export class InvoiceComponent implements OnInit {
     { value: 'transport', viewValue: 'ترحيل داخلي' },
     { value: 'customs', viewValue: 'جمارك' }
   ]
-  editPayment(row){
-    this.payment=row;
-    
+  editPayment(row) {
+    this.payment = row;
+
   }
-  deletePayment(index,row){
-    this.processinfo.reminder=Number(this.processinfo.reminder)+Number(row.amount);
-    this.payments.splice(index,1);
+  deletePayment(index, row) {
+    this.processinfo.reminder = Number(this.processinfo.reminder) + Number(row.amount);
+    this.payments.splice(index, 1);
+    this.payment = {};
+
   }
 
   addpayment() {
@@ -446,9 +534,10 @@ export class InvoiceComponent implements OnInit {
       console.log(this.payments);
       this.paid = 0;
     }
-    else{
+    else {
       this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
     }
+    this.payment.paymentmethod = payment.paymentmethod;
 
   }
 

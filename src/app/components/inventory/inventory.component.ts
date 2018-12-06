@@ -34,7 +34,7 @@ export class InventoryComponent implements OnInit {
   //   data:[]
   // }
   public inventroy = {
-    storeid: 0.00,
+    storeid: 0,
     data: null
   }
   public stores: any[] = [];
@@ -135,7 +135,7 @@ export class InventoryComponent implements OnInit {
       });
   }
 
-  getitemsbyclass() {
+ getitemsbyclass() {
     if (this.processinfo.parent != 0) {
       console.log(this.processinfo.parent);
       console.log(this.productsview);
