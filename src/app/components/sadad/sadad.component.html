@@ -20,7 +20,7 @@
         <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
       </mat-select>
     </mat-form-field>
-    
+
     <mat-form-field>
       <input matInput required placeholder=" اسم العميل" [value]="supcus.fullname" [disabled]="true">
     </mat-form-field>
@@ -59,7 +59,7 @@
       <mat-form-field>
         <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.bankname" required>
       </mat-form-field>
-      <mat-form-field >
+      <mat-form-field>
           <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك">
           <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
           <mat-datepicker #date></mat-datepicker>
@@ -87,35 +87,102 @@
     </button>
 
     <div>
-        <h4>ملخص الدفع</h4>
-        <table>
-          <tr>
-            <th>
-              الملبلغ
-            </th>
-            <th>
-              طريقة الدفع
-            </th>
-            <th>
-              رقم الشيك
-            </th>
-  
-            <th>
-              العمليات
-            </th>
-          </tr>
-          <tr *ngFor="let row of payments;let i=index;">
-            <td>{{row.amount}}</td>
-            <td>{{row.paymentmethod}}</td>
-            <td>{{row.checkno}}</td>
-            <td>
-                <img src="assets/icnEdit.png" alt="" width="32" class="btn-img" (click)="editPayment(row)">
-                <img src="assets/icnDelete.png" alt="" width="32" class="btn-img" (click)="deletePayment(index,row)">
-            </td>
-          </tr>
-        </table>
-  
-      </div>
+      <h4>ملخص الدفع</h4>
+      <table>
+        <tr>
+          <th>
+            الملبلغ
+          </th>
+          <th>
+            طريقة الدفع
+          </th>
+          <th>
+            رقم الشيك
+          </th>
+
+          <th>
+            العمليات
+          </th>
+        </tr>
+        <tr *ngFor="let row of payments;let i=index;">
+          <td>{{row.amount}}</td>
+          <td>{{row.paymentmethod}}</td>
+          <td>{{row.checkno}}</td>
+          <td>
+            <img src="assets/icnEdit.png" alt="" width="32" class="btn-img" (click)="editPayment(row)">
+            <img src="assets/icnDelete.png" alt="" width="32" class="btn-img" (click)="deletePayment(index,row)">
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <button mat-raised-button (click)="save()">
+      <img src="assets/icnSave.png" alt="" width="32" class="btn-img">
+    </button>
+    <button *ngIf="sadad.id!=null" mat-raised-button (click)="print(payment)">
+      طباعة ايصال
+    </button>
+
+
+    <div class="printdiv" hidden="true">
+      <table>
+        <tr>
+          <td>
+            رقم المعاملة: {{sadad.id}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            إسم العميل/المورد : {{supcus.fullname}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            جملة المدفوع او المستلم : {{paid}}
+          </td>
+        </tr>
+        <tr>
+          <table>
+            <thead>
+                <tr>
+                    <th>
+                      طريقة الدفع
+                    </th>
+                    <th>
+                      رقم الشيك
+                    </th>
+                    <th>
+                      الملبلغ
+                    </th>
+      
+                  </tr>
+            </thead>
+           <tbody>
+              <tr *ngFor="let row of payments;let i=index;">
+                  <td>{{row.paymentmethod}}</td>
+                  <td>{{row.checkno}}</td>
+                  <td>{{row.amount}}</td>
+    
+    
+    
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    جملة المدفوع او المستلم : {{paid}}
+                  </td>
+                </tr>
+              </table>
+            </tr>
+    
+    
+           </tbody>
+      
+      </table>
+    </div>
+
 
   </mat-card-content>
 </mat-card>

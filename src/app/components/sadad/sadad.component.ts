@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ShareService } from 'src/app/services/share.service';
 import { HttpService } from 'src/app/services/http.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-sadad',
@@ -9,6 +10,8 @@ import { HttpService } from 'src/app/services/http.service';
   styleUrls: ['./sadad.component.css']
 })
 export class SadadComponent implements OnInit {
+  @ViewChild('date')
+  public date: any;
   public cuss: any[] = [];
   public supp: any[] = [];
   public supcus = {
@@ -18,9 +21,8 @@ export class SadadComponent implements OnInit {
     data: {},
     balance: 0
   };
-  @ViewChild('date')
-  public date: any;
-  public sadad:any={};
+ 
+  public sadad: any = {};
   public payment: any;
   public payments: any[] = [];
   public suppcus: any[] = [];
@@ -43,7 +45,7 @@ export class SadadComponent implements OnInit {
   public processinfo = {
     status: ""
   };
-  constructor(private _hs: HttpService,
+  constructor(private _hs: HttpService,private _ut: UtilsService,
     private _ss: ShareService,
     private _router: Router) { }
 
@@ -57,24 +59,28 @@ export class SadadComponent implements OnInit {
     this.getsupcusinfo();
     this.reset();
   }
-
-
-  makesadad(sadad, check) {
-    sadad.user=this.user.id;
-    if(this.check.checkno!=""&&this.check.amount!=4&&this.check.bankname!=""){
-      check.user=this.user.id;
-      this.insertchecks();
-      this._hs.post('sadad', sadad).subscribe(res => {
+  save() {
+    if (this.supcus.id != null && this.sadad.desc != "" && this.payments.length > 0) {
+      this.sadad.entity = this.supcus.id;
+      this.sadad.data = JSON.stringify(this.payments);
+      this.sadad.user = this.user.id;
+      this.sadad.total = this.paid;
+      this._hs.post('sadad', this.sadad).subscribe(res => {
+        this.sadad.id = res.text();
+        this.updatesuppcussbalance(this.paid);
+        this.insertchecks();
+        this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
       });
-      this.updatesuppcussbalance(check.amount,sadad.entity);
+
     }
-    else{
-      this._hs.post('sadad', sadad).subscribe(res => {
-      });
-      this.updatesuppcussbalance(check.amount,sadad.entity);
+    else {
+      this._ss.setSnackBar('الرجاء تعبئة الحقول الأساسية');
+
     }
   }
+
   private insertchecks() {
+
     this.payments.forEach(element => {
       if (element.paymentmethod == "check") {
         if (element.bankname != "" && element.checkNo != "" && element.amount != 0) {
@@ -83,7 +89,9 @@ export class SadadComponent implements OnInit {
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
           this.check.checkno = element.checkno;
-          this.check.date=(new Date(this.date._selected)).toISOString();
+          console.log(this.date);
+          
+          this.check.date = (new Date(this.date._selected)).toISOString();
           if (this.processinfo.status == 'c') {
             this.check.source = "in";
 
@@ -102,10 +110,16 @@ export class SadadComponent implements OnInit {
     });
   }
 
-  updatesuppcussbalance(amount, entityid) {
-    
-    this.supcus.balance=this.supcus.balance+amount;
-    this.supcus.data=JSON.stringify(this.supcus.data);
+  updatesuppcussbalance(amount) {
+    if (this.supcus.type == 'c') {
+      this.supcus.balance =  Number(this.supcus.balance) + Number(amount);
+
+    }
+    else {
+      this.supcus.balance =  Number(this.supcus.balance) - Number(amount);
+
+    }
+    this.supcus.data = JSON.stringify(this.supcus.data);
     this._hs.put('suppcus', "id", this.supcus).subscribe(res => {
       this._ss.setSnackBar("تم تعديل رصيد العميل");
     }
@@ -129,7 +143,7 @@ export class SadadComponent implements OnInit {
         });
       });
   }
-  private reset(){
+  private reset() {
     this.payment = {
       paymentmethod: "",
       amount: 0.0,
@@ -137,7 +151,7 @@ export class SadadComponent implements OnInit {
       checkNo: "0000",
       amountUSD: 0.00,
       rate: 0.00,
-      date:""
+      date: ""
     };
     this.check = {
       id: 0,
@@ -156,7 +170,7 @@ export class SadadComponent implements OnInit {
     this.processinfo = {
       status: ""
     };
-     this.supcus = {
+    this.supcus = {
       id: 0,
       type: "",
       fullname: "",
@@ -165,14 +179,14 @@ export class SadadComponent implements OnInit {
     };
   }
 
-  editPayment(row){
-    this.payment=row;
-    
+  editPayment(row) {
+    this.payment = row;
+
   }
-  deletePayment(index,row){
-    this.paid=Number(this.paid)-Number(row.amount);
-    this.payments.splice(index,1);
-    this.payment={};
+  deletePayment(index, row) {
+    this.paid = Number(this.paid) - Number(row.amount);
+    this.payments.splice(index, 1);
+    this.payment = {};
   }
   pushpayment(payment) {
     this.paid = 0;
@@ -183,13 +197,13 @@ export class SadadComponent implements OnInit {
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);
-
+        this.payment = {};
       });
     }
-    else{
+    else {
       this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
     }
-    this.reset();
+
 
   }
   // save old balance + new balance
@@ -211,16 +225,22 @@ export class SadadComponent implements OnInit {
     { value: 'new', viewValue: 'جديد' }
   ];
 
-  forsuppliers(){
+  forsuppliers() {
     this.reset();
-    this.processinfo.status='s';
-    this.sadad.source='out';
+    this.processinfo.status = 's';
+    this.sadad.source = 'out';
   }
-  fromcustomers(){
+  fromcustomers() {
     this.reset();
-    this.processinfo.status='c';
-    this.sadad.source='in';
+    this.processinfo.status = 'c';
+    this.sadad.source = 'in';
 
+  }
+
+  
+  print() {
+    this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
+    this._ut.showReport('إيصال إستلام');
   }
 }
 
