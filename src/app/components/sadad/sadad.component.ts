@@ -91,7 +91,7 @@ export class SadadComponent implements OnInit {
           this.check.checkno = element.checkno;
           console.log(this.date);
           
-          this.check.date = (new Date(this.date._selected)).toISOString();
+          this.check.date = new Date(Date.now()).toISOString();
           if (this.processinfo.status == 'c') {
             this.check.source = "in";
 

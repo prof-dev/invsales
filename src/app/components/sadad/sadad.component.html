@@ -60,7 +60,7 @@
         <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.bankname" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك">
+          <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك" >
           <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
           <mat-datepicker #date></mat-datepicker>
         </mat-form-field>
@@ -117,7 +117,7 @@
 
     </div>
 
-    <button mat-raised-button (click)="save()">
+    <button mat-raised-button (click)="save()" n *ngIf="sadad.id==null" >
       <img src="assets/icnSave.png" alt="" width="32" class="btn-img">
     </button>
     <button *ngIf="sadad.id!=null" mat-raised-button (click)="print(payment)">
