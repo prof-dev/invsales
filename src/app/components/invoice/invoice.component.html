@@ -87,9 +87,13 @@
       <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="product.price" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" العدد" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)"
+      <input matInput required placeholder=" الكمية" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)"
         required>
     </mat-form-field>
+    <mat-form-field>
+        <input matInput required placeholder=" الكمية بالحروف" name="arcount" [(ngModel)]="product.arcount"
+          required>
+      </mat-form-field>
     <mat-form-field>
       <input matInput required placeholder=" المبلغ" name="total" [(ngModel)]="product.totalprice" required [disabled]="true">
     </mat-form-field>
@@ -235,14 +239,16 @@
           <tr>
             <th>الصنف</th>
             <th>الكمية</th>
+            <th>الكمية بالحروف</th>
             <th>المخزن</th>
-            <th>تعليق</th>
+          
           </tr>
           <tr *ngFor="let row of invoiceitems">
             <td>{{row.titlear}}</td>
             <td>{{row.count}}</td>
-            <td>{{row.store.titlear}}</td>
-            <td></td>
+            <td>{{row.arcount}}</td>
+            <td>{{getStoreName(row.store)}}</td>
+            
           </tr>
         </table>
       </tr>

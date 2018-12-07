@@ -1,5 +1,5 @@
 <div id="map" class="map"></div>
-<mat-expansion-panel>   
+<mat-expansion-panel>
     <mat-expansion-panel-header>
         {{location}} انقر على الخريطه
     </mat-expansion-panel-header>
@@ -16,7 +16,7 @@
                 <input matInput required placeholder="الإسم " [(ngModel)]="form.fullname">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance">
+                <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance" [disabled]="processinfo.disbalance">
             </mat-form-field>
             <mat-form-field *ngIf="form.type=='c'">
                 <input matInput required placeholder=" فرع العميل" [(ngModel)]="form.branch">
@@ -42,13 +42,177 @@
 
 
         </div>
-
         <div mat-dialog-actions>
             <button mat-raised-button (click)="save(form)" color='primary' *ngIf="form.type!=''">حفظ</button>
             <button mat-raised-button (click)="onNoClick()" color='warn'>تراجع</button>
 
 
         </div>
+        <hr>
+        <div mat-dialog-content *ngIf="processinfo.operation==1">
+            <mat-form-field>
+                <textarea matInput required placeholder="التعليق " name="paid" [(ngModel)]="sadad.desc" required></textarea>
+            </mat-form-field>
+            <br>
+            <h3> الدفع</h3>
+            <mat-form-field>
+                <select matNativeControl required class="primary" [(ngModel)]="payment.paymentmethod" placeholder="طريقة الدفع">
+                    <option *ngFor="let ch of paymentmethods" [(value)]="ch.value">{{ch.viewValue}} </option>
+
+                </select>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder=" المدفوع" name="total" [(ngModel)]="paid" required>
+            </mat-form-field>
+
+
+            <div *ngIf="payment.paymentmethod=='check'">
+                <mat-form-field>
+                    <input matInput required placeholder="قيمة الشيك " name="paid" [(ngModel)]="payment.amount"
+                        required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="رقم الشيك" name="reminder" [(ngModel)]="payment.checkno"
+                        required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.bankname"
+                        required>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك" [(ngModel)]="payment.date">
+                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <mat-datepicker #date></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="حساب بإسم " name="reminder" [(ngModel)]="payment.checkowner"
+                        required>
+                </mat-form-field>
+                <mat-form-field>
+                    <select matNativeControl required class="primary" [(ngModel)]="payment.checkstatus" placeholder=" حالة الشيك"
+                        (focusout)="pushpayment(payment)">
+                        <option *ngFor="let ch of checkstatus" [(value)]="ch.value">{{ch.viewValue}} </option>
+
+                    </select>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="payment.paymentmethod=='cash'">
+                <mat-form-field>
+                    <input matInput required placeholder="المدفوع " name="paid" [(ngModel)]="payment.amount" required
+                        (focusout)="pushpayment(payment)">
+                </mat-form-field>
+
+            </div>
+            <!-- <button mat-raised-button (click)="addpayment(payment)">
+                        <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
+                      </button> -->
+
+            <div>
+                <h4>ملخص الدفع</h4>
+                <table>
+                    <tr>
+                        <th>
+                            الملبلغ
+                        </th>
+                        <th>
+                            طريقة الدفع
+                        </th>
+                        <th>
+                            رقم الشيك
+                        </th>
+
+                        <th>
+                            العمليات
+                        </th>
+                    </tr>
+                    <tr *ngFor="let row of payments;let i=index;">
+                        <td>{{row.amount}}</td>
+                        <td>{{row.paymentmethod}}</td>
+                        <td>{{row.checkno}}</td>
+                        <td>
+                            <img src="assets/icnEdit.png" alt="" width="32" class="btn-img" (click)="editPayment(row)">
+                            <img src="assets/icnDelete.png" alt="" width="32" class="btn-img" (click)="deletePayment(index,row)">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <button mat-raised-button (click)="savePayment()" n *ngIf="sadad.id==null">
+                <img src="assets/icnSave.png" alt="" width="32" class="btn-img">
+            </button>
+            <button *ngIf="sadad.id!=null" mat-raised-button (click)="print(payment)">
+                طباعة ايصال
+            </button>
+
+
+            <div class="printdiv" hidden="true">
+                <table>
+                    <tr>
+                        <td>
+                            رقم المعاملة: {{sadad.id}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="form.type=='c'">
+                            إسم العميل : {{form.fullname}}
+                        </td>
+                        <td *ngIf="form.type=='s'">
+                            إسم المورد : {{form.fullname}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="form.type=='c'">
+                            جملة المستلم : {{paid}}
+                        </td>
+                        <td *ngIf="form.type=='s'">
+                            جملة المدفوع : {{paid}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        طريقة الدفع
+                                    </th>
+                                    <th>
+                                        رقم الشيك
+                                    </th>
+                                    <th>
+                                        الملبلغ
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of payments;let i=index;">
+                                    <td>{{row.paymentmethod}}</td>
+                                    <td>{{row.checkno}}</td>
+                                    <td>{{row.amount}}</td>
+
+
+
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        جملة المدفوع او المستلم : {{paid}}
+                                    </td>
+                                </tr>
+                        </table>
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
         <div *ngIf="operation != 0">
 
 
@@ -77,6 +241,12 @@
                     <td>{{row.balance}}</td>
                     <td>
                         <button mat-raised-button color="primary" (click)="modify(row)">تعديل</button>
+                    </td>
+                    <td *ngIf="row.type=='s'">
+                        <button mat-raised-button color="primary" (click)="pay(row)">دفعيات</button>
+                    </td>
+                    <td *ngIf="row.type=='c'">
+                        <button mat-raised-button color="primary" (click)="pay(row)">إستلام مبالغ</button>
                     </td>
 
 

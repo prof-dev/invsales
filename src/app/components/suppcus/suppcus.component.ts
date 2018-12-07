@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { ShareService } from '../../services/share.service';
 import { HttpService } from '../../services/http.service';
 import { Router } from '@angular/router';
+import { UtilsService } from 'src/app/services/utils.service';
 declare var ol: any;
 interface Data {
     phone: string;
@@ -26,20 +27,52 @@ interface Suppcus {
 export class SuppcusComponent implements OnInit {
     map: any;
     public suppcus: Suppcus[] = [];
+    @ViewChild('date')
+    public date: any;
     public theader: any = [];
     public data: Data;
     public formtype: string;
     public user: any;
-
+    public processinfo = {
+        operation: 0,
+        disbalance: true
+    }
     public form: any;
 
     public operation = 0;
     location: any;
     temp: any;
-
-    constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router) { }
+    public paid=0;
+    public sadad: any = {};
+    public payment: any;
+    public payments: any[] = [];
+    public check = {
+        id: 0,
+        checkno: "",
+        bankname: "",
+        date: "",
+        status: "",
+        checkowner: "0",
+        lastholder: "",
+        amount: 4,
+        source: "",
+        user: 0,
+        comment: "",
+        invoice: 0
+      };
+      
+    constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router,private _ut: UtilsService) { }
     ngOnInit() {
-        
+        this.payment = {
+            paymentmethod: "",
+            amount: 0.0,
+            paymenttype: 5,
+            checkNo: "0000",
+            amountUSD: 0.00,
+            rate: 0.00,
+            date: ""
+          };
+
         this.map = new ol.Map({
             target: 'map',
             layers: [
@@ -53,11 +86,11 @@ export class SuppcusComponent implements OnInit {
                 zoom: 14
             })
         });
-        this.map.on('singleclick', (ev)=>{
+        this.map.on('singleclick', (ev) => {
             this.location = ol.proj.toLonLat(ev.coordinate);
-            this.temp=this.location[0];
-            this.location[0]=this.location[1];
-            this.location[1]=this.temp;
+            this.temp = this.location[0];
+            this.location[0] = this.location[1];
+            this.location[1] = this.temp;
             console.log('location: ', ev.coordinate)
         });
         this.operation = 0;
@@ -85,13 +118,13 @@ export class SuppcusComponent implements OnInit {
                 "whatsapp": "",
                 "email": "",
                 "phone2": "",
-                 "location":null
+                "location": null
             }
         }
     }
     save(form) {
-        this.form.data.location=this.location;
-        if (form.id != 0 && form.phone!="" && form.whatsapp!=""&& form.fullname!="") {
+        this.form.data.location = this.location;
+        if (form.id != 0 && form.phone != "" && form.whatsapp != "" && form.fullname != "") {
             form.data = JSON.stringify(form.data);
             console.log(form.data);
             this._hs.put('suppcus', "id", form).subscribe(res => {
@@ -119,6 +152,7 @@ export class SuppcusComponent implements OnInit {
         this.ngOnInit();
         this.operation = 1;
         this.form.type = type;
+        this.processinfo.disbalance = false;
 
         if (this.form.type == 's') {
             this.formtype = ' الموردين';
@@ -149,8 +183,13 @@ export class SuppcusComponent implements OnInit {
         this.resetForm();
     }
 
+    pay(row) {
+        this.modify(row);
+        this.processinfo.operation = 1;
+    }
 
     modify(item) {
+        this.processinfo.disbalance = true;
         this.operation = 2;
         if (item.type == 's') {
             this.formtype = 'تعديل الموردين';
@@ -165,6 +204,124 @@ export class SuppcusComponent implements OnInit {
         //   this.form.data=JSON.parse(item.data);
 
     }
+
+    pushpayment(payment) {
+        this.paid = 0;
+        if (payment.amount > 0) {
+          this.payments.push(payment);
+          this.payments.forEach(element => {
+            this.paid = this.paid + Number(element.amount);
+            console.log(element.amount);
+    
+            console.log("المدفووووووووووع :", this.paid);
+            this.payment = {};
+          });
+        }
+        else {
+          this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
+        }
+    
+    
+      }
+      savePayment() {
+        if (this.form.id != null && this.sadad.desc != "" && this.payments.length > 0) {
+          this.sadad.entity = this.form.id;
+          this.sadad.data = JSON.stringify(this.payments);
+          this.sadad.user = this.user.id;
+          this.sadad.total = this.paid;
+          this._hs.post('sadad', this.sadad).subscribe(res => {
+            this.sadad.id = res.text();
+            this.updatesuppcussbalance(this.paid);
+            this.insertchecks();
+            this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
+          });
+    
+        }
+        else {
+          this._ss.setSnackBar('الرجاء تعبئة الحقول الأساسية');
+    
+        }
+      }
+
+      private insertchecks() {
+
+        this.payments.forEach(element => {
+          if (element.paymentmethod == "check") {
+            if (element.bankname != "" && element.checkNo != "" && element.amount != 0) {
+              this.check.user = this.user.id;
+              this.check.bankname = element.bankname;
+              this.check.checkowner = element.checkowner;
+              this.check.amount = element.amount;
+              this.check.checkno = element.checkno;
+              console.log(element.date);
+    
+              this.check.date = (new Date(element.date)).toISOString().split('T')[0];
+              if (this.form.type == 'c') {
+                this.check.source = "in";
+    
+              }
+              else {
+                this.check.source = "out";
+              }
+              this.check.status = element.checkstatus;
+              this.check.status = element.checkstatus;
+              console.log(this.check);
+              this._hs.post('checks', this.check).subscribe(res2 => {
+                this._ss.setSnackBar("تم حفظ الشيك");
+              });
+            }
+          }
+           this.check = {
+            id: 0,
+            checkno: "",
+            bankname: "",
+            date: "",
+            status: "",
+            checkowner: "0",
+            lastholder: "",
+            amount: 4.00,
+            source: "",
+            user: 0,
+            comment: "",
+            invoice: 0
+          };
+        });
+      }
+    
+      updatesuppcussbalance(amount) {
+        if (this.form.type == 'c') {
+          
+          this.form.balance = Number(this.form.balance) + Number(amount);
+    
+        }
+        else {
+          this.form.balance = Number(this.form.balance) - Number(amount);
+    
+        }
+        this.form.data = JSON.stringify(this.form.data);
+        this._hs.put('suppcus', "id", this.form).subscribe(res => {
+          this._ss.setSnackBar("تم تعديل رصيد العميل");
+        }
+        );
+      }
+      print() {
+        this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
+        this._ut.showReport('إيصال إستلام');
+      }
+      public paymentmethods: Choice[] = [
+        { value: 'check', viewValue: 'شيك' },
+        { value: 'cash', viewValue: 'كاش' }
+      ];
+      public checkstatus: Choice[] = [
+        { value: 'clarified', viewValue: 'مظهر' },
+        { value: 'new', viewValue: 'جديد' }
+      ];
 }
+
+interface Choice {
+    value: string;
+    viewValue: string;
+  }
+  
 
 

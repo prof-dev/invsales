@@ -10,19 +10,19 @@
         <mat-form-field>
           <input matInput required placeholder="الإسم العربي" name="email" [(ngModel)]="item.arname">
         </mat-form-field>
-        <mat-form-field>
+        <!-- <mat-form-field>
           <input matInput required placeholder="الإسم الإنجليزي" name="email" [(ngModel)]="item.engname">
-        </mat-form-field>
-        <mat-form-field>
+        </mat-form-field> -->
+        <!-- <mat-form-field>
           <input matInput required placeholder="الباركود" name="email" [(ngModel)]="item.barcode">
-        </mat-form-field>
+        </mat-form-field> -->
         <mat-form-field>
           <input matInput required placeholder="السعر" name="email" [(ngModel)]="data.price">
         </mat-form-field>
         <br>
       
-        <label>صورة المنتج</label>
-        <input required type="file" #file (change)="upload($event)">
+        <!-- <label>صورة المنتج</label>
+        <input required type="file" #file (change)="upload($event)"> -->
       
         <button mat-raised-button color="accent" (click)="insertitem()">حفظ</button>
       
@@ -56,7 +56,7 @@
       
       </mat-card>
       
-      <mat-card class="tab2">
+      <!-- <mat-card class="tab2">
         <table class="tab2">
           <tr>
             <th>الصنف : {{item.arname}}</th>
@@ -73,7 +73,7 @@
           </tr>
         </table>
       
-      </mat-card>
+      </mat-card> -->
 
 </div>
 
