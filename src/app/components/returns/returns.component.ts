@@ -60,10 +60,12 @@ export class ReturnsComponent implements OnInit {
       });
   }
   prepareRetOb() {
+    
     this.retOb.row.data = JSON.parse(this.retOb.row.data);
+    this.retOb.itemsarr= this.retOb.row.data.items;
     this.retOb.buildItemsIds();
     this.retOb.getItems().subscribe(res => {
-      this.retOb.fixItems(res.json().lookups);
+      this.retOb.fixItems(res.json().items);
     });
   }
   typeChanged(){
@@ -77,8 +79,8 @@ export class ReturnsComponent implements OnInit {
       return;
     }
     var qtyerror=0;
-    this.retOb.row.data.forEach(itm => {
-      if (itm.qty-itm.return<0){
+    this.retOb.row.data.items.forEach(itm => {
+      if (itm.count-itm.return<0){
         qtyerror=1;
       }
     });

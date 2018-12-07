@@ -1,5 +1,5 @@
 <div id="map" class="map"></div>
-<mat-expansion-panel>
+<mat-expansion-panel>   
     <mat-expansion-panel-header>
         {{location}} انقر على الخريطه
     </mat-expansion-panel-header>
@@ -10,7 +10,7 @@
         <br>
         <h1 mat-dialog-title> إدخال بيانات {{formtype}}</h1>
 
-        <div mat-dialog-content>
+        <div mat-dialog-content *ngIf="form.type!=''">
 
             <mat-form-field>
                 <input matInput required placeholder="الإسم " [(ngModel)]="form.fullname">
@@ -44,7 +44,7 @@
         </div>
 
         <div mat-dialog-actions>
-            <button mat-raised-button (click)="save(form)" color='primary'>حفظ</button>
+            <button mat-raised-button (click)="save(form)" color='primary' *ngIf="form.type!=''">حفظ</button>
             <button mat-raised-button (click)="onNoClick()" color='warn'>تراجع</button>
 
 

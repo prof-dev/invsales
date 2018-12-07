@@ -91,7 +91,7 @@ export class SuppcusComponent implements OnInit {
     }
     save(form) {
         this.form.data.location=this.location;
-        if (form.id != 0) {
+        if (form.id != 0 && form.phone!="" && form.whatsapp!=""&& form.fullname!="") {
             form.data = JSON.stringify(form.data);
             console.log(form.data);
             this._hs.put('suppcus', "id", form).subscribe(res => {

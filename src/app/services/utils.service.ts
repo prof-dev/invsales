@@ -221,6 +221,7 @@ export class ReturnsObject {
   public type: string;
   public name: string;
   public row: any = {};
+  public itemsarr:any[]=[];
   private itemsids: number[];
   public inrets: boolean;
   public ready: boolean;
@@ -243,21 +244,21 @@ export class ReturnsObject {
     this.ready = false;
   }
   buildItemsIds() {
-    this.row.data.forEach(itm => {
+    this.row.data.items.forEach(itm => {
       this.itemsids.push(itm.id);
     });
   }
   getItems() {
     this._ht.get('suppcus', 'filter=id,eq,' + this.row.entityid).subscribe(res => {
-      this.suppcusname = res.json().suppcus[0].name;
+      this.suppcusname = res.json().suppcus[0].fullname;
     });
-    return this._ht.get('lookups', 'filter[]=group,eq,item&filter[]=id,in,' + this.itemsids + '&satisfy=all')
+    return this._ht.get('items', 'filter[]=id,in,' + this.itemsids )
   }
 
   saveApplication() {
     let therow: any = JSON.parse(JSON.stringify(this.row));
     therow.locked = 0;
-    therow.data.forEach(itm => {
+    therow.data.items.forEach(itm => {
       delete itm.name;
     });
     therow.data = JSON.stringify(therow.data);
@@ -271,10 +272,10 @@ export class ReturnsObject {
   }
 
   fixItems(items: any[]) {
-    this.row.data.forEach(rec => {
+    this.row.data.items.forEach(rec => {
       var recitem: any = items.find(el => { return rec.id == el.id });
       if (recitem)
-        rec.name = recitem.titlear;
+        rec.name = recitem.arname;
     });
     this.ready = true;
     console.log('this.ready:', this.ready);

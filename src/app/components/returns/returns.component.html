@@ -55,10 +55,10 @@
                     <th>الكميه</th>
                     <th>المردود</th>
                 </tr>
-                <tr *ngFor="let one of retOb.row.data">
+                <tr *ngFor="let one of retOb.itemsarr">
                     <td>{{one.id}}</td>
-                    <td>{{one.name}}</td>
-                    <td>{{one.qty}}</td>
+                    <td>{{one.titlear}}</td>
+                    <td>{{one.count}}</td>
                     <td>
                         <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">
                     </td>
