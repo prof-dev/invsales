@@ -182,7 +182,10 @@ export class ChecksComponent implements OnInit {
       });
   }
 
-
+  goto(url:string){
+    this._ss.setScreen(url);
+    this._router.navigateByUrl(url);
+  }
 }
 
 

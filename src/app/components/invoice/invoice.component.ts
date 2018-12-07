@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
@@ -38,13 +38,13 @@ export class InvoiceComponent implements OnInit {
   public invoiceitems: any[] = [];
   public data: any;
   public items: any[] = [];
+  public payments: any[] = [];
   public showiteminsert: boolean;
   public item: any;
   public payment: any;
-  public payments: any[] = [];
   public suppcus: any[] = [];
   public processinfo = {
-    parent:0,
+    parent: 0,
     reminder: 0,
     status: ""
   };
@@ -97,20 +97,30 @@ export class InvoiceComponent implements OnInit {
     com: 0
   };
   goodsobj: any;
-
+  public param = 0;
+  temp: any;
 
 
   constructor(private _hs: HttpService,
-    private _ss: ShareService, private _ut: UtilsService,
-    private _router: Router) { }
+    private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
+    private _router: Router) {
+    this._ar.params.subscribe(params => this.param = params['id']);
+
+  }
 
 
   ngOnInit() {
+    console.log("this.param :", this.param);
 
     this.refresh();
     this.getallstores();
     this.getInventories();
     this.getallclasses();
+    this.getsupcusinfo();
+
+    if (this.param != null) {
+      this.getInvoiceById(this.param);
+    }
     this.data = {
 
     }
@@ -129,7 +139,8 @@ export class InvoiceComponent implements OnInit {
       paymenttype: 5,
       checkNo: "0000",
       amountUSD: 0.00,
-      rate: 0.00
+      rate: 0.00,
+      date: ""
     }
 
 
@@ -148,6 +159,14 @@ export class InvoiceComponent implements OnInit {
       });
   }
 
+  getStoreName(storeobj): string {
+    console.log("====================");
+    console.log(storeobj);
+
+    this.temp = this.storeselect.find(obj => obj.id == storeobj);
+
+    return this.temp.titlear;
+  }
 
   private getInventories() {
     this._hs.get('inventory')
@@ -198,7 +217,7 @@ export class InvoiceComponent implements OnInit {
           console.log(this.items);
         });
         this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
-      this.list=this.productsview;
+        this.list = this.productsview;
       });
   }
   getitemsbyclass() {
@@ -242,10 +261,11 @@ export class InvoiceComponent implements OnInit {
       this.inventory.data.forEach(element => {
         console.log(this.inventory.data);
 
-        if ((!((Number(element.avb)-Number(element.rsv))< Number(item.count))) && element.id == item.id) {
+        if ((!((Number(element.avb) - Number(element.rsv)) < Number(item.count))) && element.id == item.id) {
           console.log(item);
           this.invoiceitems.push(item);
           this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
+          this.product.store = item.store.id;
           this.product = {};
           this.processinfo.reminder += Number(item.totalprice);
 
@@ -307,11 +327,38 @@ export class InvoiceComponent implements OnInit {
 
   }
 
+  getInvoiceById(id) {
+    this._ss.setAppIsBusy(true);
+    this._hs.get('pursales', 'filter=id,eq,' + id)
+      .subscribe(res => {
+        this.invoice = res.json().pursales[0];
+        console.log("retrieved inv", this.invoice);
+
+        this.invoicedata = JSON.parse(res.json().pursales[0].data);
+        this.invoiceitems = this.invoicedata.items;
+        this.payments = this.invoicedata.payments;
+        console.log(this.suppcus);
+
+        this.selecteditem = this.suppcus.find(obj => obj.id == this.invoice.entityid);
+
+        this.selecteditem.data = JSON.parse(this.selecteditem.data + "");
+
+
+        console.log('selected customer:', this.selecteditem);
+
+
+      });
+    this._ss.setAppIsBusy(false);
+
+
+  }
+
   private getsupcusinfo() {
     this._hs.get('suppcus')
       .subscribe(res => {
         // this.suppcus = res.json().suppcus;
         console.log(res.json());
+        this.suppcus = res.json().suppcus;
         res.json().suppcus.forEach(element => {
           element.data = JSON.parse(element.data);
           if (element.type == 'c') {
@@ -355,7 +402,7 @@ export class InvoiceComponent implements OnInit {
     this.invoiceitems = [];
     this.payments = [];
     this.processinfo = {
-      parent:0,
+      parent: 0,
       reminder: 0,
       status: ""
     };
@@ -451,7 +498,8 @@ export class InvoiceComponent implements OnInit {
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
           this.check.checkno = element.checkno;
-          this.check.date = (new Date(this.date._selected)).toISOString();
+          this.check.date = (new Date(element.date)).toISOString().split('T')[0];
+
 
           if (this.invoice.type == 's') {
             this.check.source = "in";

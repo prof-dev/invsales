@@ -18,22 +18,23 @@ import { ItemsComponent } from '../components/items/items.component';
 import { ProfileComponent } from '../components/profile/profile.component';
 
 const routes: Routes = [
-  {path:'', component:HomeComponent},
-  {path:'login', component:LoginComponent},
-  {path:'settings', component:SettingsComponent},
-  {path:'supcus', component:SuppcusComponent},
-  {path:'users',component:UsersComponent},
-  {path:'lookups',component:LookupsComponent},
-  {path:'invoice',component:InvoiceComponent},
-  {path:'checks',component:ChecksComponent},
-  {path:'returns',component:ReturnsComponent},
-  {path:'log',component:LogComponent},
-  {path:'inventory',component:InventoryComponent},
-  {path:'sadad',component:SadadComponent},
-  {path:'reports/:table',component:ReportsComponent},
-  {path:'spending',component:SpendingsComponent},
-  {path:'profile',component:ProfileComponent},
-  {path:'items',component:ItemsComponent}
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'settings', component: SettingsComponent },
+  { path: 'supcus', component: SuppcusComponent },
+  { path: 'users', component: UsersComponent },
+  { path: 'lookups', component: LookupsComponent },
+  { path: 'invoice', component: InvoiceComponent },
+  { path: 'checks', component: ChecksComponent },
+  { path: 'returns', component: ReturnsComponent },
+  { path: 'log', component: LogComponent },
+  { path: 'inventory', component: InventoryComponent },
+  { path: 'sadad', component: SadadComponent },
+  { path: 'reports/:table', component: ReportsComponent },
+  { path: 'spending', component: SpendingsComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'items', component: ItemsComponent },
+  { path: 'invoice/:id', component: InvoiceComponent },
 ];
 
 @NgModule({

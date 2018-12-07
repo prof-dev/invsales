@@ -4,9 +4,9 @@
   <button mat-raised-button color="primary" (click)="setType('p')">أوامر الطلبيات</button>
   <span class="filler"></span>
   <mat-form-field>
-    <input matInput required placeholder="رقم الفاتورة" name="shipno">
+    <input matInput required placeholder="رقم الفاتورة" name="shipno" [(ngModel)]="invoice.id">
   </mat-form-field>
-  <button mat-raised-button color="accent">إسترجاع</button>
+  <button mat-raised-button color="accent"  (click)="getInvoiceById(invoice.id)">إسترجاع</button>
 
 
   <div class="AddLookup" *ngIf="invoice.type!=''">
@@ -119,7 +119,7 @@
         <td>{{row.price}}</td>
         <td>{{row.count}}</td>
         <td>{{row.totalprice}}</td>
-        <td>{{row.store.titlear}}</td>
+        <td>{{getStoreName(row.store)}}</td>
         <td>
           <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(row,i)" class="btn-img" matTooltip="حذف">
         </td>
@@ -156,7 +156,7 @@
         <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.bankname" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك">
+        <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك"   [(ngModel)]="payment.date" >
         <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
         <mat-datepicker #date></mat-datepicker>
       </mat-form-field>
@@ -214,8 +214,8 @@
     </div>
 
 
-    <button mat-raised-button (click)="save()" color="accent">حفظ</button>
-    <button mat-raised-button (click)="print()" color="accent" *ngIf="processinfo.status=='print'"> إذن الإستلام</button>
+    <button mat-raised-button (click)="save()" color="accent" *ngIf="invoice.id==0">حفظ</button>
+    <button mat-raised-button (click)="print()" color="accent" *ngIf="invoice.id!=0"> إذن الإستلام</button>
 
   </div>
   <div class="printdiv" hidden="true">

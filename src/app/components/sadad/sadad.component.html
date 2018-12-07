@@ -22,15 +22,15 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput required placeholder=" اسم العميل" [value]="supcus.fullname" [disabled]="true">
+      <input matInput required placeholder=" اسم العميل" [(ngModel)]="supcus.fullname" [disabled]="true">
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" رصيد العميل" [value]="supcus.balance" [disabled]="true">
+      <input matInput required placeholder=" رصيد العميل" [(ngModel)]="supcus.balance" [disabled]="true">
     </mat-form-field>
-
+<!-- 
     <mat-form-field>
-      <input matInput required placeholder=" تلفون العميل" [value]="supcus.data.phone" [disabled]="true">
-    </mat-form-field>
+      <input matInput required placeholder=" تلفون العميل" [(ngModel)]="supcus.data.phone" [disabled]="true">
+    </mat-form-field> -->
     <br>
 
     <mat-form-field>
@@ -60,7 +60,7 @@
         <input matInput required placeholder="اسم البنك " name="paid" [(ngModel)]="payment.bankname" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك" >
+          <input matInput [matDatepicker]="date" placeholder=" تاريخ الشيك" [(ngModel)]="payment.date">
           <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
           <mat-datepicker #date></mat-datepicker>
         </mat-form-field>
@@ -82,9 +82,9 @@
       </mat-form-field>
 
     </div>
-    <button mat-raised-button (click)="addpayment(payment)">
+    <!-- <button mat-raised-button (click)="addpayment(payment)">
       <img src="assets/icnAdd.png" alt="" width="32" class="btn-img">
-    </button>
+    </button> -->
 
     <div>
       <h4>ملخص الدفع</h4>

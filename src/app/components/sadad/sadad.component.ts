@@ -18,10 +18,11 @@ export class SadadComponent implements OnInit {
     id: 0,
     type: "",
     fullname: "",
-    data: {},
+    data:{},
     balance: 0
   };
- 
+  
+
   public sadad: any = {};
   public payment: any;
   public payments: any[] = [];
@@ -45,11 +46,12 @@ export class SadadComponent implements OnInit {
   public processinfo = {
     status: ""
   };
-  constructor(private _hs: HttpService,private _ut: UtilsService,
+  constructor(private _hs: HttpService, private _ut: UtilsService,
     private _ss: ShareService,
     private _router: Router) { }
 
   ngOnInit() {
+
     this._ss.User.subscribe(user => {
       this.user = user;
       if (this.user.id == 0) {
@@ -78,7 +80,7 @@ export class SadadComponent implements OnInit {
 
     }
   }
-
+  
   private insertchecks() {
 
     this.payments.forEach(element => {
@@ -89,9 +91,9 @@ export class SadadComponent implements OnInit {
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
           this.check.checkno = element.checkno;
-          console.log(this.date);
-          
-          this.check.date = new Date(Date.now()).toISOString();
+          console.log(element.date);
+
+          this.check.date = (new Date(element.date)).toISOString().split('T')[0];
           if (this.processinfo.status == 'c') {
             this.check.source = "in";
 
@@ -112,11 +114,12 @@ export class SadadComponent implements OnInit {
 
   updatesuppcussbalance(amount) {
     if (this.supcus.type == 'c') {
-      this.supcus.balance =  Number(this.supcus.balance) + Number(amount);
+      
+      this.supcus.balance = Number(this.supcus.balance) + Number(amount);
 
     }
     else {
-      this.supcus.balance =  Number(this.supcus.balance) - Number(amount);
+      this.supcus.balance = Number(this.supcus.balance) - Number(amount);
 
     }
     this.supcus.data = JSON.stringify(this.supcus.data);
@@ -174,7 +177,7 @@ export class SadadComponent implements OnInit {
       id: 0,
       type: "",
       fullname: "",
-      data: {},
+      data:{},
       balance: 0
     };
   }
@@ -188,6 +191,8 @@ export class SadadComponent implements OnInit {
     this.payments.splice(index, 1);
     this.payment = {};
   }
+ 
+
   pushpayment(payment) {
     this.paid = 0;
     if (payment.amount > 0) {
@@ -237,7 +242,7 @@ export class SadadComponent implements OnInit {
 
   }
 
-  
+
   print() {
     this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
     this._ut.showReport('إيصال إستلام');

@@ -67,7 +67,10 @@
         </tr>
         <tr *ngFor="let check of checkes">
           <td>{{check.id}}</td>
-          <td>{{check.invoice}}</td>
+          <td *ngIf="check.invoice!=0">
+              <a [routerLink]="['/invoice/',check.invoice]" class="sd-btn" >{{check.invoice}}</a>
+          </td>
+          <td *ngIf="check.invoice==0">لا يوجد</td>
           <td>{{check.banckname}}</td>
           <td>{{check.checkno}}</td>
           <td>{{check.amount}}</td>
