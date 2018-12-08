@@ -15,6 +15,7 @@ import { Item } from '../inventory/inventory.component';
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  public touched: number[] = [];
   myControl = new FormControl();
   public supp: any[] = [];
   public cuss: any[] = [];
@@ -99,6 +100,7 @@ export class InvoiceComponent implements OnInit {
   goodsobj: any;
   public param = 0;
   temp: any;
+  istouched: boolean;
 
 
   constructor(private _hs: HttpService,
@@ -254,30 +256,48 @@ export class InvoiceComponent implements OnInit {
   additem(item) {
     console.log(item);
     // console.log(this.inventories);
+    if (this.invoice.type = 's') {
+      this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
 
-    this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
+      if (this.inventory != null) {
 
-    if (this.inventory != null) {
-      this.inventory.data.forEach(element => {
-        console.log(this.inventory.data);
+        this.inventory.data.forEach(element => {
+          console.log(this.inventory.data);
 
-        if ((!((Number(element.avb) - Number(element.rsv)) < Number(item.count))) && element.id == item.id) {
-          console.log(item);
-          this.invoiceitems.push(item);
-          this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
-          this.product.store = item.store.id;
-          this.product = {};
-          this.processinfo.reminder += Number(item.totalprice);
+          if ((!((Number(element.avb) - Number(element.rsv)) < Number(item.count))) && element.id == item.id) {
+            console.log(item);
+            this.invoiceitems.push(item);
+            this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
+            this.product.store = item.store.id;
+            this.product = {};
+            this.processinfo.reminder += Number(item.totalprice);
+            element.rsv = Number(element.rsv) + Number(item.count);
+            this.istouched = false;
+            this.touched.forEach(el => {
+              if (el == item.store.id) {
+                this.istouched = true;
+              }
+            });
+            if (this.istouched) {
+              this.touched.push(item.store.id);
+            }
 
-        }
-        else {
-          this._ss.setSnackBar('عذرا الكمية بالمخزن غير كافية');
-        }
-      });
+
+          }
+          else {
+            this._ss.setSnackBar('عذرا الكمية بالمخزن غير كافية');
+          }
+        });
+
+      }
+      else {
+        this._ss.setSnackBar('عذرا لا تتوفر أصناف بالمخزن المختار');
+      }
+
 
     }
-    else {
-      this._ss.setSnackBar('عذرا لا تتوفر أصناف بالمخزن المختار');
+    else if (this.invoice.type = 'p') {
+
     }
 
 
@@ -417,7 +437,21 @@ export class InvoiceComponent implements OnInit {
     };
     this.invoiceitems = [];
   }
+  updateInventory() {
+    this.touched.forEach(outer => {
+      this.inventories.forEach(inner => {
+        if (outer == inner.storeid) {
+          inner.data = JSON.stringify(inner.data);
+          this._hs.put('inventory', 'storeid', inner).subscribe(res => {
 
+            this._ss.setSnackBar('inserted page is refreshed for you');
+            this.getInventories();
+          });
+        }
+      });
+    });
+    this.touched=[];
+  }
   save() {
     if (this.processinfo.status != "print") {
       this.invoice.entityid = this.selecteditem.id;
@@ -438,6 +472,7 @@ export class InvoiceComponent implements OnInit {
 
         }
         this.updateuserbalance();
+        this.updateInventory();
         this.processinfo.status = "print";
         this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
 
@@ -599,35 +634,35 @@ export class InvoiceComponent implements OnInit {
     return val ? val.fullname : val;
   }
 
-  numbertToWords(num){
-    var number=parseInt(num);
-    if(number==0) return ' ';
+  numbertToWords(num) {
+    var number = parseInt(num);
+    if (number == 0) return ' ';
 
-    var words="";
-    if(Math.floor(number/1000000)>0){
-      words+=this.numbertToWords(Math.floor(number/1000000))+ ' مليون ';
-      number %=1000000;
+    var words = "";
+    if (Math.floor(number / 1000000) > 0) {
+      words += this.numbertToWords(Math.floor(number / 1000000)) + ' مليون ';
+      number %= 1000000;
     }
-    if(Math.floor(number/1000)>0){
-      words+=this.numbertToWords(Math.floor(number/1000))+ ' ألف ';
-      number %=1000;
+    if (Math.floor(number / 1000) > 0) {
+      words += this.numbertToWords(Math.floor(number / 1000)) + ' ألف ';
+      number %= 1000;
     }
-    if(Math.floor(number/100)>0){
-      words+=this.numbertToWords(Math.floor((number/100)))+ ' مائة ';
-      number %=100;
+    if (Math.floor(number / 100) > 0) {
+      words += this.numbertToWords(Math.floor((number / 100))) + ' مائة ';
+      number %= 100;
     }
-    if(number>0){      
-      if(words!=""){words+= "  "}
+    if (number > 0) {
+      if (words != "") { words += "  " }
 
-      var unitmap= ['','واحد','اثنان','ثلاثة','اربعة','خمسة','ستة','سبعة','ثمانية','تسعة','عشرة','احدى عشر','اثنا عشر','ثلاثة عشر','اربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
-      var tensmap=['','عشرة','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
-      if(number<20) words  +=unitmap[number];
-      else{
-        console.log('number/10',Math.floor(number/10));
-        console.log(number%10);
-        
-        if((number/10)>0) words += unitmap[number%10];
-        words+=" و "+tensmap[Math.floor(number/10)];
+      var unitmap = ['', 'واحد', 'اثنان', 'ثلاثة', 'اربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة', 'احدى عشر', 'اثنا عشر', 'ثلاثة عشر', 'اربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'];
+      var tensmap = ['', 'عشرة', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
+      if (number < 20) words += unitmap[number];
+      else {
+        console.log('number/10', Math.floor(number / 10));
+        console.log(number % 10);
+
+        if ((number / 10) > 0) words += unitmap[number % 10];
+        words += " و " + tensmap[Math.floor(number / 10)];
 
       }
     }
