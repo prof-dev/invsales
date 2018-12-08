@@ -598,6 +598,41 @@ export class InvoiceComponent implements OnInit {
   displayFn(val: any) {
     return val ? val.fullname : val;
   }
+
+  numbertToWords(num){
+    var number=parseInt(num);
+    if(number==0) return ' ';
+
+    var words="";
+    if(Math.floor(number/1000000)>0){
+      words+=this.numbertToWords(Math.floor(number/1000000))+ ' مليون ';
+      number %=1000000;
+    }
+    if(Math.floor(number/1000)>0){
+      words+=this.numbertToWords(Math.floor(number/1000))+ ' ألف ';
+      number %=1000;
+    }
+    if(Math.floor(number/100)>0){
+      words+=this.numbertToWords(Math.floor((number/100)))+ ' مائة ';
+      number %=100;
+    }
+    if(number>0){      
+      if(words!=""){words+= "  "}
+
+      var unitmap= ['','واحد','اثنان','ثلاثة','اربعة','خمسة','ستة','سبعة','ثمانية','تسعة','عشرة','احدى عشر','اثنا عشر','ثلاثة عشر','اربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
+      var tensmap=['','عشرة','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+      if(number<20) words  +=unitmap[number];
+      else{
+        console.log('number/10',Math.floor(number/10));
+        console.log(number%10);
+        
+        if((number/10)>0) words += unitmap[number%10];
+        words+=" و "+tensmap[Math.floor(number/10)];
+
+      }
+    }
+    return words;
+  }
 }
 
 interface Choice {

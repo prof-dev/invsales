@@ -2,6 +2,7 @@
   <br><br>
   <button mat-raised-button color="primary" (click)="setType('s')">فاتورة مبيعات</button>&nbsp;
   <button mat-raised-button color="primary" (click)="setType('p')">أوامر الطلبيات</button>
+  <!-- {{numbertToWords(2795159)}} -->
   <span class="filler"></span>
   <mat-form-field>
     <input matInput required placeholder="رقم الفاتورة" name="shipno" [(ngModel)]="invoice.id">
@@ -90,10 +91,7 @@
       <input matInput required placeholder=" الكمية" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)"
         required>
     </mat-form-field>
-    <mat-form-field>
-        <input matInput required placeholder=" الكمية بالحروف" name="arcount" [(ngModel)]="product.arcount"
-          required>
-      </mat-form-field>
+   
     <mat-form-field>
       <input matInput required placeholder=" المبلغ" name="total" [(ngModel)]="product.totalprice" required [disabled]="true">
     </mat-form-field>
@@ -246,7 +244,7 @@
           <tr *ngFor="let row of invoiceitems">
             <td>{{row.titlear}}</td>
             <td>{{row.count}}</td>
-            <td>{{row.arcount}}</td>
+            <td>فقط {{numbertToWords(row.count)}} لا غير</td>
             <td>{{getStoreName(row.store)}}</td>
             
           </tr>
