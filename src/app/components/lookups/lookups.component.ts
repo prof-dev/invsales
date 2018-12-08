@@ -3,6 +3,7 @@ import { HttpService } from '../../services/http.service';
 import { ShareService } from '../../services/share.service';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../services/utils.service';
+import { element } from '@angular/core/src/render3/instructions';
 
 
 @Component({
@@ -13,6 +14,8 @@ import { UtilsService } from '../../services/utils.service';
 export class LookupsComponent implements OnInit {
   public user: any;
   public nodes: any[] = [];
+  public alllookups: any[] = [];
+  public disgroup = false;
   public lookups: any[] = [];
   public lookupitems: any[] = [];
   public group: any = null;
@@ -42,9 +45,22 @@ export class LookupsComponent implements OnInit {
         this._router.navigateByUrl('/login');
       }
       else {
-        this._hs.get('lookups', 'filter=isleaf,eq,0')
+        this._hs.get('lookups')//, 'filter=parent,eq,0')
           .subscribe(res => {
-            this.lookups = res.json().lookups;
+            console.log(res.json().lookups);
+
+            this.alllookups = res.json().lookups;
+            this.alllookups.forEach(element => {
+              if (element.parent != 0) {
+                element.data = JSON.parse(element.data);
+
+              }
+
+            });
+
+            console.log(this.alllookups);
+
+            this.lookups = this.alllookups.filter(obj => obj.parent === 0);
             console.log(this.lookups);
           });
       }
@@ -92,12 +108,7 @@ export class LookupsComponent implements OnInit {
         this.filterby = group.id;
       }
 
-      this._hs.get('lookups', 'filter[]=parent,eq,' + this.filterby)
-        .subscribe(res => {
-          this.lookupitems = res.json().lookups;
-
-        })
-
+      this.lookupitems = this.alllookups.filter(obj => obj.parent === this.filterby);
       this.visible = true;
       console.log("group is set to:", group.group);
 
@@ -107,21 +118,18 @@ export class LookupsComponent implements OnInit {
   }
 
   modify(item) {
+    this.group = item.group;
     this.processinfo.processtype = false;
     this.visible = false;
     this.operation = "تعديل";
     this.form = true;
-    this.data = JSON.parse(item.data);
-    console.log(JSON.parse(item.data));
-
+    this.data = item.data;
     this.bank.titlear = item.titlear;
     this.bank.id = item.id;
     this.bank.group = item.group;
     this.bank.isleaf = item.isleaf;
     this.bank.parent = item.parent;
     this.bank.data = this.data;
-
-
     this.bank.titleen = item.group;
     this.visible = false;
 
@@ -131,13 +139,11 @@ export class LookupsComponent implements OnInit {
   dodelete(item): void {
     this._hs.delete('lookups', item.id, item).subscribe(res => {
       if (res.json() == 1) {
-
+        this.refresh();
         this._ss.setSnackBar("تم الحذف بنجاااح");
 
       }
     });
-
-
   }
 
 
@@ -160,7 +166,7 @@ export class LookupsComponent implements OnInit {
   }
 
   addnewitem(parent) {
-   
+
     this.setGroup(parent);
     this.visible = false;
     this.form = true;
@@ -170,9 +176,9 @@ export class LookupsComponent implements OnInit {
     this.data.balance = 0;
     this.data.price = 0;
     this.bank.titleen = "";
-
+    this.bank.isleaf = this.processinfo.objecttype;
     this.visible = false;
-
+    this.disgroup=true;
 
     this.bank.parent = parent.id;
   }
@@ -188,6 +194,8 @@ export class LookupsComponent implements OnInit {
       this._hs.post('lookups', item).subscribe(res => {
 
         console.log("تمت إضافة " + this.group.titlear + " id :" + res.toString());
+        this.refresh();
+
 
       })
 
@@ -199,33 +207,35 @@ export class LookupsComponent implements OnInit {
       this._hs.put('lookups', "id", item).subscribe(res => {
 
         console.log("تمت تعديل " + this.group.titlear + " id :" + res.json());
+        this.refresh();
 
-      })
+
+      });
+
     }
 
     // this._router.navigateByUrl('/lookups'); 
-    this.ngOnInit();
     this.form = false;
 
 
   }
 
-  setgroupname(id) {
-    console.log(id);
-    if (id == 2) {
-      this.bank.group = 'item';
-      this.opengroup = false;
-    }
-    else
-      if (id == 3) {
-        this.bank.group = 'spending';
-        this.opengroup = false;
-      }
-      else {
-        this.bank.group = '';
-        this.opengroup = true;
-      }
-  }
+  // setgroupname(id) {
+  //   console.log(id);
+  //   if (id == 2) {
+  //     this.bank.group = 'item';
+  //     this.opengroup = false;
+  //   }
+  //   else
+  //     if (id == 3) {
+  //       this.bank.group = 'spending';
+  //       this.opengroup = false;
+  //     }
+  //     else {
+  //       this.bank.group = '';
+  //       this.opengroup = true;
+  //     }
+  // }
 
   deleteitem(item) {
 
@@ -241,8 +251,8 @@ export class LookupsComponent implements OnInit {
   }
   public leaf: Choice[] = [
     { value: '1', viewValue: 'فرع نهائي' },
-    { value: '2', viewValue: 'بضاعة ' },
-    { value: '3', viewValue: ' بنود صرف' },
+    // { value: '2', viewValue: 'بضاعة ' },
+    // { value: '3', viewValue: ' بنود صرف' },
     { value: '0', viewValue: 'قسم رئيسي / أو فرعي' }]
 
 

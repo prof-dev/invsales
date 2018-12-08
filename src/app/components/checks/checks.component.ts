@@ -170,15 +170,19 @@ export class ChecksComponent implements OnInit {
 
 
   private getallBanks() {
-    this._hs.get('lookups', 'filter[]=group,eq,banks&filter[]=isleaf,eq,1')
+    this._hs.get('lookups', 'filter[]=group,eq,banks')//&filter[]=isleaf,eq,0')
       .subscribe(res => {
         this.banks = res.json().lookups;
         console.log(this.banks);
 
         this.banks.forEach(element => {
-          element.data = JSON.parse(element.data);
+          if(element.parent!=0){
+            element.data = JSON.parse(element.data);
+
+          }
 
         });
+        this.banks=this.banks.filter(obj=>obj.parent != 0);
       });
   }
 

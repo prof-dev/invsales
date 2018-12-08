@@ -48,7 +48,7 @@ export class SpendingsComponent implements OnInit {
       .subscribe(res => {
         this.spendingtype = res.json().lookups;
         
-        // this.spendingtype = this.lookups.map(stores => ({ id: stores.id, titlear: stores.titlear }));
+         this.spendingtype = this.spendingtype.filter(obj => obj.parent != 0 );
 
       });
   }
@@ -57,7 +57,7 @@ export class SpendingsComponent implements OnInit {
     this._hs.get('lookups', 'filter=group,eq,tresuries')
       .subscribe(res => {
         this.treasuries = res.json().lookups;
-        
+        this.treasuries = this.treasuries.filter(obj => obj.parent != 0 );
 
       });
   }
