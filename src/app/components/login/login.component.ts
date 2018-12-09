@@ -14,38 +14,51 @@ export class LoginComponent implements OnInit {
   public users=[
     {
       id:1,
-      username: "Admin",
+      username: "إداره",
       pwd: "123",
       roles:'a;',
-      fullname:'Mr Administrator',
+      fullname:'الرشد محمد التوم',
+      photo:'http://api.randomuser.me/portraits/men/2.jpg'
     },
     {
       id:2,
-      username: "TopAdmin",
+      username: "إداره عليا",
       pwd: "123",
       roles:'t;s;',
-      fullname:'Mr Top Administrator'
+      fullname:'عيسى محمد عبد الباقي',
+      photo:'http://api.randomuser.me/portraits/men/44.jpg'
     },
     {
       id:3,
-      username: "Stores",
+      username: "أفرع",
       pwd: "123",
       roles:'s;',
-      fullname:'Mr Stores Man'
+      fullname:'عثمان محمد سعيد',
+      photo:'http://api.randomuser.me/portraits/men/13.jpg'
     },
     {
       id:4,
-      username: "Branches",
+      username: "مخازن",
       pwd: "123",
       roles:'b;',
-      fullname:'Mr Branches Man'
+      fullname:'سالم أبشر علي',
+      photo:'http://api.randomuser.me/portraits/men/20.jpg'
     },
     {
-      id:1,
-      username: "Viewer",
+      id:5,
+      username: "مشاهد",
       pwd: "123",
       roles:'v;',
-      fullname:'Mr Viewer Man'
+      fullname:'صفيه عبدالرحمن التوم',
+      photo:'http://api.randomuser.me/portraits/women/50.jpg'
+    },
+    {
+      id:6,
+      username: "مستخدم",
+      pwd: "123",
+      roles:'u;',
+      fullname:'سلوى سليم العوا',
+      photo:'http://api.randomuser.me/portraits/women/72.jpg'
     }
   ];
 
@@ -59,27 +72,17 @@ export class LoginComponent implements OnInit {
   }
   login() {
     this._ss.setAppIsBusy(true);
-    this._hs.get('users', 'filter[]=username,eq,' + this.user.username + '&filter[]=pwd,eq,' + this.user.pwd + '&satisfy=all')
+    this._hs.get('users', 'filter[]=locked,eq,0&filter[]=username,eq,' + this.user.username + '&filter[]=pwd,eq,' + this.user.pwd + '&satisfy=all')
       .subscribe(res => {
         if (res.json().users.length != 0) {
+          this._ss.setAppIsBusy(false);
           var auser = res.json().users[0]
           this._ss.setUser(auser);
           this._router.navigateByUrl('/');
-          this._ss.setAppIsBusy(false);
 
         } else {
-          this._ss.setSnackBar("We could not log you in!")
           this._ss.setAppIsBusy(false);
-        }
-      });
-  }
-  showD() {
-
-    this._ut.messageBox('input', 'what is your name', 'Please tell the truth and enter your name', 'Your name')
-      .afterClosed()
-      .subscribe(result => {
-        if (result == 'ok') {
-          console.log('res: ', this._ut.thedata.result);
+          this._ss.setSnackBar("معلومات الدخول غير صحصحه ربما خطأ في كلمه السر أو اسم المستخدم. أو ربما تم منعك من قبل مدير النظام")
         }
       });
   }

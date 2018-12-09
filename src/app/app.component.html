@@ -3,25 +3,24 @@
 <mat-toolbar color="primary" class="mat-elevation-z4 mytoolbar">
   <p><button mat-button (click)="sidenav.toggle()"><img src="assets/icnMenu.png" width="32" alt=""></button></p>
   <img src="assets/logo.png" alt="" width="50px">
-  
+
   <span>
     &nbsp;
     <div class="site-title">
-        نظام إدارة المبيعات والمشتروات
+      نظام إدارة المبيعات والمشتروات
     </div>
   </span>
   <span class="filler">
   </span>
-  <div *ngIf="user.id>0; else elseBlock">
+  <div *ngIf="user.id>0; else elseBlock" class="site-title">
     <span>{{user.fullname}} &nbsp;</span> &nbsp;&nbsp;
-    <span *ngIf="user.photo.length>0"><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
+    <span *ngIf="user.photo.length>0"><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp;
     <span *ngIf="user.photo.length==0"><img src="assets/user.png" alt="" class="profile-avatar"></span>&nbsp;&nbsp;
-    <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
-
+    <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!">خروج</button>
   </div>
   <ng-template #elseBlock>
     <span>
-      <button width="32" type="button" class="right" mat-button (click)="routeTo('/login')"> Login
+      <button width="32" type="button" class="right" mat-button (click)="routeTo('/login')"> دخول
       </button>
     </span>
   </ng-template>
@@ -41,22 +40,26 @@
     <a [routerLink]="['lookups']" (click)="goto('/lookups')" class="sd-btn" (click)="sidenav.toggle()">ضبط النظام</a><br>
     <a [routerLink]="['items']" (click)="goto('/items')" class="sd-btn" (click)="sidenav.toggle()"> إدارة الأصناف</a><br>
     <a [routerLink]="['users']" (click)="goto('/users')" class="sd-btn" (click)="sidenav.toggle()">إدارة المستخدمين</a><br>
-    <a [routerLink]="['supcus']" (click)="goto('/supcus')" class="sd-btn" (click)="sidenav.toggle()">إدارة العملاء والموردين</a><br>
+    <a [routerLink]="['supcus']" (click)="goto('/supcus')" class="sd-btn" (click)="sidenav.toggle()">إدارة العملاء
+      والموردين</a><br>
 
     <hr>
     <h4>شاشات الأفرع</h4>
     <hr>
-    <a [routerLink]="['invoice/0']" (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">طلبات الشراء والفواتير</a><br>
+    <a [routerLink]="['invoice/0']" (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">طلبات الشراء
+      والفواتير</a><br>
     <a [routerLink]="['checks']" (click)="goto('/checks')" class="sd-btn" (click)="sidenav.toggle()">تحرير الشيكات</a><br>
     <!-- <a [routerLink]="['sadad']" (click)="goto('/sadad')" class="sd-btn" (click)="sidenav.toggle()">السداد و الدفعيات </a><br> -->
-    <a [routerLink]="['spending']" (click)="goto('/spending')" class="sd-btn" (click)="sidenav.toggle()">تحرير المصروفات</a><br>
+    <a [routerLink]="['spending']" (click)="goto('/spending')" class="sd-btn" (click)="sidenav.toggle()">تحرير
+      المصروفات</a><br>
     <a [routerLink]="['returns']" (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
-   
+
     <hr>
     <h4>شاشات المخازن</h4>
     <hr>
 
-    <a [routerLink]="['inventory']" (click)="goto('/inventory')" class="sd-btn" (click)="sidenav.toggle()">تحرير المخازن</a><br>
+    <a [routerLink]="['inventory']" (click)="goto('/inventory')" class="sd-btn" (click)="sidenav.toggle()">تحرير
+      المخازن</a><br>
     <a [routerLink]="['returns']" (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
     <hr>
     <h4>التقارير</h4>

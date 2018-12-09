@@ -49,11 +49,10 @@ a{
   height: 100%;
 }
 .profile-avatar{
-  width: 40px;
-  margin-top: 10px;
+  width: 50px;
+  margin-top: 20px;
 }
 .site-title{
   margin-bottom:20px;
-  
   padding-right: 20px;
 }
