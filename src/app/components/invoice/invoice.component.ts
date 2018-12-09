@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { fadeInItems, DateAdapter } from '@angular/material';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Item } from '../inventory/inventory.component';
+import { InventoryClass } from 'src/app/services/classes';
 
 @Component({
   selector: 'app-invoice',
@@ -15,6 +16,7 @@ import { Item } from '../inventory/inventory.component';
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  public inventoryObj: InventoryClass;
   public touched: number[] = [];
   myControl = new FormControl();
   public supp: any[] = [];
@@ -106,6 +108,7 @@ export class InvoiceComponent implements OnInit {
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
+      this.inventoryObj = new InventoryClass(this._hs,this._ss);
     this._ar.params.subscribe(params => this.param = params['id']);
 
   }
@@ -256,7 +259,9 @@ export class InvoiceComponent implements OnInit {
   additem(item) {
     console.log(item);
     // console.log(this.inventories);
-    if (this.invoice.type = 's') {
+    console.log(this.invoice.type);
+    
+    if (this.invoice.type == 's') {
       this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
 
       if (this.inventory != null) {
@@ -264,7 +269,7 @@ export class InvoiceComponent implements OnInit {
         this.inventory.data.forEach(element => {
           console.log(this.inventory.data);
 
-          if ((!((Number(element.avb) - Number(element.rsv)) < Number(item.count))) && element.id == item.id) {
+          if ((!((Number(element.avb) - Number(element.rsv) + Number(element.com)) < Number(item.count))) && element.id == item.id) {
             console.log(item);
             this.invoiceitems.push(item);
             this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
@@ -296,7 +301,11 @@ export class InvoiceComponent implements OnInit {
 
 
     }
-    else if (this.invoice.type = 'p') {
+    else if (this.invoice.type == 'p') {
+      this.invitem.com=Number(this.invitem.com)+Number(item.count);
+      this.touched.push(item.store.id);
+      this.inventories=this.inventoryObj.additemtolist(this.invitem,item.store.id,this.inventories);
+      this.invoiceitems.push(item);
 
     }
 
