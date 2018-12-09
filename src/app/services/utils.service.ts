@@ -124,7 +124,7 @@ export class ReportObject {
       ++this.ready;
     });
     this._hs.get(this.table).subscribe(res => {
-      this.items = res.json()[this.table];
+      this.items = res.json()[this.table].slice(0,2);
       ++this.ready;
       return this.items;
     });
@@ -132,7 +132,7 @@ export class ReportObject {
       case 'pursales':
         this.title = 'تقرير المبيعات والمشتروات';
         this.searchfields.push({ type: 'string', fieldname: 'type', operator: 'eq', placeholder: 'نوع المعامله', value: 's' });
-        this.searchfields.push({ type: 'number', fieldname: 'entityid', operator: 'gt', placeholder: 'رقم العميل اكبر من', value: '0' });
+        this.searchfields.push({ type: 'number', fieldname: 'entityid', operator: 'eq', placeholder: 'رقم العميل', value: '' });
         this.searchfields.push({ type: 'date', fieldname: 'date' });
         this.aggrefields.push({ fieldname: 'totalprice', groupas: 'sum', title: 'مجموع الرصيد' });
         this.aggrefields.push({ groupas: 'count', title: 'عدد المعاملات' });
@@ -141,7 +141,7 @@ export class ReportObject {
       case 'pursalesret':
         this.title = 'تقرير المردودات';
         this.searchfields.push({ type: 'string', fieldname: 'type', operator: 'eq', placeholder: 'نوع المردودات', value: 's' });
-        this.searchfields.push({ type: 'number', fieldname: 'entityid', operator: 'eq', placeholder: 'رقم العميل', value: '0' });
+        this.searchfields.push({ type: 'number', fieldname: 'entityid', operator: 'eq', placeholder: 'رقم العميل', value: '' });
         this.searchfields.push({ type: 'date', fieldname: 'date' });
         this.aggrefields.push({ fieldname: 'totalprice', groupas: 'sum', title: 'مجموع الرصيد' });
         this.aggrefields.push({ groupas: 'count', title: 'عدد المعاملات' });
@@ -150,15 +150,33 @@ export class ReportObject {
       case 'suppcus':
         this.title = 'تقرير العملاء والموردين';
         this.searchfields.push({ type: 'string', fieldname: 'type', operator: 'eq', placeholder: 'عملاء أو موردين', value: 's' });
-        this.searchfields.push({ type: 'number', fieldname: 'entityid', operator: 'gt', placeholder: 'رقم العميل اكبر من', value: '0' });
         this.aggrefields.push({ fieldname: 'totalprice', groupas: 'sum', title: 'مجموع الرصيد' });
+        this.aggrefields.push({ groupas: 'count', title: 'عدد المعاملات' });
+        ++this.ready;
+        break;
+      case 'spending':
+        this.title = 'تقرير  المصروفات';
+        this.searchfields.push({ type: 'number', fieldname: 'type', operator: 'eq', placeholder: 'كود نوع المصروف', value: '' });
+        this.searchfields.push({ type: 'number', fieldname: 'user', operator: 'eq', placeholder: 'رقم   المستخدم', value: '' });
+        this.searchfields.push({ type: 'date', fieldname: 'date' });
+        this.aggrefields.push({ fieldname: 'amount', groupas: 'sum', title: 'مجموع المصروفات' });
+        this.aggrefields.push({ groupas: 'count', title: 'عدد المعاملات' });
+        ++this.ready;
+        break;
+      case 'sadad':
+        this.title = 'تقرير  السداد';
+        this.searchfields.push({ type: 'number', fieldname: 'entity', operator: 'eq', placeholder: 'رقم العميل', value: '' });
+        this.searchfields.push({ type: 'number', fieldname: 'user', operator: 'eq', placeholder: 'رقم المستخدم', value: '' });
+        this.searchfields.push({ type: 'string', fieldname: 'source', operator: 'eq', placeholder: 'اتجاه السداد', value: 'in' });
+        this.searchfields.push({ type: 'date', fieldname: 'date' });
+        this.aggrefields.push({ fieldname: 'total', groupas: 'sum', title: 'المجموع' });
         this.aggrefields.push({ groupas: 'count', title: 'عدد المعاملات' });
         ++this.ready;
         break;
       case 'users':
         this.title = 'تقرير  المستخدمون';
-        this.searchfields.push({ type: 'string', fieldname: 'roles', operator: 'cs', placeholder: 'الأدوار المعطاة', value: '0' });
-        this.searchfields.push({ type: 'number', fieldname: 'balance', operator: 'gt', placeholder: 'الرصيد أكبر من', value: '0' });
+        this.searchfields.push({ type: 'string', fieldname: 'roles', operator: 'cs', placeholder: 'الأدوار المعطاة', value: '' });
+        this.searchfields.push({ type: 'number', fieldname: 'balance', operator: 'gt', placeholder: 'الرصيد أكبر من', value: '' });
         this.aggrefields.push({ fieldname: 'balance', groupas: 'sum', title: 'مجموع الرصيد' });
         this.aggrefields.push({ groupas: 'count', title: 'عدد المستخدمين' });
         ++this.ready;
@@ -180,13 +198,13 @@ export class ReportObject {
         where += 'filter[]=' + field.fieldname + ',' + field.operator + ',' + field.value + '&'
       }
       if (field.type == 'date') {
-        from = this.fromdate.toISOString().split('T')[0];
-        to = this.todate.toISOString().split('T')[0];
-        field.placeholder = 'التاريخ :';
+        if (this.fromdate.length > 0 && this.todate.length > 0) {
+          from = this.fromdate.toISOString().split('T')[0];
+          to = this.todate.toISOString().split('T')[0];
+          where += 'filter[]=' + field.fieldname + ',bt,' + from + ',' + to + '&'
+        }
+        field.placeholder = 'التاريخ';
         field.value = ' من تاريخ ' + from + ' الى تاريخ ' + to;
-        console.log('from to: ', from, to);
-
-        where += 'filter[]=' + field.fieldname + ',bt,' + from + ',' + to + '&'
       }
     });
     if (where.length > 0) {
@@ -221,7 +239,7 @@ export class ReturnsObject {
   public type: string;
   public name: string;
   public row: any = {};
-  public itemsarr:any[]=[];
+  public itemsarr: any[] = [];
   private itemsids: number[];
   public inrets: boolean;
   public ready: boolean;
@@ -237,7 +255,7 @@ export class ReturnsObject {
     this.ready = false;
   }
   reset() {
-    this.suppcusname='';
+    this.suppcusname = '';
     this.row = {};
     this.itemsids = [0];
     this.inrets = false;
@@ -252,7 +270,7 @@ export class ReturnsObject {
     this._ht.get('suppcus', 'filter=id,eq,' + this.row.entityid).subscribe(res => {
       this.suppcusname = res.json().suppcus[0].fullname;
     });
-    return this._ht.get('items', 'filter[]=id,in,' + this.itemsids )
+    return this._ht.get('items', 'filter[]=id,in,' + this.itemsids)
   }
 
   saveApplication() {
