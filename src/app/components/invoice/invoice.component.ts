@@ -308,12 +308,7 @@ export class InvoiceComponent implements OnInit {
       this.invoiceitems.push(item);
 
     }
-
-
-
-
-
-  }
+}
 
   remove(item, i) {
     this.invoice.totalprice = this.invoice.totalprice - Number(item.totalprice);
