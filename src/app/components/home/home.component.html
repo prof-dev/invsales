@@ -1,2 +1,26 @@
-<h1> Home Component, you logged in successfully</h1>
-<p> Flowbytes appplication works</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>وَالْعَصْرِ ﴿١﴾ إِنَّ الْإِنسَانَ لَفِي خُسْرٍ ﴿٢﴾ إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ
+            وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ ﴿٣﴾</mat-card-title>
+        <mat-card-subtitle>Flowbytes appplication works</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <button mat-raised-button color="primary" (click)="showTables()">Show Tables</button>
+        <table>
+            <tr>
+                <th>Table</th>
+                <th>Web to Local</th>
+                <th>Local to Web</th>
+                <th>Structure</th>
+            </tr>
+            <tr *ngFor="let table of tags">
+                <td>{{table.name}}</td>
+                <td><button mat-raised-button color="primary" (click)="webToLocal(table)">Copy Web to Local</button></td>
+                <td><button mat-raised-button color="primary" (click)="localToWeb(table)">Copy Local to Web</button></td>
+                <td><button mat-raised-button color="primary" (click)="showRow(table)">Row</button></td>
+            </tr>
+        </table>
+        <h4>Row looks like:</h4>
+        <div>{{row | json}}</div>
+    </mat-card-content>
+</mat-card>

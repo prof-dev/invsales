@@ -14,8 +14,8 @@
   </span>
   <div *ngIf="user.id>0; else elseBlock">
     <span>{{user.fullname}} &nbsp;</span> &nbsp;&nbsp;
-    <!-- <span *ngIf="user.photo.length>0"><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
-    <span *ngIf="user.photo.length==0"><img src="assets/user.png" alt="" class="profile-avatar"></span>&nbsp;&nbsp;  -->
+    <span *ngIf="user.photo.length>0"><img src="{{user.photo}}" alt="" class="profile-avatar"></span>&nbsp;&nbsp; 
+    <span *ngIf="user.photo.length==0"><img src="assets/user.png" alt="" class="profile-avatar"></span>&nbsp;&nbsp;
     <button mat-button (click)="logout()" matTooltip="Log out, and save data before that!!" alt="">Logout</button>
 
   </div>
