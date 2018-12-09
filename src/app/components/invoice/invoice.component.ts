@@ -108,7 +108,7 @@ export class InvoiceComponent implements OnInit {
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
-      this.inventoryObj = new InventoryClass(this._hs,this._ss);
+    this.inventoryObj = new InventoryClass(this._hs, this._ss);
     this._ar.params.subscribe(params => this.param = params['id']);
 
   }
@@ -260,7 +260,7 @@ export class InvoiceComponent implements OnInit {
     console.log(item);
     // console.log(this.inventories);
     console.log(this.invoice.type);
-    
+
     if (this.invoice.type == 's') {
       this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
 
@@ -302,17 +302,33 @@ export class InvoiceComponent implements OnInit {
 
     }
     else if (this.invoice.type == 'p') {
-      this.invitem.com=Number(this.invitem.com)+Number(item.count);
+      this.invitem.com = Number(this.invitem.com) + Number(item.count);
+      this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
+      this.product.store = item.store.id;
+      this.product = {};
       this.touched.push(item.store.id);
-      this.inventories=this.inventoryObj.additemtolist(this.invitem,item.store.id,this.inventories);
+      this.inventories = this.inventoryObj.additemtolist(this.invitem, item.store.id, this.inventories);
       this.invoiceitems.push(item);
 
     }
-}
+  }
 
   remove(item, i) {
     this.invoice.totalprice = this.invoice.totalprice - Number(item.totalprice);
     this.invoiceitems.splice(i, 1);
+    this.inventories.forEach(element => {
+      if (element.storeid == item.store.id) {
+        element.data.forEach(el => {
+          if (this.invoice.type == 's') {
+            el.rsv=Number(el.rsv)+Number(item.count);
+          }
+          else {
+            el.com = Number(el.com) - Number(item.count);
+  
+          }
+        });
+      }
+    });
     this.product = {};
   }
 
@@ -454,10 +470,10 @@ export class InvoiceComponent implements OnInit {
         }
       });
     });
-    this.touched=[];
+    this.touched = [];
   }
   save() {
-    if (this.processinfo.status != "print") {
+    if (this.processinfo.status != "print" && this.selecteditem!=null) {
       this.invoice.entityid = this.selecteditem.id;
       this.invoice.user = this.user.id;
       this.invoicedata = {
@@ -494,7 +510,13 @@ export class InvoiceComponent implements OnInit {
 
   print() {
     this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
-    this._ut.showReport('إذن  إستلام بضاعة');
+    if (this.invoice.type == 's') {
+      this._ut.showReport('إذن  إستلام بضاعة');
+
+    } else {
+      this._ut.showReport(' إضافة مشتريات للمخزن ');
+
+    }
   }
 
   updateuserbalance() {
