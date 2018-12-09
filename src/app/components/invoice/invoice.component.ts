@@ -634,6 +634,7 @@ export class InvoiceComponent implements OnInit {
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);
+        this.payment={};
 
       });
       if (this.paid != 0) {
