@@ -29,6 +29,7 @@ import { SpendingsComponent } from './components/spendings/spendings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { ItemsComponent } from './components/items/items.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ItemmovComponent } from './components/itemmov/itemmov.component';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent, ItemmovComponent
   ],
   imports: [
     BrowserModule,
