@@ -19,7 +19,28 @@
                 <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance" [disabled]="processinfo.disbalance">
             </mat-form-field>
             <mat-form-field *ngIf="form.type=='c'">
-                <input matInput required placeholder=" فرع العميل" [(ngModel)]="form.branch">
+                <input matInput required placeholder=" فرع العميل" [(ngModel)]="form.data.branch">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="  إسم الترحيلات" [(ngModel)]="form.data.transport">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="  رقم الترحيلات" [(ngModel)]="form.data.transphone">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder=" إسم المشتريات" [(ngModel)]="form.data.purname">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder=" رقم المشتريات" [(ngModel)]="form.data.purphone">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder=" واتس  المشتريات" [(ngModel)]="form.data.purwhats">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="  التصنيف" [(ngModel)]="form.data.class">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="   التخصص" [(ngModel)]="form.data.domain">
             </mat-form-field>
             <mat-form-field>
                 <input matInput required placeholder=" موبايل" [(ngModel)]="form.data.phone">
@@ -237,7 +258,7 @@
                     <td>{{row.data.phone2}}</td>
                     <td>{{row.data.whatsapp}}</td>
                     <td>{{row.data.email}}</td>
-                    <td *ngIf="form.type=='c'">{{row.branch}}</td>
+                    <td *ngIf="form.type=='c'">{{row.data.branch}}</td>
                     <td>{{row.balance}}</td>
                     <td>
                         <button mat-raised-button color="primary" (click)="modify(row)">تعديل</button>

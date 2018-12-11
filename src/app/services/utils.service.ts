@@ -293,7 +293,7 @@ export class ReturnsObject {
     this.row.data.items.forEach(rec => {
       var recitem: any = items.find(el => { return rec.id == el.id });
       if (recitem)
-        rec.name = recitem.arname;
+        rec.name = recitem.namear;
     });
     this.ready = true;
     console.log('this.ready:', this.ready);

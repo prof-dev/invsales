@@ -22,8 +22,8 @@ export class ItemsComponent implements OnInit {
     parent: 0,
     id: 0,
     barcode: "",
-    arname: "",
-    engname: "",
+    namear: "",
+    nameen: "",
     data: ""
   };
   blob: any[];

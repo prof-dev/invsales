@@ -221,7 +221,7 @@ export class InvoiceComponent implements OnInit {
           element.data = JSON.parse(element.data);
           console.log(this.items);
         });
-        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
       });
   }
@@ -535,9 +535,9 @@ export class InvoiceComponent implements OnInit {
 
   private updatecustomeraccount() {
     if (this.invoice.type == 's') {
-      this.selecteditem.balance = this.selecteditem.balance - this.processinfo.reminder;
+      this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
     } else {
-      this.selecteditem.balance = this.selecteditem.balance + this.processinfo.reminder;
+      this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
     }
     this.suppcussdata = JSON.stringify(this.selecteditem.data);
     this.selecteditem.data = this.suppcussdata;

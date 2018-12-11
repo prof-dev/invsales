@@ -116,7 +116,7 @@ export class InventoryComponent implements OnInit {
           element.data = JSON.parse(element.data);
           // console.log(this.items);
         });
-        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
       });
   }

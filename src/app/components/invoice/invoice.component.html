@@ -31,7 +31,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf="invoice.type=='p'">
-      <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
+      <mat-select placeholder="إختيار المورد" [(ngModel)]="selecteditem" (change)="selected($event.value)">
         <mat-option>None</mat-option>
         <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
       </mat-select>
@@ -61,11 +61,11 @@
 
 
     <mat-form-field>
-      <input matInput required placeholder=" رصيد العميل" [(ngModel)]="selecteditem.balance" [disabled]="true">
+      <input matInput required placeholder=" رصيد العميل/ المورد" [(ngModel)]="selecteditem.balance" [disabled]="true">
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput required placeholder=" تلفون العميل" [(ngModel)]="selecteditem.data.phone" [disabled]="true">
+      <input matInput required placeholder=" تلفون العميل/ المورد" [(ngModel)]="selecteditem.data.phone" [disabled]="true">
     </mat-form-field>
 
     <hr>

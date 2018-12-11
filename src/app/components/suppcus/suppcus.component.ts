@@ -42,7 +42,7 @@ export class SuppcusComponent implements OnInit {
     public operation = 0;
     location: any;
     temp: any;
-    public paid=0;
+    public paid = 0;
     public sadad: any = {};
     public payment: any;
     public payments: any[] = [];
@@ -59,9 +59,9 @@ export class SuppcusComponent implements OnInit {
         user: 0,
         comment: "",
         invoice: 0
-      };
-      
-    constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router,private _ut: UtilsService) { }
+    };
+
+    constructor(private _ss: ShareService, private _hs: HttpService, private _router: Router, private _ut: UtilsService) { }
     ngOnInit() {
         this.payment = {
             paymentmethod: "",
@@ -71,7 +71,7 @@ export class SuppcusComponent implements OnInit {
             amountUSD: 0.00,
             rate: 0.00,
             date: ""
-          };
+        };
 
         this.map = new ol.Map({
             target: 'map',
@@ -112,13 +112,21 @@ export class SuppcusComponent implements OnInit {
             "id": 0,
             "balance": 0.00,
             "fullname": "",
-            "branch": "",
+
             "data": {
                 "phone": "",
                 "whatsapp": "",
                 "email": "",
                 "phone2": "",
-                "location": null
+                "location": null,
+                "branch": "",
+                "transport": "",
+                "class": "",
+                "transphone": "",
+                "purname": "",
+                "purhpone": "",
+                "domain": "",
+                "purwhats": ""
             }
         }
     }
@@ -129,8 +137,8 @@ export class SuppcusComponent implements OnInit {
             console.log(form.data);
             this._hs.put('suppcus', "id", form).subscribe(res => {
                 this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+
             });
-            this.resetForm();
 
         }
         else
@@ -139,46 +147,52 @@ export class SuppcusComponent implements OnInit {
                 console.log(form.data);
                 this._hs.post('suppcus', form).subscribe(res => {
                     this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
+
                 });
-                this.resetForm();
             }
             else {
                 this._ss.setSnackBar('الرجاء ملء جميع الحقول');
             }
+
+        if (this.form.type == 's') {
+            this.formtype = ' الموردين';
+            this.getSubCus('s');
+        }
+        else if (this.form.type == 'c') {
+            this.formtype = 'العملاء';
+            this.getSubCus('c');
+        }
+        this.resetForm();
+
     }
 
 
     setType(type) {
-        this.ngOnInit();
+        // this.ngOnInit();
         this.operation = 1;
         this.form.type = type;
         this.processinfo.disbalance = false;
 
         if (this.form.type == 's') {
             this.formtype = ' الموردين';
-
-
-            this._hs.get('suppcus', 'filter=type,eq,s')
-                .subscribe(res => {
-                    this.suppcus = res.json().suppcus;
-                    this.suppcus.forEach(element => {
-                        element.data = JSON.parse(element.data);
-                    });
-                })
-
+            this.getSubCus('s');
         }
         else if (this.form.type == 'c') {
             this.formtype = 'العملاء';
-            this._hs.get('suppcus', 'filter=type,eq,c')
-                .subscribe(res => {
-                    this.suppcus = res.json().suppcus;
-                    this.suppcus.forEach(element => {
-                        element.data = JSON.parse(element.data);
-                        console.log(element.data);
-                    });
-                })
+            this.getSubCus('c');
         }
     }
+    private getSubCus(type) {
+        this._hs.get('suppcus', 'filter=type,eq,' + type)
+            .subscribe(res => {
+                this.suppcus = res.json().suppcus;
+                this.suppcus.forEach(element => {
+                    element.data = JSON.parse(element.data);
+                    console.log(element.data);
+                });
+            });
+    }
+
     onNoClick() {
         this.resetForm();
     }
@@ -208,120 +222,120 @@ export class SuppcusComponent implements OnInit {
     pushpayment(payment) {
         this.paid = 0;
         if (payment.amount > 0) {
-          this.payments.push(payment);
-          this.payments.forEach(element => {
-            this.paid = this.paid + Number(element.amount);
-            console.log(element.amount);
-    
-            console.log("المدفووووووووووع :", this.paid);
-            this.payment = {};
-          });
-        }
-        else {
-          this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
-        }
-    
-    
-      }
-      savePayment() {
-        if (this.form.id != null && this.sadad.desc != "" && this.payments.length > 0) {
-          this.sadad.entity = this.form.id;
-          this.sadad.data = JSON.stringify(this.payments);
-          this.sadad.user = this.user.id;
-          this.sadad.total = this.paid;
-          this._hs.post('sadad', this.sadad).subscribe(res => {
-            this.sadad.id = res.text();
-            this.updatesuppcussbalance(this.paid);
-            this.insertchecks();
-            this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
-          });
-    
-        }
-        else {
-          this._ss.setSnackBar('الرجاء تعبئة الحقول الأساسية');
-    
-        }
-      }
+            this.payments.push(payment);
+            this.payments.forEach(element => {
+                this.paid = this.paid + Number(element.amount);
+                console.log(element.amount);
 
-      private insertchecks() {
+                console.log("المدفووووووووووع :", this.paid);
+                this.payment = {};
+            });
+        }
+        else {
+            this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
+        }
+
+
+    }
+    savePayment() {
+        if (this.form.id != null && this.sadad.desc != "" && this.payments.length > 0) {
+            this.sadad.entity = this.form.id;
+            this.sadad.data = JSON.stringify(this.payments);
+            this.sadad.user = this.user.id;
+            this.sadad.total = this.paid;
+            this._hs.post('sadad', this.sadad).subscribe(res => {
+                this.sadad.id = res.text();
+                this.updatesuppcussbalance(this.paid);
+                this.insertchecks();
+                this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
+            });
+
+        }
+        else {
+            this._ss.setSnackBar('الرجاء تعبئة الحقول الأساسية');
+
+        }
+    }
+
+    private insertchecks() {
 
         this.payments.forEach(element => {
-          if (element.paymentmethod == "check") {
-            if (element.bankname != "" && element.checkNo != "" && element.amount != 0) {
-              this.check.user = this.user.id;
-              this.check.bankname = element.bankname;
-              this.check.checkowner = element.checkowner;
-              this.check.amount = element.amount;
-              this.check.checkno = element.checkno;
-              console.log(element.date);
-    
-              this.check.date = (new Date(element.date)).toISOString().split('T')[0];
-              if (this.form.type == 'c') {
-                this.check.source = "in";
-    
-              }
-              else {
-                this.check.source = "out";
-              }
-              this.check.status = element.checkstatus;
-              this.check.status = element.checkstatus;
-              console.log(this.check);
-              this._hs.post('checks', this.check).subscribe(res2 => {
-                this._ss.setSnackBar("تم حفظ الشيك");
-              });
+            if (element.paymentmethod == "check") {
+                if (element.bankname != "" && element.checkNo != "" && element.amount != 0) {
+                    this.check.user = this.user.id;
+                    this.check.bankname = element.bankname;
+                    this.check.checkowner = element.checkowner;
+                    this.check.amount = element.amount;
+                    this.check.checkno = element.checkno;
+                    console.log(element.date);
+
+                    this.check.date = (new Date(element.date)).toISOString().split('T')[0];
+                    if (this.form.type == 'c') {
+                        this.check.source = "in";
+
+                    }
+                    else {
+                        this.check.source = "out";
+                    }
+                    this.check.status = element.checkstatus;
+                    this.check.status = element.checkstatus;
+                    console.log(this.check);
+                    this._hs.post('checks', this.check).subscribe(res2 => {
+                        this._ss.setSnackBar("تم حفظ الشيك");
+                    });
+                }
             }
-          }
-           this.check = {
-            id: 0,
-            checkno: "",
-            bankname: "",
-            date: "",
-            status: "",
-            checkowner: "0",
-            lastholder: "",
-            amount: 4.00,
-            source: "",
-            user: 0,
-            comment: "",
-            invoice: 0
-          };
+            this.check = {
+                id: 0,
+                checkno: "",
+                bankname: "",
+                date: "",
+                status: "",
+                checkowner: "0",
+                lastholder: "",
+                amount: 4.00,
+                source: "",
+                user: 0,
+                comment: "",
+                invoice: 0
+            };
         });
-      }
-    
-      updatesuppcussbalance(amount) {
+    }
+
+    updatesuppcussbalance(amount) {
         if (this.form.type == 'c') {
-          
-          this.form.balance = Number(this.form.balance) + Number(amount);
-    
+
+            this.form.balance = Number(this.form.balance) + Number(amount);
+
         }
         else {
-          this.form.balance = Number(this.form.balance) - Number(amount);
-    
+            this.form.balance = Number(this.form.balance) - Number(amount);
+
         }
         this.form.data = JSON.stringify(this.form.data);
         this._hs.put('suppcus', "id", this.form).subscribe(res => {
-          this._ss.setSnackBar("تم تعديل رصيد العميل");
+            this._ss.setSnackBar("تم تعديل رصيد العميل");
         }
         );
-      }
-      print() {
+    }
+    print() {
         this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
         this._ut.showReport('إيصال إستلام');
-      }
-      public paymentmethods: Choice[] = [
+    }
+    public paymentmethods: Choice[] = [
         { value: 'check', viewValue: 'شيك' },
         { value: 'cash', viewValue: 'كاش' }
-      ];
-      public checkstatus: Choice[] = [
+    ];
+    public checkstatus: Choice[] = [
         { value: 'clarified', viewValue: 'مظهر' },
         { value: 'new', viewValue: 'جديد' }
-      ];
+    ];
 }
 
 interface Choice {
     value: string;
     viewValue: string;
-  }
-  
+}
+
 
 
