@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
         this._ss.setAppIsBusy(true);
         this._ht._http.get('http://www.prof-dev.com/api.php/' + table.name + '?transform=1').subscribe(res => {
             var rows = res.json()[table.name];
-            this._ht._http.post('http://localhost/invsales/api.php/' + table.name, rows).subscribe(res1 => {
+            this._ht._http.post('http://localhost:83/api.php/' + table.name, rows).subscribe(res1 => {
                 this._ss.setAppIsBusy(false);
                 var num = res1.json().length;
                 this._ss.setSnackBar('Around ' + num + ' rows were transferred to LOCAL');
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
     }
     localToWeb(table) {
         this._ss.setAppIsBusy(true);
-        this._ht._http.get('http://localhost/invsales/api.php/' + table.name + '?transform=1').subscribe(res => {
+        this._ht._http.get('http://localhost:83/api.php/' + table.name + '?transform=1').subscribe(res => {
             var rows = res.json()[table.name];
             this._ht._http.post('http://www.prof-dev.com/api.php/' + table.name, rows).subscribe(res1 => {
                 this._ss.setAppIsBusy(false);
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     }
     showTables() {
         this._ss.setAppIsBusy(true);
-        this._ht._http.get('http://localhost/invsales/api.php').subscribe(res => {
+        this._ht._http.get('http://localhost:83/api.php').subscribe(res => {
             this._ss.setAppIsBusy(false);
             this.tags = res.json().tags;
         });

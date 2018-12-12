@@ -1,92 +1,99 @@
 <mat-card color="accent">
   <h2>الشيكات</h2>
-</mat-card>
-<div class="container ar" dir="rtl">
-  <mat-card class="control">
-
-    <hr>
-
+  <h3>إختيار الشيك لتعديل الحالة</h3>
+<mat-card-content>
     <mat-form-field>
-      <input matInput required placeholder="اسم صاحب الحساب" name="email" [(ngModel)]="check.checkowner" [disabled]="true">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput required placeholder="رقم الشيك" name="group" [(ngModel)]="check.checkno" [disabled]="true">
-    </mat-form-field>
-    <mat-form-field *ngIf="check.status=='مظهر'">
-      <input matInput required placeholder="آخر حامل للشيك" name="group" [(ngModel)]="check.lastholder" [disabled]="true">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput required placeholder="نوع الشيك" name="group" [(ngModel)]="check.source" [disabled]="true">
-    </mat-form-field>
-    <mat-form-field > 
-        <input matInput required placeholder="حالة الشيك " name="group" [value]="getStatusArabic(check.status)" [disabled]="true">
+        <input matInput required placeholder="اسم صاحب الحساب" name="email" [(ngModel)]="check.checkowner" [disabled]="true">
       </mat-form-field>
-    <mat-form-field *ngIf="check.status!='paid'">
-      <select matNativeControl required class="primary" [(ngModel)]="check.status" placeholder="حالة الشيك">
-        <option *ngFor="let ch of statuses" [(value)]="ch.value">{{ch.viewValue}} </option>
-      </select>
-    </mat-form-field><br>
- 
-    <mat-form-field>
-      <textarea matInput required placeholder="تعليق" name="group" [(ngModel)]="check.comment"></textarea>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="check.status=='paid'">
-        <select matNativeControl required class="primary" [(ngModel)]="moenyto" placeholder="ايداع ببنك" >
-          <option *ngFor="let ch of banks" [(value)]="ch.id">{{ch.titlear}} </option>
-  
+      <mat-form-field>
+        <input matInput required placeholder="رقم الشيك" name="group" [(ngModel)]="check.checkno" [disabled]="true">
+      </mat-form-field>
+      <mat-form-field *ngIf="check.status=='مظهر'">
+        <input matInput required placeholder="آخر حامل للشيك" name="group" [(ngModel)]="check.lastholder" [disabled]="true">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput required placeholder="نوع الشيك" name="group" [(ngModel)]="check.source" [disabled]="true">
+      </mat-form-field>
+      <mat-form-field > 
+          <input matInput required placeholder="حالة الشيك " name="group" [value]="getStatusArabic(check.status)" [disabled]="true">
+        </mat-form-field>
+      <mat-form-field *ngIf="check.status!='paid'">
+        <select matNativeControl required class="primary" [(ngModel)]="check.status" placeholder="حالة الشيك">
+          <option *ngFor="let ch of statuses" [(value)]="ch.value">{{ch.viewValue}} </option>
         </select>
-      </mat-form-field>
+      </mat-form-field><br>
    
-    <br>
-    <br>
+      <mat-form-field>
+        <textarea matInput required placeholder="تعليق" name="group" [(ngModel)]="check.comment"></textarea>
+      </mat-form-field>
+  
+      <mat-form-field *ngIf="check.status=='paid'">
+          <select matNativeControl required class="primary" [(ngModel)]="moenyto" placeholder="ايداع ببنك" >
+            <option *ngFor="let ch of banks" [(value)]="ch.id">{{ch.titlear}} </option>
+    
+          </select>
+        </mat-form-field>
+     
+      <br>
+      <br>
+  
+      <button mat-raised-button (click)="save(check)" color="primary">حفظ</button>
 
-    <button mat-raised-button (click)="save(check)" color="primary">حفظ</button>
+</mat-card-content>
+    
+  
+  
 
 
+</mat-card>
+<mat-card>
+    <div #panel class="table">
+        <mat-card>
+    
+          <table>
+            <tr>
+              <th>الرقم</th>
+              <th>رقم الفاتورة</th>
+              <th>اسم البنك</th>
+              <th> رقم الشيك</th>
+              <th>المبلغ</th>
+              <th>المصدر</th>
+              <th>تاريخ الشيك</th>
+              <th>إسم صاحب الحساب</th>
+              <th>حالة الشيك</th>
+    
+              <th>تحديث حالة الشيك</th>
+    
+            </tr>
+            <tr *ngFor="let check of page">
+              <td>{{check.id}}</td>
+              <td *ngIf="check.pursalesid!=0">
+                  <a [routerLink]="['/invoice/',check.pursalesid]" class="sd-btn" >{{check.pursalesid}}</a>
+              </td>
+              <td *ngIf="check.pursalesid==0">لا يوجد</td>
+              <td>{{check.banckname}}</td>
+              <td>{{check.checkno}}</td>
+              <td>{{check.amount}}</td>
+              <td *ngIf="check.source=='صادر'" style="color: red">{{check.source}}</td>
+              <td *ngIf="check.source!='صادر'" style="color: green">{{check.source}}</td>
+              <td>{{check.date | date : 'dd/MM/yyyy'}}</td>
+              <td>{{check.checkowner}}</td>
+              <td>
+                {{getStatusArabic(check.status)}}
+              </td>
+              <td><button mat-raised-button color="warn" (click)="update(check)">تحديث حالة</button></td>
+            </tr>
+          </table>
+          <mat-paginator [length]="checkes.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" (page)="setPage($event)">
+            </mat-paginator>
+    
+        </mat-card>
+    
+      </div>
+</mat-card>
+<!-- <div class="container ar" dir="rtl">
+ 
 
-  </mat-card>
+  
 
-  <div #panel class="table">
-    <mat-card>
-
-      <table>
-        <tr>
-          <th>الرقم</th>
-          <th>رقم الفاتورة</th>
-          <th>اسم البنك</th>
-          <th> رقم الشيك</th>
-          <th>المبلغ</th>
-          <th>المصدر</th>
-          <th>تاريخ الشيك</th>
-          <th>إسم صاحب الحساب</th>
-          <th>حالة الشيك</th>
-
-          <th>تحديث حالة الشيك</th>
-
-        </tr>
-        <tr *ngFor="let check of checkes">
-          <td>{{check.id}}</td>
-          <td *ngIf="check.invoice!=0">
-              <a [routerLink]="['/invoice/',check.invoice]" class="sd-btn" >{{check.invoice}}</a>
-          </td>
-          <td *ngIf="check.invoice==0">لا يوجد</td>
-          <td>{{check.banckname}}</td>
-          <td>{{check.checkno}}</td>
-          <td>{{check.amount}}</td>
-          <td *ngIf="check.source=='صادر'" style="color: red">{{check.source}}</td>
-          <td *ngIf="check.source!='صادر'" style="color: green">{{check.source}}</td>
-          <td>{{check.date | date : 'dd/MM/yyyy'}}</td>
-          <td>{{check.checkowner}}</td>
-          <td>
-            {{getStatusArabic(check.status)}}
-          </td>
-          <td><button mat-raised-button color="warn" (click)="update(check)">تحديث حالة</button></td>
-        </tr>
-      </table>
-
-    </mat-card>
-
-  </div>
-
-</div>
+</div> -->

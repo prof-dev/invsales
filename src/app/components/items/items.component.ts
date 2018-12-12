@@ -22,8 +22,8 @@ export class ItemsComponent implements OnInit {
     parent: 0,
     id: 0,
     barcode: "",
-    arname: "",
-    engname: "",
+    namear: "",
+    nameen: "",
     data: ""
   };
   blob: any[];
@@ -50,8 +50,8 @@ export class ItemsComponent implements OnInit {
       parent: 0,
       id: 0,
       barcode: "",
-      arname: "",
-      engname: "",
+      nameen: "",
+      namear: "",
       data: ""
     };
 
@@ -83,8 +83,8 @@ export class ItemsComponent implements OnInit {
       parent: row.parent,
       id: row.id,
       barcode: row.barcode,
-      arname: row.arname,
-      engname: row.engname,
+      namear: row.namear,
+      nameen: row.nameen,
       data: ""
     };
   }

@@ -13,8 +13,8 @@
   <div class="AddLookup" *ngIf="invoice.type!=''">
     <h3> فاتورة {{operation}}</h3>
     {{message}}
-
-    <h3 *ngIf="invoice.type=='s'">بيانات العميل</h3>
+<!-- 
+    <h3 *ngIf="invoice.type=='s'">بيانات العميل</h3> -->
 
     <div *ngIf="invoice.type=='p'">
       <h3>بيانات الطلبية</h3>
@@ -23,7 +23,7 @@
       </mat-form-field>
 
     </div>
-    <h3 *ngIf="invoice.type=='p'">بيانات المورد</h3>
+    <!-- <h3 *ngIf="invoice.type=='p'">بيانات المورد</h3> -->
     <mat-form-field *ngIf="invoice.type=='s'">
       <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
         <mat-option>None</mat-option>
@@ -31,7 +31,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf="invoice.type=='p'">
-      <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
+      <mat-select placeholder="إختيار المورد" [(ngModel)]="selecteditem" (change)="selected($event.value)">
         <mat-option>None</mat-option>
         <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
       </mat-select>
@@ -50,19 +50,22 @@
       </mat-autocomplete>
  -->
 
+    <mat-form-field *ngIf="invoice.type=='p'">
+      <input matInput required placeholder=" اسم المورد" [(ngModel)]="selecteditem.fullname" [disabled]="true">
+    </mat-form-field>
+    <mat-form-field *ngIf="invoice.type=='s'">
+        <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.fullname" [disabled]="true">
+      </mat-form-field>
+
+
+
+
     <mat-form-field>
-      <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.fullname" [disabled]="true">
+      <input matInput required placeholder=" رصيد العميل/ المورد" [(ngModel)]="selecteditem.balance" [disabled]="true">
     </mat-form-field>
 
-
-
-
     <mat-form-field>
-      <input matInput required placeholder=" رصيد العميل" [(ngModel)]="selecteditem.balance" [disabled]="true">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput required placeholder=" تلفون العميل" [(ngModel)]="selecteditem.data.phone" [disabled]="true">
+      <input matInput required placeholder=" تلفون العميل/ المورد" [(ngModel)]="selecteditem.data.phone" [disabled]="true">
     </mat-form-field>
 
     <hr>
@@ -228,9 +231,12 @@
         </td>
       </tr>
       <tr>
-        <td>
+        <td *ngIf="invoice.type=='s'">
           إسم العميل : {{selecteditem.fullname}}
         </td>
+        <td *ngIf="invoice.type=='p'">
+            إسم المورد : {{selecteditem.fullname}}
+          </td>
       </tr>
       <tr>
         <table>

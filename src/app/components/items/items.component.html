@@ -8,7 +8,7 @@
           </select>
         </mat-form-field>
         <mat-form-field>
-          <input matInput required placeholder="الإسم العربي" name="email" [(ngModel)]="item.arname">
+          <input matInput required placeholder="الإسم العربي" name="email" [(ngModel)]="item.namear">
         </mat-form-field>
         <!-- <mat-form-field>
           <input matInput required placeholder="الإسم الإنجليزي" name="email" [(ngModel)]="item.engname">
@@ -40,7 +40,7 @@
             <tr *ngFor="let row of productsview">
               <td>{{row.id}}</td>
               <td>{{row.barcode}}</td>
-              <td>{{row.arname}}</td>
+              <td>{{row.namear}}</td>
               <td>{{row.data.price}}</td>
               <td><img src={{row.data.image}} (click)="edit(row)" width="50" height="50"></td>
               <td>

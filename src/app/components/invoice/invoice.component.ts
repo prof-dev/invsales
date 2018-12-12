@@ -32,9 +32,9 @@ export class InvoiceComponent implements OnInit {
     data: {},
     id: 0,
     shipno: "",
-    totalprice: 0,
-    entityid: 0,
-    user: 0
+    amount: 0,
+    suppcusid: 0,
+    userid: 0
   }
   @ViewChild('date')
   public date: any;
@@ -69,9 +69,9 @@ export class InvoiceComponent implements OnInit {
     lastholder: "",
     amount: 4,
     source: "",
-    user: 0,
+    userid: 0,
     comment: "",
-    invoice: 0
+    pursalesid: 0
   };
   public classes: any[] = [];
   public list: any[] = [];
@@ -108,7 +108,7 @@ export class InvoiceComponent implements OnInit {
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
-      this.inventoryObj = new InventoryClass(this._hs,this._ss);
+    this.inventoryObj = new InventoryClass(this._hs, this._ss);
     this._ar.params.subscribe(params => this.param = params['id']);
 
   }
@@ -221,7 +221,7 @@ export class InvoiceComponent implements OnInit {
           element.data = JSON.parse(element.data);
           console.log(this.items);
         });
-        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.arname, price: lookup.data.price, parent: lookup.parent }));
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
       });
   }
@@ -260,7 +260,7 @@ export class InvoiceComponent implements OnInit {
     console.log(item);
     // console.log(this.inventories);
     console.log(this.invoice.type);
-    
+
     if (this.invoice.type == 's') {
       this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
 
@@ -272,7 +272,7 @@ export class InvoiceComponent implements OnInit {
           if ((!((Number(element.avb) - Number(element.rsv) + Number(element.com)) < Number(item.count))) && element.id == item.id) {
             console.log(item);
             this.invoiceitems.push(item);
-            this.invoice.totalprice = this.invoice.totalprice + Number(item.totalprice);
+            this.invoice.amount = this.invoice.amount + Number(item.totalprice);
             this.product.store = item.store.id;
             this.product = {};
             this.processinfo.reminder += Number(item.totalprice);
@@ -302,22 +302,33 @@ export class InvoiceComponent implements OnInit {
 
     }
     else if (this.invoice.type == 'p') {
-      this.invitem.com=Number(this.invitem.com)+Number(item.count);
+      this.invitem.com = Number(this.invitem.com) + Number(item.count);
+      this.invoice.amount = this.invoice.amount + Number(item.totalprice);
+      this.product.store = item.store.id;
+      this.product = {};
       this.touched.push(item.store.id);
-      this.inventories=this.inventoryObj.additemtolist(this.invitem,item.store.id,this.inventories);
+      this.inventories = this.inventoryObj.additemtolist(this.invitem, item.store.id, this.inventories);
       this.invoiceitems.push(item);
 
     }
-
-
-
-
-
   }
 
   remove(item, i) {
-    this.invoice.totalprice = this.invoice.totalprice - Number(item.totalprice);
+    this.invoice.amount = this.invoice.amount - Number(item.amount);
     this.invoiceitems.splice(i, 1);
+    this.inventories.forEach(element => {
+      if (element.storeid == item.store.id) {
+        element.data.forEach(el => {
+          if (this.invoice.type == 's') {
+            el.rsv=Number(el.rsv)+Number(item.count);
+          }
+          else {
+            el.com = Number(el.com) - Number(item.count);
+  
+          }
+        });
+      }
+    });
     this.product = {};
   }
 
@@ -368,7 +379,7 @@ export class InvoiceComponent implements OnInit {
         this.payments = this.invoicedata.payments;
         console.log(this.suppcus);
 
-        this.selecteditem = this.suppcus.find(obj => obj.id == this.invoice.entityid);
+        this.selecteditem = this.suppcus.find(obj => obj.id == this.invoice.suppcusid);
 
         this.selecteditem.data = JSON.parse(this.selecteditem.data + "");
 
@@ -413,7 +424,7 @@ export class InvoiceComponent implements OnInit {
       lastholder: "",
       amount: 4,
       source: "",
-      user: 0,
+      userid: 0,
       comment: "",
       invoice: 0
     };
@@ -422,9 +433,9 @@ export class InvoiceComponent implements OnInit {
       data: {},
       id: 0,
       shipno: "",
-      totalprice: 0,
-      entityid: 0,
-      user: 0
+      amount: 0,
+      suppcusid: 0,
+      userid: 0
 
 
     }
@@ -459,12 +470,12 @@ export class InvoiceComponent implements OnInit {
         }
       });
     });
-    this.touched=[];
+    this.touched = [];
   }
   save() {
-    if (this.processinfo.status != "print") {
-      this.invoice.entityid = this.selecteditem.id;
-      this.invoice.user = this.user.id;
+    if (this.processinfo.status != "print" && this.selecteditem!=null) {
+      this.invoice.suppcusid = this.selecteditem.id;
+      this.invoice.userid = this.user.id;
       this.invoicedata = {
         payments: this.payments,
         items: this.invoiceitems
@@ -494,12 +505,18 @@ export class InvoiceComponent implements OnInit {
 
 
 
-
+    
   }
 
   print() {
     this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
-    this._ut.showReport('إذن  إستلام بضاعة');
+    if (this.invoice.type == 's') {
+      this._ut.showReport('إذن  إستلام بضاعة');
+
+    } else {
+      this._ut.showReport(' إضافة مشتريات للمخزن ');
+
+    }
   }
 
   updateuserbalance() {
@@ -518,9 +535,9 @@ export class InvoiceComponent implements OnInit {
 
   private updatecustomeraccount() {
     if (this.invoice.type == 's') {
-      this.selecteditem.balance = this.selecteditem.balance - this.processinfo.reminder;
+      this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
     } else {
-      this.selecteditem.balance = this.selecteditem.balance + this.processinfo.reminder;
+      this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
     }
     this.suppcussdata = JSON.stringify(this.selecteditem.data);
     this.selecteditem.data = this.suppcussdata;
@@ -536,8 +553,8 @@ export class InvoiceComponent implements OnInit {
     this.payments.forEach(element => {
       if (element.paymentmethod == "check") {
         if (element.bankname != "" && element.checkNo != "" && element.amount != 0 && element.date != "") {
-          this.check.user = this.user.id;
-          this.check.invoice = invoiceid;
+          this.check.userid = this.user.id;
+          this.check.pursalesid = invoiceid;
           this.check.bankname = element.bankname;
           this.check.checkowner = element.checkowner;
           this.check.amount = element.amount;
@@ -617,10 +634,11 @@ export class InvoiceComponent implements OnInit {
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);
+        this.payment={};
 
       });
       if (this.paid != 0) {
-        this.processinfo.reminder = this.invoice.totalprice - this.paid;
+        this.processinfo.reminder = this.invoice.amount - this.paid;
       }
 
       console.log(this.payments);
@@ -634,8 +652,8 @@ export class InvoiceComponent implements OnInit {
   }
 
   selected(item) {
-    this.invoice.entityid = item.id;
-    console.log(this.invoice.entityid);
+    this.invoice.suppcusid = item.id;
+    console.log(this.invoice.suppcusid);
 
   }
 

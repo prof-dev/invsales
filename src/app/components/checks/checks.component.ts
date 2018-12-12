@@ -12,7 +12,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./checks.component.css']
 })
 export class ChecksComponent implements OnInit {
-
+  public page: any[] = [];
   @ViewChild('panel', { read: ElementRef }) public panel: ElementRef<any>;
 
   myControl = new FormControl();
@@ -33,8 +33,9 @@ export class ChecksComponent implements OnInit {
     lastholder: "",
     amount: 4,
     source: "",
-    user: 0,
-    comment: ""
+    userid: 0,
+    comment: "",
+    pursalesid:""
   };
   public moenyto: 0;
   public sourceese: Choice[] = [
@@ -71,27 +72,31 @@ export class ChecksComponent implements OnInit {
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
       } else {
-        this._hs.get('checks')
-          .subscribe(res => {
-            console.log(res.json());
-
-            this.checks = res.json().checks;
-            this.checks.forEach(check => {
-              this.check = check;
-              this.sourceese.forEach(element => {
-                if (check.source == element.value) {
-                  this.check.source = element.viewValue;
-                }
-
-              })
-              this.checkes.push(this.check);
-            });
-          });
+        this.getChecks();
       }
     });
 
 
 
+
+  }
+
+  private getChecks() {
+    this._hs.get('checks')
+      .subscribe(res => {
+        console.log(res.json());
+        this.checks = res.json().checks;
+        this.checks.forEach(check => {
+          this.check = check;
+          this.sourceese.forEach(element => {
+            if (check.source == element.value) {
+              this.check.source = element.viewValue;
+            }
+          });
+          this.checkes.push(this.check);
+        });
+      });
+     
 
   }
 
@@ -117,6 +122,11 @@ export class ChecksComponent implements OnInit {
     { value: 'law', viewValue: 'الشؤون القانونية' },
     { value: 'paid', viewValue: 'تم السداد' }]
 
+    setPage(ev) {
+    
+      this.page= this.checkes.slice(ev.pageIndex*ev.pageSize,(ev.pageIndex+1)*ev.pageSize);
+    }
+
   update(check) {
     this.check = check;
     console.log(check.status);
@@ -124,7 +134,7 @@ export class ChecksComponent implements OnInit {
   }
 
   save(check) {
-    check.user = this.user.id;
+    check.userid = this.user.id;
 
     if (check.id != 0) {
       this._hs.put('checks', "id", check).subscribe(res => {
