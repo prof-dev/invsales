@@ -29,11 +29,7 @@ import { SpendingsComponent } from './components/spendings/spendings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { ItemsComponent } from './components/items/items.component';
 import { ProfileComponent } from './components/profile/profile.component';
-<<<<<<< HEAD
 import { ItemsmoveComponent } from './components/itemsmove/itemsmove.component';
-=======
-import { ItemmovComponent } from './components/itemmov/itemmov.component';
->>>>>>> 813bf2b2b12f48f85cebfc73a1c2b6da0172f35e
 
 
 @NgModule({
@@ -47,11 +43,7 @@ import { ItemmovComponent } from './components/itemmov/itemmov.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-<<<<<<< HEAD
     ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent, ItemsmoveComponent
-=======
-    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent, ItemmovComponent
->>>>>>> 813bf2b2b12f48f85cebfc73a1c2b6da0172f35e
   ],
   imports: [
     BrowserModule,
