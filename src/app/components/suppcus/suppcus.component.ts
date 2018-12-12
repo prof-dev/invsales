@@ -239,13 +239,24 @@ export class SuppcusComponent implements OnInit {
     }
     savePayment() {
         if (this.form.id != null && this.sadad.desc != "" && this.payments.length > 0) {
-            this.sadad.entity = this.form.id;
+            this.sadad.suppcusid = this.form.id;
             this.sadad.data = JSON.stringify(this.payments);
-            this.sadad.user = this.user.id;
+            if (this.form.type == 'c') {
+
+                this.form.balance = Number(this.form.balance) + Number(this.paid);
+                this.sadad.newbalance=Number(this.form.balance) + Number(this.paid);
+            }
+            else {
+                this.form.balance = Number(this.form.balance) - Number(this.paid);
+                this.sadad.newbalance= Number(this.form.balance) - Number(this.paid);
+            }
+            this.sadad.oldbalance=this.form.balance;
+            
+            this.sadad.userid = this.user.id;
             this.sadad.total = this.paid;
             this._hs.post('sadad', this.sadad).subscribe(res => {
                 this.sadad.id = res.text();
-                this.updatesuppcussbalance(this.paid);
+                this.updatesuppcussbalance();
                 this.insertchecks();
                 this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
             });
@@ -302,16 +313,8 @@ export class SuppcusComponent implements OnInit {
         });
     }
 
-    updatesuppcussbalance(amount) {
-        if (this.form.type == 'c') {
-
-            this.form.balance = Number(this.form.balance) + Number(amount);
-
-        }
-        else {
-            this.form.balance = Number(this.form.balance) - Number(amount);
-
-        }
+    updatesuppcussbalance() {
+     
         this.form.data = JSON.stringify(this.form.data);
         this._hs.put('suppcus', "id", this.form).subscribe(res => {
             this._ss.setSnackBar("تم تعديل رصيد العميل");

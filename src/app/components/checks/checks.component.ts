@@ -95,8 +95,9 @@ export class ChecksComponent implements OnInit {
           });
           this.checkes.push(this.check);
         });
+      this.page = this .checkes.slice(0,5);
+
       });
-     
 
   }
 

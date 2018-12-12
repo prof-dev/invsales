@@ -16,6 +16,7 @@ import { InventoryClass } from 'src/app/services/classes';
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  public sadad: any={};
   public inventoryObj: InventoryClass;
   public touched: number[] = [];
   myControl = new FormControl();
@@ -82,7 +83,9 @@ export class InvoiceComponent implements OnInit {
   store: any;
   stores: any[] = [];
   public storeselect: any[] = [];
-  invoicedata: { payments: any[]; items: any[]; };
+  invoicedata: { //payments: any[]
+    items: any[];
+  };
   public invoiceid = 0;
   public paid = 0;
   suppcussdata: string;
@@ -221,7 +224,7 @@ export class InvoiceComponent implements OnInit {
           element.data = JSON.parse(element.data);
           console.log(this.items);
         });
-        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, namear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
       });
   }
@@ -250,7 +253,7 @@ export class InvoiceComponent implements OnInit {
     }
     else if (this.filteringtype == 'items') {
       //console.log(this.cuss.filter(option => option.titlear.toLowerCase().includes(filterValue)));
-      return this.productsview.filter(option => option.titlear.toLowerCase().includes(filterValue));
+      return this.productsview.filter(option => option.namear.toLowerCase().includes(filterValue));
     }
 
   }
@@ -320,11 +323,11 @@ export class InvoiceComponent implements OnInit {
       if (element.storeid == item.store.id) {
         element.data.forEach(el => {
           if (this.invoice.type == 's') {
-            el.rsv=Number(el.rsv)+Number(item.count);
+            el.rsv = Number(el.rsv) + Number(item.count);
           }
           else {
             el.com = Number(el.com) - Number(item.count);
-  
+
           }
         });
       }
@@ -336,7 +339,7 @@ export class InvoiceComponent implements OnInit {
     console.log('hello');
 
 
-    return item.titlear;
+    return item.namear;
 
   }
 
@@ -376,13 +379,13 @@ export class InvoiceComponent implements OnInit {
 
         this.invoicedata = JSON.parse(res.json().pursales[0].data);
         this.invoiceitems = this.invoicedata.items;
-        this.payments = this.invoicedata.payments;
+        // this.payments = this.invoicedata.payments;
         console.log(this.suppcus);
 
         this.selecteditem = this.suppcus.find(obj => obj.id == this.invoice.suppcusid);
 
         this.selecteditem.data = JSON.parse(this.selecteditem.data + "");
-
+        this.getPaymentInfoByInvoice(id);
 
         console.log('selected customer:', this.selecteditem);
 
@@ -391,6 +394,19 @@ export class InvoiceComponent implements OnInit {
     this._ss.setAppIsBusy(false);
 
 
+
+
+
+  }
+
+  getPaymentInfoByInvoice(pursalesid) {
+    this._hs.get('sadad', 'filter=pursalesid,eq,' + pursalesid)
+      .subscribe(res => {
+        this.sadad = res.json().sadad[0];
+        this.sadad.data = JSON.parse(this.sadad.data);
+        this.payments = this.sadad.data;
+      }
+      );
   }
 
   private getsupcusinfo() {
@@ -426,7 +442,7 @@ export class InvoiceComponent implements OnInit {
       source: "",
       userid: 0,
       comment: "",
-      invoice: 0
+      pursalesid: 0
     };
     this.invoice = {
       type: "",
@@ -472,12 +488,48 @@ export class InvoiceComponent implements OnInit {
     });
     this.touched = [];
   }
+
+  saveToSadad(invoiceid) {
+    if (this.selecteditem.id != null && this.payments.length > 0) {
+      this.sadad.pursalesid = invoiceid;
+      this.sadad.suppcusid = this.selecteditem.id;
+      this.sadad.data = JSON.stringify(this.payments);
+      this.sadad.amount=this.paid;
+      if (this.invoice.type == 's') {
+
+        this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
+        this.sadad.newbalance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
+        this.sadad.source='in';
+      }
+      else {
+        this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
+        this.sadad.newbalance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
+        this.sadad.source='out';
+
+      }
+      this.sadad.oldbalance = this.selecteditem.balance;
+
+      this.sadad.userid = this.user.id;
+      this.sadad.total = this.paid;
+      this._hs.post('sadad', this.sadad).subscribe(res => {
+        this.sadad.id = res.text();
+        // this.updatesuppcussbalance();
+        // this.insertchecks();
+        this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
+      });
+
+    }
+    else {
+      this._ss.setSnackBar('الرجاء تعبئة الحقول الأساسية');
+
+    }
+  }
   save() {
-    if (this.processinfo.status != "print" && this.selecteditem!=null) {
+    if (this.processinfo.status != "print" && this.selecteditem != null) {
       this.invoice.suppcusid = this.selecteditem.id;
       this.invoice.userid = this.user.id;
       this.invoicedata = {
-        payments: this.payments,
+
         items: this.invoiceitems
       };
       this.invoice.data = JSON.stringify(this.invoicedata);
@@ -485,8 +537,9 @@ export class InvoiceComponent implements OnInit {
 
       this._hs.post('pursales', this.invoice).subscribe(res => {
         this.invoice.id = Number(res.text());
-        //confirm(res.text());
+
         this.insertchecks(this.invoice.id);
+        this.saveToSadad(res.text());
         if (this.processinfo.reminder != 0) {
           this.updatecustomeraccount();
 
@@ -505,7 +558,7 @@ export class InvoiceComponent implements OnInit {
 
 
 
-    
+
   }
 
   print() {
@@ -534,11 +587,11 @@ export class InvoiceComponent implements OnInit {
   }
 
   private updatecustomeraccount() {
-    if (this.invoice.type == 's') {
-      this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
-    } else {
-      this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
-    }
+    // if (this.invoice.type == 's') {
+    //   this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
+    // } else {
+    //   this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
+    // }
     this.suppcussdata = JSON.stringify(this.selecteditem.data);
     this.selecteditem.data = this.suppcussdata;
     this._hs.put('suppcus', "id", this.selecteditem).subscribe(res2 => {
@@ -634,7 +687,7 @@ export class InvoiceComponent implements OnInit {
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);
-        this.payment={};
+        this.payment = {};
 
       });
       if (this.paid != 0) {

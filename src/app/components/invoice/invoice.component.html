@@ -83,7 +83,7 @@
 
       <mat-select placeholder="إختيار الصنف" [(ngModel)]="product" required>
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let op of list" [value]="op">{{op.titlear}}</mat-option>
+        <mat-option *ngFor="let op of list" [value]="op">{{op.namear}}</mat-option>
       </mat-select>
 
     </mat-form-field>
@@ -120,7 +120,7 @@
       </tr>
       <tr *ngFor="let row of invoiceitems;let i = index;">
         <td>{{row.id}}</td>
-        <td>{{row.titlear}}</td>
+        <td>{{row.namear}}</td>
         <td>{{row.price}}</td>
         <td>{{row.count}}</td>
         <td>{{row.totalprice}}</td>
@@ -248,7 +248,7 @@
           
           </tr>
           <tr *ngFor="let row of invoiceitems">
-            <td>{{row.titlear}}</td>
+            <td>{{row.namear}}</td>
             <td>{{row.count}}</td>
             <td>فقط {{numbertToWords(row.count)}} لا غير</td>
             <td>{{getStoreName(row.store)}}</td>
