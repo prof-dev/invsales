@@ -1,0 +1,13 @@
+mat-card{
+    margin-left:20%;
+    margin-right:20%;
+}
+mat-grid-tile{
+    background-color: lightblue;
+}
+mat-form-field{
+    width: 100%;
+}
+mat-select{
+    width: 300px;
+}

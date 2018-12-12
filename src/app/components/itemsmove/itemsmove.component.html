@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>تحويل الأصناف</mat-card-title>
+    <mat-card-subtitle>نقل الأصناف من مخزن لمخزن</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <tr>
+        <th>الصنف</th>
+        <th>الكميه المراد نقلها</th>
+      </tr>
+      <tr>
+          <td>
+            <mat-select placeholder="اختر الصنف" [(ngModel)]="itemid" name="itemid">
+              <mat-option *ngFor="let item of items " [value]="item.id" (click)="itemSelected(item)">{{item.namear}}</mat-option>
+            </mat-select>
+          </td>
+          <td>
+            <mat-form-field>
+              <input matInput [(ngModel)]="qty" placeholder="الكميه المراد تحويلها">
+            </mat-form-field>
+          </td>
+        </tr>
+    </table>
+    <table>
+      <tr>
+        <th>المخزن المصدر</th>
+        <th>المخزن الهدف</th>
+      </tr>
+      <tr>
+        <td>
+          <mat-select placeholder="اختر المخزن المصدر" [(ngModel)]="fromstore" name="fromstore">
+            <mat-option *ngFor="let store of stores" [value]="store.id" (click)="sourceSelected()">{{store.namear}}</mat-option>
+          </mat-select>
+        </td>
+        <td>
+          <mat-select placeholder="اختر المخزن الهدف" [(ngModel)]="tostore" name="tostore">
+            <mat-option *ngFor="let store of stores" [value]="store.id" (click)="targetSelected()">{{store.namear}}</mat-option>
+          </mat-select>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button mat-raised-button (click)="moveItems()" color="primary">انقل البضاعه من المصدر للهدف</button>
+        </td>
+      </tr>
+    </table>
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <h4>الكميه المتوفره في المصدر من الصنف</h4>&nbsp;
+        {{qtyinsource}}
+      </mat-grid-tile>
+      <mat-grid-tile>
+        :<h4>الكميه المتوفره في الهدف من الصنف</h4>&nbsp;
+        {{qtyintarget}}
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>

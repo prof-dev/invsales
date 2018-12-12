@@ -165,11 +165,13 @@ export class ReportObject {
         break;
       case 'sadad':
         this.title = 'تقرير  السداد';
-        this.searchfields.push({ type: 'number', fieldname: 'entity', operator: 'eq', placeholder: 'رقم العميل', value: '' });
-        this.searchfields.push({ type: 'number', fieldname: 'user', operator: 'eq', placeholder: 'رقم المستخدم', value: '' });
+        this.searchfields.push({ type: 'number', fieldname: 'suppcusid', operator: 'eq', placeholder: 'رقم العميل', value: '' });
+        this.searchfields.push({ type: 'number', fieldname: 'usersid', operator: 'eq', placeholder: 'رقم المستخدم', value: '' });
         this.searchfields.push({ type: 'string', fieldname: 'source', operator: 'eq', placeholder: 'اتجاه السداد', value: 'in' });
         this.searchfields.push({ type: 'date', fieldname: 'date' });
-        this.aggrefields.push({ fieldname: 'total', groupas: 'sum', title: 'المجموع' });
+        this.aggrefields.push({ fieldname: 'amount', groupas: 'sum', title: 'المجموع' });
+        this.aggrefields.push({ fieldname: 'oldbalance', groupas: 'sum', title: 'الرصيد السابق' });
+        this.aggrefields.push({ fieldname: 'newbalance', groupas: 'sum', title: 'الرصيد الجديد' });
         this.aggrefields.push({ groupas: 'count', title: 'عدد المعاملات' });
         ++this.ready;
         break;
