@@ -305,12 +305,16 @@ export class InvoiceComponent implements OnInit {
 
     }
     else if (this.invoice.type == 'p') {
-      this.invitem.com = Number(this.invitem.com) + Number(item.count);
+      this.invitem.com =  Number(item.count);
       this.invoice.amount = this.invoice.amount + Number(item.totalprice);
       this.product.store = item.store.id;
       this.product = {};
       this.touched.push(item.store.id);
+      console.log(this.inventories);
+      
       this.inventories = this.inventoryObj.additemtolist(this.invitem, item.store.id, this.inventories);
+      console.log(this.inventories);
+
       this.invoiceitems.push(item);
 
     }
