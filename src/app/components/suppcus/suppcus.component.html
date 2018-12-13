@@ -10,61 +10,61 @@
         <br>
         <h1 mat-dialog-title> إدخال بيانات {{formtype}}</h1>
 
-        <div mat-dialog-content *ngIf="form.type!=''">
+        <div mat-dialog-content *ngIf="supcus.type!=''">
 
             <mat-form-field>
-                <input matInput required placeholder="الإسم " [(ngModel)]="form.namear">
+                <input matInput required placeholder="الإسم " [(ngModel)]="supcus.namear">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.amount" [disabled]="processinfo.disbalance">
+                <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="supcus.amount" [disabled]="processinfo.disbalance">
             </mat-form-field>
-            <mat-form-field *ngIf="form.type=='c'">
-                <input matInput required placeholder=" فرع العميل" [(ngModel)]="form.data.branch">
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput required placeholder="  إسم الترحيلات" [(ngModel)]="form.data.transport">
+            <mat-form-field *ngIf="supcus.type=='c'">
+                <input matInput required placeholder=" فرع العميل" [(ngModel)]="supcus.data.branch">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="  رقم الترحيلات" [(ngModel)]="form.data.transphone">
+                <input matInput required placeholder="  إسم الترحيلات" [(ngModel)]="supcus.data.transport">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" إسم المشتريات" [(ngModel)]="form.data.purname">
+                <input matInput required placeholder="  رقم الترحيلات" [(ngModel)]="supcus.data.transphone">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" رقم المشتريات" [(ngModel)]="form.data.purphone">
+                <input matInput required placeholder=" إسم المشتريات" [(ngModel)]="supcus.data.purname">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" واتس  المشتريات" [(ngModel)]="form.data.purwhats">
+                <input matInput required placeholder=" رقم المشتريات" [(ngModel)]="supcus.data.purphone">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="  التصنيف" [(ngModel)]="form.data.class">
+                <input matInput required placeholder=" واتس  المشتريات" [(ngModel)]="supcus.data.purwhats">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="   التخصص" [(ngModel)]="form.data.domain">
+                <input matInput required placeholder="  التصنيف" [(ngModel)]="supcus.data.class">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" موبايل" [(ngModel)]="form.data.phone">
+                <input matInput required placeholder="   التخصص" [(ngModel)]="supcus.data.domain">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" موبايل 2" [(ngModel)]="form.data.phone2">
+                <input matInput required placeholder=" موبايل" [(ngModel)]="supcus.data.phone">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" بريد إلكتروني" [(ngModel)]="form.data.email">
+                <input matInput required placeholder=" موبايل 2" [(ngModel)]="supcus.data.phone2">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" رقم الواتساب" [(ngModel)]="form.data.whatsapp">
+                <input matInput required placeholder=" بريد إلكتروني" [(ngModel)]="supcus.data.email">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder="العنوان على الخريطة" [(ngModel)]="form.data.location" [value]="location">
+                <input matInput required placeholder=" رقم الواتساب" [(ngModel)]="supcus.data.whatsapp">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput required placeholder="العنوان على الخريطة" [(ngModel)]="supcus.data.location" [value]="location">
             </mat-form-field>
             <br>
-            <!-- capture the location from the map save it to form.data.location -->
+            <!-- capture the location from the map save it to supcus.data.location -->
 
 
 
         </div>
         <div mat-dialog-actions>
-            <button mat-raised-button (click)="save(form)" color='primary' *ngIf="form.type!=''">حفظ</button>
+            <button mat-raised-button (click)="save(form)" color='primary' *ngIf="supcus.type!=''">حفظ</button>
             <button mat-raised-button (click)="onNoClick()" color='warn'>تراجع</button>
 
 
@@ -176,18 +176,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td *ngIf="form.type=='c'">
-                            إسم العميل : {{form.namear}}
+                        <td *ngIf="supcus.type=='c'">
+                            إسم العميل : {{supcus.namear}}
                         </td>
-                        <td *ngIf="form.type=='s'">
-                            إسم المورد : {{form.namear}}
+                        <td *ngIf="supcus.type=='s'">
+                            إسم المورد : {{supcus.namear}}
                         </td>
                     </tr>
                     <tr>
-                        <td *ngIf="form.type=='c'">
+                        <td *ngIf="supcus.type=='c'">
                             جملة المستلم : {{paid}}
                         </td>
-                        <td *ngIf="form.type=='s'">
+                        <td *ngIf="supcus.type=='s'">
                             جملة المدفوع : {{paid}}
                         </td>
                     </tr>
@@ -247,7 +247,7 @@
                     <th>الموبايل</th>
                     <th>الواتساب</th>
                     <th>الايميل</th>
-                    <th *ngIf="form.type=='c'">الفرع</th>
+                    <th *ngIf="supcus.type=='c'">الفرع</th>
                     <th>الرصيد</th>
                     <th>تعديل</th>
                 </tr>
@@ -258,7 +258,7 @@
                     <td>{{row.data.phone2}}</td>
                     <td>{{row.data.whatsapp}}</td>
                     <td>{{row.data.email}}</td>
-                    <td *ngIf="form.type=='c'">{{row.data.branch}}</td>
+                    <td *ngIf="supcus.type=='c'">{{row.data.branch}}</td>
                     <td>{{row.amount}}</td>
                     <td>
                         <button mat-raised-button color="primary" (click)="modify(row)">تعديل</button>
