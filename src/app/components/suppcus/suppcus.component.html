@@ -16,7 +16,7 @@
                 <input matInput required placeholder="الإسم " [(ngModel)]="form.namear">
             </mat-form-field>
             <mat-form-field>
-                <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance" [disabled]="processinfo.disbalance">
+                <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.amount" [disabled]="processinfo.disbalance">
             </mat-form-field>
             <mat-form-field *ngIf="form.type=='c'">
                 <input matInput required placeholder=" فرع العميل" [(ngModel)]="form.data.branch">
@@ -259,7 +259,7 @@
                     <td>{{row.data.whatsapp}}</td>
                     <td>{{row.data.email}}</td>
                     <td *ngIf="form.type=='c'">{{row.data.branch}}</td>
-                    <td>{{row.balance}}</td>
+                    <td>{{row.amount}}</td>
                     <td>
                         <button mat-raised-button color="primary" (click)="modify(row)">تعديل</button>
                     </td>

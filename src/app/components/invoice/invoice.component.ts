@@ -57,7 +57,7 @@ export class InvoiceComponent implements OnInit {
     type: "",
     namear: "",
     data: {},
-    balance: 0
+    amount: 0
   };
   public product: any = {};
   public check = {
@@ -469,7 +469,7 @@ export class InvoiceComponent implements OnInit {
       type: "",
       namear: "",
       data: {},
-      balance: 0
+      amount: 0
     };
     this.invoiceitems = [];
   }
@@ -497,17 +497,17 @@ export class InvoiceComponent implements OnInit {
       this.sadad.amount=this.paid;
       if (this.invoice.type == 's') {
 
-        this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
-        this.sadad.newbalance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
+        this.selecteditem.amount = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
+        this.sadad.newbalance = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
         this.sadad.source='in';
       }
       else {
-        this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
-        this.sadad.newbalance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
+        this.selecteditem.amount = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
+        this.sadad.newbalance = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
         this.sadad.source='out';
 
       }
-      this.sadad.oldbalance = this.selecteditem.balance;
+      this.sadad.oldbalance = this.selecteditem.amount;
 
       this.sadad.userid = this.user.id;
       this.sadad.total = this.paid;
@@ -575,7 +575,7 @@ export class InvoiceComponent implements OnInit {
   updateuserbalance() {
     this.payments.forEach(element => {
       if (element.paymentmethod == "cash") {
-        this.user.balance = Number(this.user.balance) + Number(element.amount);
+        this.user.amount = Number(this.user.amount) + Number(element.amount);
       }
     }
     );
@@ -588,9 +588,9 @@ export class InvoiceComponent implements OnInit {
 
   private updatecustomeraccount() {
     // if (this.invoice.type == 's') {
-    //   this.selecteditem.balance = Number(this.selecteditem.balance) - Number(this.processinfo.reminder);
+    //   this.selecteditem.amount = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
     // } else {
-    //   this.selecteditem.balance = Number(this.selecteditem.balance) + Number(this.processinfo.reminder);
+    //   this.selecteditem.amount = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
     // }
     this.suppcussdata = JSON.stringify(this.selecteditem.data);
     this.selecteditem.data = this.suppcussdata;

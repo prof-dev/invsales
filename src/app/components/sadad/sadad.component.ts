@@ -19,7 +19,7 @@ export class SadadComponent implements OnInit {
     type: "",
     namear: "",
     data:{},
-    balance: 0
+    amount: 0
   };
   
 
@@ -115,11 +115,11 @@ export class SadadComponent implements OnInit {
   updatesuppcussbalance(amount) {
     if (this.supcus.type == 'c') {
       
-      this.supcus.balance = Number(this.supcus.balance) + Number(amount);
+      this.supcus.amount = Number(this.supcus.amount) + Number(amount);
 
     }
     else {
-      this.supcus.balance = Number(this.supcus.balance) - Number(amount);
+      this.supcus.amount = Number(this.supcus.amount) - Number(amount);
 
     }
     this.supcus.data = JSON.stringify(this.supcus.data);
@@ -178,7 +178,7 @@ export class SadadComponent implements OnInit {
       type: "",
       namear: "",
       data:{},
-      balance: 0
+      amount: 0
     };
   }
 

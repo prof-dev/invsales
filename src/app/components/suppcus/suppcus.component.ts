@@ -37,7 +37,7 @@ export class SuppcusComponent implements OnInit {
         operation: 0,
         disbalance: true
     }
-    public form: any;
+    public supcus: any;
 
     public operation = 0;
     location: any;
@@ -107,7 +107,7 @@ export class SuppcusComponent implements OnInit {
     }
 
     resetForm() {
-        this.form = {
+        this.supcus = {
             "type": "",
             "id": 0,
             "balance": 0.00,
@@ -131,7 +131,7 @@ export class SuppcusComponent implements OnInit {
         }
     }
     save(form) {
-        this.form.data.location = this.location;
+        this.supcus.data.location = this.location;
         if (form.id != 0 && form.phone != "" && form.whatsapp != "" && form.namear != "") {
             form.data = JSON.stringify(form.data);
             console.log(form.data);
@@ -154,11 +154,11 @@ export class SuppcusComponent implements OnInit {
                 this._ss.setSnackBar('الرجاء ملء جميع الحقول');
             }
 
-        if (this.form.type == 's') {
+        if (this.supcus.type == 's') {
             this.formtype = ' الموردين';
             this.getSubCus('s');
         }
-        else if (this.form.type == 'c') {
+        else if (this.supcus.type == 'c') {
             this.formtype = 'العملاء';
             this.getSubCus('c');
         }
@@ -170,14 +170,14 @@ export class SuppcusComponent implements OnInit {
     setType(type) {
         // this.ngOnInit();
         this.operation = 1;
-        this.form.type = type;
+        this.supcus.type = type;
         this.processinfo.disbalance = false;
 
-        if (this.form.type == 's') {
+        if (this.supcus.type == 's') {
             this.formtype = ' الموردين';
             this.getSubCus('s');
         }
-        else if (this.form.type == 'c') {
+        else if (this.supcus.type == 'c') {
             this.formtype = 'العملاء';
             this.getSubCus('c');
         }
@@ -214,8 +214,8 @@ export class SuppcusComponent implements OnInit {
 
         }
 
-        this.form = item;
-        //   this.form.data=JSON.parse(item.data);
+        this.supcus = item;
+        //   this.supcus.data=JSON.parse(item.data);
 
     }
 
@@ -238,19 +238,19 @@ export class SuppcusComponent implements OnInit {
 
     }
     savePayment() {
-        if (this.form.id != null && this.sadad.desc != "" && this.payments.length > 0) {
-            this.sadad.suppcusid = this.form.id;
+        if (this.supcus.id != null && this.sadad.desc != "" && this.payments.length > 0) {
+            this.sadad.suppcusid = this.supcus.id;
             this.sadad.data = JSON.stringify(this.payments);
-            if (this.form.type == 'c') {
+            if (this.supcus.type == 'c') {
 
-                this.form.balance = Number(this.form.balance) + Number(this.paid);
-                this.sadad.newbalance=Number(this.form.balance) + Number(this.paid);
+                this.supcus.amount = Number(this.supcus.amount) + Number(this.paid);
+                this.sadad.newbalance=Number(this.supcus.amount) + Number(this.paid);
             }
             else {
-                this.form.balance = Number(this.form.balance) - Number(this.paid);
-                this.sadad.newbalance= Number(this.form.balance) - Number(this.paid);
+                this.supcus.amount = Number(this.supcus.amount) - Number(this.paid);
+                this.sadad.newbalance= Number(this.supcus.amount) - Number(this.paid);
             }
-            this.sadad.oldbalance=this.form.balance;
+            this.sadad.oldbalance=this.supcus.amount;
             
             this.sadad.userid = this.user.id;
             this.sadad.amount = this.paid;
@@ -281,7 +281,7 @@ export class SuppcusComponent implements OnInit {
                     console.log(element.date);
 
                     this.check.date = (new Date(element.date)).toISOString().split('T')[0];
-                    if (this.form.type == 'c') {
+                    if (this.supcus.type == 'c') {
                         this.check.source = "in";
 
                     }
@@ -315,8 +315,8 @@ export class SuppcusComponent implements OnInit {
 
     updatesuppcussbalance() {
      
-        this.form.data = JSON.stringify(this.form.data);
-        this._hs.put('suppcus', "id", this.form).subscribe(res => {
+        this.supcus.data = JSON.stringify(this.supcus.data);
+        this._hs.put('suppcus', "id", this.supcus).subscribe(res => {
             this._ss.setSnackBar("تم تعديل رصيد العميل");
         }
         );
