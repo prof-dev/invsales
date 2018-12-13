@@ -13,7 +13,7 @@ export class ItemsmoveComponent implements OnInit {
   public tostore: number = 0;
   private fromstorejson: any;
   private tostorejson: any;
-
+public itemid:any;
   public qty: number = 0;
   public qtyinsource: number = 0;
   public qtyintarget: number = 0;

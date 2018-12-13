@@ -14,10 +14,10 @@ export class SpendingsComponent implements OnInit {
   public treasuries: any[] = [];
   public spending={
     id:0,
-    type:"",
+    lookupsid:"",
     data:"",
     amount:0.00,
-    user:0
+    userid:0
 
   };
   public data={ 
@@ -65,10 +65,10 @@ export class SpendingsComponent implements OnInit {
   reset(){
      this.spending={
       id:0,
-      type:"",
+      lookupsid:"",
       data:"",
       amount:0.00,
-      user:0
+      userid:0
   
     };
      this.data={ 
@@ -79,7 +79,7 @@ export class SpendingsComponent implements OnInit {
   }
 
   save(){
-    this.spending.user=this.user.id;
+    this.spending.userid=this.user.id;
     this.spending.data=JSON.stringify(this.data);
     this._hs.post('spending', this.spending).subscribe(res => {
       if(this.canselect){
