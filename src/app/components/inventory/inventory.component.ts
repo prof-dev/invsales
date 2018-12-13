@@ -82,7 +82,7 @@ export class InventoryComponent implements OnInit {
             .subscribe(res => {
               this.stores = res.json().lookups;
               console.log(this.stores);
-              this.storeselect = this.stores.map(stores => ({ id: stores.id, titlear: stores.titlear }));
+              this.storeselect = this.stores.map(stores => ({ id: stores.id, namear: stores.namear }));
               console.log(this.storeselect);
 
 
@@ -116,7 +116,7 @@ export class InventoryComponent implements OnInit {
           element.data = JSON.parse(element.data);
           // console.log(this.items);
         });
-        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, titlear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
+        this.productsview = this.lookups.map(lookup => ({ id: lookup.id, namear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
       });
   }
@@ -254,7 +254,7 @@ export class InventoryComponent implements OnInit {
       if (element.id == id) {
 
 
-        this.result = element.titlear;
+        this.result = element.namear;
 
       }
 
@@ -269,7 +269,7 @@ export class InventoryComponent implements OnInit {
       if (element.id == id) {
 
 
-        this.result = element.titlear;
+        this.result = element.namear;
 
       }
 

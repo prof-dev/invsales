@@ -57,7 +57,7 @@
                 </tr>
                 <tr *ngFor="let one of retOb.itemsarr">
                     <td>{{one.id}}</td>
-                    <td>{{one.titlear}}</td>
+                    <td>{{one.namear}}</td>
                     <td>{{one.count}}</td>
                     <td>
                         <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">

@@ -17,7 +17,7 @@
             </tr>
             <tr *ngFor="let row of lookups">
                 <td>
-                    {{row.titlear}}
+                    {{row.namear}}
                 </td>
                 <td>
                     <button mat-raised-button color="primary" (click)="setGroup(row)">عرض الفروع</button>
@@ -40,7 +40,7 @@
 
     <mat-card>
         <div *ngIf="lookupitems.length>0 && visible" id="datatable">
-            <h3> {{group.titlear}}</h3>
+            <h3> {{group.namear}}</h3>
             <table>
                 <tr>
                     <th>Id</th>
@@ -52,7 +52,7 @@
                 </tr>
                 <tr *ngFor="let item of lookupitems">
                     <td>{{item.id}}</td>
-                    <td>{{item.titlear}}</td>
+                    <td>{{item.namear}}</td>
 
                     <td>
                         <img src="assets/icnEdit.png" alt="" width="32" (click)="modify(item)" class="btn-img"
@@ -70,7 +70,7 @@
         <!-- <div *ngIf="form">
             <div class="AddLookup">
                 <h1>العملية :{{operation}}</h1>
-                <h3> {{group.titlear}}</h3>
+                <h3> {{group.namear}}</h3>
                 <hr>
 
                 <div class="the-container">
@@ -84,7 +84,7 @@
                     <br>
                     <mat-form-field>
 
-                        <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.titlear">
+                        <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.namear">
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput required placeholder="المجموعة" name="group" [disabled]="!opengroup"
@@ -112,7 +112,7 @@
         <div *ngIf="form">
             <div class="AddLookup">
                 <h1>العملية :{{operation}}</h1>
-                <h3> {{group.titlear}}</h3>
+                <h3> {{group.namear}}</h3>
                 <hr>
 
                 <div class="the-container">
@@ -127,7 +127,7 @@
                     <br>
                     <mat-form-field>
 
-                        <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.titlear">
+                        <input matInput required placeholder="الإسم بالعربي" name="email" [(ngModel)]="bank.namear">
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput required placeholder="المجموعة" name="group" [disabled]="(operation=='تعديل' || disgroup==true)"

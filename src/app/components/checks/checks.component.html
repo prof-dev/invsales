@@ -29,7 +29,7 @@
   
       <mat-form-field *ngIf="check.status=='paid'">
           <select matNativeControl required class="primary" [(ngModel)]="moenyto" placeholder="ايداع ببنك" >
-            <option *ngFor="let ch of banks" [(value)]="ch.id">{{ch.titlear}} </option>
+            <option *ngFor="let ch of banks" [(value)]="ch.id">{{ch.namear}} </option>
     
           </select>
         </mat-form-field>

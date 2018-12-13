@@ -37,7 +37,7 @@
              ... إختيار 
             </option>
             <option *ngFor="let option of stores " [value]="option.id">
-              {{option.titlear}}
+              {{option.namear}}
             </option>
           </select>
         </mat-form-field>
@@ -45,7 +45,7 @@
         <select matNativeControl required class="primary" placeholder=" الأصناف الرئيسية" [(ngModel)]="processinfo.parent"
           (change)="getitemsbyclass()">
           <option *ngFor="let option of classes " [value]="option.id">
-            {{option.titlear}}
+            {{option.namear}}
           </option>
 
         </select>
@@ -56,7 +56,7 @@
             إختيار ...
           </option>
           <option *ngFor="let option of list " [value]="option.id">
-            {{option.titlear}}
+            {{option.namear}}
           </option>
 
         </select>

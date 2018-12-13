@@ -174,7 +174,7 @@ export class ChecksComponent implements OnInit {
     this.banktoupdate.data.balance = Number(this.banktoupdate.data.balance) + Number(this.check.amount);
     this.banktoupdate.data = JSON.stringify(this.banktoupdate.data);
     this._hs.put('lookups', "id", this.banktoupdate).subscribe(res => {
-      this._ss.setSnackBar('تمت تعديل رصيد البنك :' + this.banktoupdate.titlear);
+      this._ss.setSnackBar('تمت تعديل رصيد البنك :' + this.banktoupdate.namear);
     });
   }
 

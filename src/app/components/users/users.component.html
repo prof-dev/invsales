@@ -59,7 +59,7 @@
             <th>اضف أو اذل</th>
           </tr>
           <tr *ngFor="let one of branches">
-            <td>{{one.titlear}}</td>
+            <td>{{one.namear}}</td>
             <div *ngIf="actionUserBranches.indexOf(one.id)>=0">
               <td>
                 <img src="assets/icnDelete.png" width="32" alt="" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Branch from user">
@@ -88,7 +88,7 @@
             <th>أضف أو أذل</th>
           </tr>
           <tr *ngFor="let one of stores">
-            <td>{{one.titlear}}</td>
+            <td>{{one.namear}}</td>
             <div *ngIf="actionUserStores.indexOf(one.id)>=0">
               <td>
                 <img src="assets/icnDelete.png" alt="" width="32" (click)="deleteSB(one)" class="btn-img" matTooltip="Remove Store from user">

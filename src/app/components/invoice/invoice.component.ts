@@ -173,7 +173,7 @@ export class InvoiceComponent implements OnInit {
 
     this.temp = this.storeselect.find(obj => obj.id == storeobj);
 
-    return this.temp.titlear;
+    return this.temp.namear;
   }
 
   private getInventories() {
@@ -197,7 +197,7 @@ export class InvoiceComponent implements OnInit {
         this._hs.get('lookups', 'filter[]=parent,eq,' + this.store.id)
           .subscribe(res => {
             this.stores = res.json().lookups;
-            this.storeselect = this.stores.map(stores => ({ id: stores.id, titlear: stores.titlear }));
+            this.storeselect = this.stores.map(stores => ({ id: stores.id, namear: stores.namear }));
             console.log(this.storeselect);
           });
       });
@@ -252,7 +252,7 @@ export class InvoiceComponent implements OnInit {
       return this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue));
     }
     else if (this.filteringtype == 'items') {
-      //console.log(this.cuss.filter(option => option.titlear.toLowerCase().includes(filterValue)));
+      //console.log(this.cuss.filter(option => option.namear.toLowerCase().includes(filterValue)));
       return this.productsview.filter(option => option.namear.toLowerCase().includes(filterValue));
     }
 

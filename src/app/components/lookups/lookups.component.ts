@@ -83,7 +83,7 @@ export class LookupsComponent implements OnInit {
         parent: 0,
         isleaf: 0,
         titleen: "",
-        titlear: "",
+        namear: "",
         data: null
       };
       this.group = this.bank;
@@ -95,7 +95,7 @@ export class LookupsComponent implements OnInit {
         parent: 0,
         isleaf: 0,
         titleen: "",
-        titlear: "",
+        namear: "",
         data: null
       };
       this.group = group;
@@ -124,7 +124,7 @@ export class LookupsComponent implements OnInit {
     this.operation = "تعديل";
     this.form = true;
     this.data = item.data;
-    this.bank.titlear = item.titlear;
+    this.bank.namear = item.namear;
     this.bank.id = item.id;
     this.bank.group = item.group;
     this.bank.isleaf = item.isleaf;
@@ -153,7 +153,7 @@ export class LookupsComponent implements OnInit {
     this.setGroup(null);
     this.form = true;
     this.operation = "إدخال جديد";
-    this.bank.titlear = "";
+    this.bank.namear = "";
     this.bank.group = "";
     this.data.address = "";
     this.data.balance = 0;
@@ -171,7 +171,7 @@ export class LookupsComponent implements OnInit {
     this.visible = false;
     this.form = true;
     this.operation = "إدخال جديد";
-    this.bank.titlear = "";
+    this.bank.namear = "";
     this.data.address = "";
     this.data.balance = 0;
     this.data.price = 0;
@@ -193,7 +193,7 @@ export class LookupsComponent implements OnInit {
       console.log(item.data);
       this._hs.post('lookups', item).subscribe(res => {
 
-        console.log("تمت إضافة " + this.group.titlear + " id :" + res.toString());
+        console.log("تمت إضافة " + this.group.namear + " id :" + res.toString());
         this.refresh();
 
 
@@ -206,7 +206,7 @@ export class LookupsComponent implements OnInit {
 
       this._hs.put('lookups', "id", item).subscribe(res => {
 
-        console.log("تمت تعديل " + this.group.titlear + " id :" + res.json());
+        console.log("تمت تعديل " + this.group.namear + " id :" + res.json());
         this.refresh();
 
 
