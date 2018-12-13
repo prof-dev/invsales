@@ -11,18 +11,18 @@
     <mat-form-field *ngIf="processinfo.status=='c'">
       <mat-select placeholder="إختيار العميل" [(ngModel)]="supcus" (change)="selected($event.value)">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let op of cuss" [value]="op">{{op.fullname}}</mat-option>
+        <mat-option *ngFor="let op of cuss" [value]="op">{{op.namear}}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf="processinfo.status=='s'">
       <mat-select placeholder="إختيار المورد" [(ngModel)]="supcus" (change)="selected($event.value)">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
+        <mat-option *ngFor="let op of supp" [value]="op">{{op.namear}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput required placeholder=" اسم العميل" [(ngModel)]="supcus.fullname" [disabled]="true">
+      <input matInput required placeholder=" اسم العميل" [(ngModel)]="supcus.namear" [disabled]="true">
     </mat-form-field>
     <mat-form-field>
       <input matInput required placeholder=" رصيد العميل" [(ngModel)]="supcus.balance" [disabled]="true">
@@ -134,7 +134,7 @@
         </tr>
         <tr>
           <td>
-            إسم العميل/المورد : {{supcus.fullname}}
+            إسم العميل/المورد : {{supcus.namear}}
           </td>
         </tr>
         <tr>

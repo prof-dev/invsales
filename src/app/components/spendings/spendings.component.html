@@ -6,7 +6,7 @@
       </mat-option>
     </mat-autocomplete> -->
 
-      <mat-select placeholder="بند الصرف " [(ngModel)]="spending.type" >
+      <mat-select placeholder="بند الصرف " [(ngModel)]="spending.lookupsid" >
           <mat-option>None</mat-option>
           <mat-option *ngFor="let item of spendingtype" [value]="item.id">{{item.namear}}</mat-option>
         </mat-select>

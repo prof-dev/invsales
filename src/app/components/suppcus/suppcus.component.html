@@ -13,7 +13,7 @@
         <div mat-dialog-content *ngIf="form.type!=''">
 
             <mat-form-field>
-                <input matInput required placeholder="الإسم " [(ngModel)]="form.fullname">
+                <input matInput required placeholder="الإسم " [(ngModel)]="form.namear">
             </mat-form-field>
             <mat-form-field>
                 <input matInput required placeholder=" الرصيد المبدئي" [(ngModel)]="form.balance" [disabled]="processinfo.disbalance">
@@ -177,10 +177,10 @@
                     </tr>
                     <tr>
                         <td *ngIf="form.type=='c'">
-                            إسم العميل : {{form.fullname}}
+                            إسم العميل : {{form.namear}}
                         </td>
                         <td *ngIf="form.type=='s'">
-                            إسم المورد : {{form.fullname}}
+                            إسم المورد : {{form.namear}}
                         </td>
                     </tr>
                     <tr>
@@ -253,7 +253,7 @@
                 </tr>
                 <tr *ngFor="let row of suppcus  ">
                     <td>{{row.id}}</td>
-                    <td>{{row.fullname}}</td>
+                    <td>{{row.namear}}</td>
                     <td>{{row.data.phone}}</td>
                     <td>{{row.data.phone2}}</td>
                     <td>{{row.data.whatsapp}}</td>

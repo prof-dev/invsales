@@ -17,7 +17,7 @@ export class SadadComponent implements OnInit {
   public supcus = {
     id: 0,
     type: "",
-    fullname: "",
+    namear: "",
     data:{},
     balance: 0
   };
@@ -136,12 +136,12 @@ export class SadadComponent implements OnInit {
         res.json().suppcus.forEach(element => {
           element.data = JSON.parse(element.data);
           if (element.type == 'c') {
-            console.log("customeris :", element.fullname);
+            console.log("customeris :", element.namear);
             this.cuss.push(element);
           }
           else if (element.type == 's') {
             this.supp.push(element);
-            console.log("supplier is :", element.fullname);
+            console.log("supplier is :", element.namear);
           }
         });
       });
@@ -176,7 +176,7 @@ export class SadadComponent implements OnInit {
     this.supcus = {
       id: 0,
       type: "",
-      fullname: "",
+      namear: "",
       data:{},
       balance: 0
     };

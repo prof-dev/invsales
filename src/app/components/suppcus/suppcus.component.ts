@@ -13,7 +13,7 @@ interface Data {
 interface Suppcus {
     id: number;
     type: string;
-    fullname: string;
+    namear: string;
     data: any;
     balance: number;
 }
@@ -111,7 +111,7 @@ export class SuppcusComponent implements OnInit {
             "type": "",
             "id": 0,
             "balance": 0.00,
-            "fullname": "",
+            "namear": "",
 
             "data": {
                 "phone": "",
@@ -132,7 +132,7 @@ export class SuppcusComponent implements OnInit {
     }
     save(form) {
         this.form.data.location = this.location;
-        if (form.id != 0 && form.phone != "" && form.whatsapp != "" && form.fullname != "") {
+        if (form.id != 0 && form.phone != "" && form.whatsapp != "" && form.namear != "") {
             form.data = JSON.stringify(form.data);
             console.log(form.data);
             this._hs.put('suppcus', "id", form).subscribe(res => {
@@ -142,7 +142,7 @@ export class SuppcusComponent implements OnInit {
 
         }
         else
-            if (form.fullname != "") {
+            if (form.namear != "") {
                 form.data = JSON.stringify(form.data);
                 console.log(form.data);
                 this._hs.post('suppcus', form).subscribe(res => {

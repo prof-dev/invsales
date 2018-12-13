@@ -21,13 +21,13 @@ export class UtilsService {
     '</head><body dir="rtl"><br><br><br><table><tr><td><b>الخرطوم السجانة</b><br><b>0123111000</b><br>' +
     '<b>Awadallah</b></td>' +
     '<td><h1>شركة هيفن</h1></td><td><img src="http://haven.mohamedosmanelsayed.com/assets/logo.jpg"></td></tr></table><br><br>';
-  public REPORTFOOTER = '<br><br><b>التوقيع</b>:<br>----------------------------<br><b>اصدرت بواسطه</b>: ' + this.user.fullname + '<br><b>ملحوظات</b>:</body></html>';
+  public REPORTFOOTER = '<br><br><b>التوقيع</b>:<br>----------------------------<br><b>اصدرت بواسطه</b>: ' + this.user.namear + '<br><b>ملحوظات</b>:</body></html>';
 
   constructor(private dialog: MatDialog, private _ss: ShareService) {
     this.thedata = new DialogData();
     this._ss.User.subscribe(user => {
       this.user = user;
-      this.REPORTFOOTER = '<br><br><b>:التوقيع</b><br>----------------------------<br><b>:اصدرت بواسطه</b> ' + this.user.fullname + '<br><b>:ملحوظات</b></body></html>';
+      this.REPORTFOOTER = '<br><br><b>:التوقيع</b><br>----------------------------<br><b>:اصدرت بواسطه</b> ' + this.user.namear + '<br><b>:ملحوظات</b></body></html>';
     });
   }
   public generateUUID() {
@@ -270,7 +270,7 @@ export class ReturnsObject {
   }
   getItems() {
     this._ht.get('suppcus', 'filter=id,eq,' + this.row.entityid).subscribe(res => {
-      this.suppcusname = res.json().suppcus[0].fullname;
+      this.suppcusname = res.json().suppcus[0].namear;
     });
     return this._ht.get('items', 'filter[]=id,in,' + this.itemsids)
   }

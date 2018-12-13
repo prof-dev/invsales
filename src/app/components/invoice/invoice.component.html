@@ -27,13 +27,13 @@
     <mat-form-field *ngIf="invoice.type=='s'">
       <mat-select placeholder="إختيار العميل" [(ngModel)]="selecteditem" (change)="selected($event.value)">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let op of cuss" [value]="op">{{op.fullname}}</mat-option>
+        <mat-option *ngFor="let op of cuss" [value]="op">{{op.namear}}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf="invoice.type=='p'">
       <mat-select placeholder="إختيار المورد" [(ngModel)]="selecteditem" (change)="selected($event.value)">
         <mat-option>None</mat-option>
-        <mat-option *ngFor="let op of supp" [value]="op">{{op.fullname}}</mat-option>
+        <mat-option *ngFor="let op of supp" [value]="op">{{op.namear}}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -45,16 +45,16 @@
         [formControl]="myControl" [matAutocomplete]="auto" >
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="selected(option)">
-          {{option.fullname}}
+          {{option.namear}}
         </mat-option>
       </mat-autocomplete>
  -->
 
     <mat-form-field *ngIf="invoice.type=='p'">
-      <input matInput required placeholder=" اسم المورد" [(ngModel)]="selecteditem.fullname" [disabled]="true">
+      <input matInput required placeholder=" اسم المورد" [(ngModel)]="selecteditem.namear" [disabled]="true">
     </mat-form-field>
     <mat-form-field *ngIf="invoice.type=='s'">
-        <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.fullname" [disabled]="true">
+        <input matInput required placeholder=" اسم العميل" [(ngModel)]="selecteditem.namear" [disabled]="true">
       </mat-form-field>
 
 
@@ -232,10 +232,10 @@
       </tr>
       <tr>
         <td *ngIf="invoice.type=='s'">
-          إسم العميل : {{selecteditem.fullname}}
+          إسم العميل : {{selecteditem.namear}}
         </td>
         <td *ngIf="invoice.type=='p'">
-            إسم المورد : {{selecteditem.fullname}}
+            إسم المورد : {{selecteditem.namear}}
           </td>
       </tr>
       <tr>

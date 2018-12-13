@@ -18,7 +18,7 @@
           </tr>
           <tr *ngFor="let user of page">
             <td>{{user.username}}</td>
-            <td>{{user.fullname}}</td>
+            <td>{{user.namear}}</td>
             <td>
               <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
             </td>
@@ -110,7 +110,7 @@
       <mat-card-header>
         <div *ngIf="action=='edituser'">
           <mat-card-title>تعديل بيانات المستخدمين</mat-card-title>
-          <mat-card-subtitle>تعديل المستخدم : {{actionUser.fullname}}</mat-card-subtitle>
+          <mat-card-subtitle>تعديل المستخدم : {{actionUser.namear}}</mat-card-subtitle>
         </div>
         <div *ngIf="action=='adduser'">
           <mat-card-title>إضافة المستخدمين</mat-card-title>
@@ -119,7 +119,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field>
-          <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.fullname">
+          <input matInput placeholder="الاسم الكامل" name="namear" [(ngModel)]="actionUser.namear">
         </mat-form-field>
         <br>
         <mat-form-field>

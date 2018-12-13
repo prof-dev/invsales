@@ -87,7 +87,7 @@ export class UsersComponent implements OnInit {
   addUser() {
     this.actionUser = {
       id: 0,
-      fullname: '',
+      namear: '',
       username: '',
       pwd: 'renewpass' + Math.random(),
       balance: 0,
@@ -154,7 +154,7 @@ export class UsersComponent implements OnInit {
   }
 
   delete(user:any) {
-    this._ut.messageBox('confirm', 'تحذير حذف مستخدم', 'هل حقا تريد حذف المستخدم [' + user.fullname + ']')
+    this._ut.messageBox('confirm', 'تحذير حذف مستخدم', 'هل حقا تريد حذف المستخدم [' + user.namear + ']')
       .afterClosed()
       .subscribe(dialog => {
         if (dialog == 'ok') {

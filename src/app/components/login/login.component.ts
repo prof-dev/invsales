@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
       username: "إداره",
       pwd: "123",
       roles: 'a;',
-      fullname: 'الرشد محمد التوم',
+      namear: 'الرشد محمد التوم',
       photo: 'http://api.randomuser.me/portraits/men/2.jpg'
     },
     {
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       username: "إداره عليا",
       pwd: "123",
       roles: 't;s;',
-      fullname: 'عيسى محمد عبد الباقي',
+      namear: 'عيسى محمد عبد الباقي',
       photo: 'http://api.randomuser.me/portraits/men/44.jpg'
     },
     {
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       username: "أفرع",
       pwd: "123",
       roles: 's;',
-      fullname: 'عثمان محمد سعيد',
+      namear: 'عثمان محمد سعيد',
       photo: 'http://api.randomuser.me/portraits/men/13.jpg'
     },
     {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       username: "مخازن",
       pwd: "123",
       roles: 'b;',
-      fullname: 'سالم أبشر علي',
+      namear: 'سالم أبشر علي',
       photo: 'http://api.randomuser.me/portraits/men/20.jpg'
     },
     {
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
       username: "مشاهد",
       pwd: "123",
       roles: 'v;',
-      fullname: 'صفيه عبدالرحمن التوم',
+      namear: 'صفيه عبدالرحمن التوم',
       photo: 'http://api.randomuser.me/portraits/women/50.jpg'
     },
     {
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       username: "مستخدم",
       pwd: "123",
       roles: 'u;',
-      fullname: 'سلوى سليم العوا',
+      namear: 'سلوى سليم العوا',
       photo: 'http://api.randomuser.me/portraits/women/72.jpg'
     }
   ];

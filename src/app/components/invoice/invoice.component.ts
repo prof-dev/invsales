@@ -55,7 +55,7 @@ export class InvoiceComponent implements OnInit {
   public selecteditem = {
     id: 0,
     type: "",
-    fullname: "",
+    namear: "",
     data: {},
     balance: 0
   };
@@ -244,12 +244,12 @@ export class InvoiceComponent implements OnInit {
   public _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
     if (this.filteringtype == 'suppliers') {
-      // this.selecteditem = this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
-      return this.supp.filter(option => option.fullname.toLowerCase().includes(filterValue));
+      // this.selecteditem = this.supp.filter(option => option.namear.toLowerCase().includes(filterValue));
+      return this.supp.filter(option => option.namear.toLowerCase().includes(filterValue));
     }
     else if (this.filteringtype == 'customers') {
-      console.log(this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue)));
-      return this.cuss.filter(option => option.fullname.toLowerCase().includes(filterValue));
+      console.log(this.cuss.filter(option => option.namear.toLowerCase().includes(filterValue)));
+      return this.cuss.filter(option => option.namear.toLowerCase().includes(filterValue));
     }
     else if (this.filteringtype == 'items') {
       //console.log(this.cuss.filter(option => option.namear.toLowerCase().includes(filterValue)));
@@ -418,12 +418,12 @@ export class InvoiceComponent implements OnInit {
         res.json().suppcus.forEach(element => {
           element.data = JSON.parse(element.data);
           if (element.type == 'c') {
-            console.log("customeris :", element.fullname);
+            console.log("customeris :", element.namear);
             this.cuss.push(element);
           }
           else if (element.type == 's') {
             this.supp.push(element);
-            console.log("supplier is :", element.fullname);
+            console.log("supplier is :", element.namear);
           }
         });
       });
@@ -467,7 +467,7 @@ export class InvoiceComponent implements OnInit {
     this.selecteditem = {
       id: 0,
       type: "",
-      fullname: "",
+      namear: "",
       data: {},
       balance: 0
     };
@@ -711,7 +711,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   displayFn(val: any) {
-    return val ? val.fullname : val;
+    return val ? val.namear : val;
   }
 
   numbertToWords(num) {
