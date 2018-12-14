@@ -21,17 +21,24 @@ export class InventoryClass {
 
     constructor(private _hs: HttpService, private _ss: ShareService) {
     }
-
-
-    public additemtolist(item, storeid, list: any[]): any[] {
-        this.inventories = list;
-        this.items = [];
+    resetItem() {
         this.item = {
             id: 0,
             avb: 0,
             rsv: 0,
             com: 0
         };
+    }
+
+    public additemtolist(item, storeid, list: any[],op:boolean): any[] {
+        console.log("additemtolist storeid:", storeid);
+        console.log("additemtolist item:", item);
+        console.log("additemtolist list:", list);
+
+
+        this.inventories = list;
+        this.items = [];
+        this.resetItem();
 
         console.log(item.id);
 
@@ -47,17 +54,27 @@ export class InventoryClass {
 
                     if (element.id == item.id) {
                         this.isexist = true;
-                        element.avb = element.avb + parseInt(item.avb);
-                        element.rsv = element.rsv + parseInt(item.rsv);
-                        element.com = element.com + parseInt(item.com);
+                        if(op){
+                            element.avb = element.avb + parseInt(item.avb);
+                            element.rsv = element.rsv + parseInt(item.rsv);
+                            element.com = element.com + parseInt(item.com);
+                        }
+                        else{
+                            element.avb = element.avb - parseInt(item.avb);
+                            element.rsv = element.rsv - parseInt(item.rsv);
+                            element.com = element.com - parseInt(item.com);
+                        }
+                   
                     }
                 });
                 if (!this.isexist) {
-                    item.avb = parseInt(item.avb);
-                    item.id = parseInt(item.id);
-                    item.rsv = parseInt(item.rsv);
-                    item.com = parseInt(item.com);
-                    el.data.push(item);
+                    this.item.avb = parseInt(item.avb);
+                    this.item.id = parseInt(item.id);
+                    this.item.rsv = parseInt(item.rsv);
+                    this.item.com = parseInt(item.com);
+                    el.data.push(this.item);
+                    this.resetItem();
+
                 }
             }
         });
@@ -66,7 +83,7 @@ export class InventoryClass {
             console.log("not exisit");
             // this.new.push(this.processinfo.store);
 
-            this.inventroy.storeid = Number(storeid);
+            this.inventroy.storeid = storeid;
             // [{ avb: number; id: number; rsv: number; com: number; }]
             console.log(this.inventroy);
             this.new.push(storeid);
@@ -75,8 +92,10 @@ export class InventoryClass {
             this.item.rsv = parseInt(item.rsv);
             this.item.com = parseInt(item.com);
             this.items.push(this.item);
+            this.resetItem();
             this.inventroy.data = JSON.stringify(this.items); console.log('inv.data  :' + this.inventroy);
             console.log(this.inventroy);
+            this.inventories.push(this.inventroy);
             this._hs.post('inventory', this.inventroy).subscribe(res => {
 
                 this._ss.setSnackBar('inserted page is refreshed for you');
@@ -84,24 +103,7 @@ export class InventoryClass {
             });
         }
 
-        // this.istouched = false;
-        // this.touched.forEach(element => {
-        //   if (element == this.processinfo.store && (this.storeexist == true)) {
-        //     this.istouched = true;
-        //   }
-        // });
-        // if (!this.istouched) {
-        //   this.touched.push(this.processinfo.store);
-        // }
 
-        // every store is touched
-
-        this.item = {
-            id: 0,
-            avb: 0,
-            rsv: 0,
-            com: 0
-        };
 
 
         return this.inventories;

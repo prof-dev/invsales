@@ -80,7 +80,7 @@ export class InvoiceComponent implements OnInit {
 
 
   public operation: string = "";
-  store: any;
+  store: any={};
   stores: any[] = [];
   public storeselect: any[] = [];
   invoicedata: { //payments: any[]
@@ -106,6 +106,7 @@ export class InvoiceComponent implements OnInit {
   public param = 0;
   temp: any;
   istouched: boolean;
+  storeid: any;
 
 
   constructor(private _hs: HttpService,
@@ -168,8 +169,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   getStoreName(storeobj): string {
-    console.log("====================");
-    console.log(storeobj);
+    // console.log(storeobj);
 
     this.temp = this.storeselect.find(obj => obj.id == storeobj);
 
@@ -184,7 +184,6 @@ export class InvoiceComponent implements OnInit {
         this.inventories.forEach(element => {
           this.items = JSON.parse(element.data);
           element.data = this.items;
-          console.log(this.items);
         });
       });
   }
@@ -193,12 +192,10 @@ export class InvoiceComponent implements OnInit {
     this._hs.get('lookups', 'filter=group,eq,stores')
       .subscribe(res => {
         this.store = res.json().lookups[0];
-        console.log(this.store);
         this._hs.get('lookups', 'filter[]=parent,eq,' + this.store.id)
           .subscribe(res => {
             this.stores = res.json().lookups;
             this.storeselect = this.stores.map(stores => ({ id: stores.id, namear: stores.namear }));
-            console.log(this.storeselect);
           });
       });
   }
@@ -219,10 +216,8 @@ export class InvoiceComponent implements OnInit {
     this._hs.get('items')
       .subscribe(res => {
         this.lookups = res.json().items;
-        console.log(this.lookups);
         this.lookups.forEach(element => {
           element.data = JSON.parse(element.data);
-          console.log(this.items);
         });
         this.productsview = this.lookups.map(lookup => ({ id: lookup.id, namear: lookup.namear, price: lookup.data.price, parent: lookup.parent }));
         this.list = this.productsview;
@@ -230,8 +225,6 @@ export class InvoiceComponent implements OnInit {
   }
   getitemsbyclass() {
     if (this.processinfo.parent != 0) {
-      console.log(this.processinfo.parent);
-      // console.log(this.productsview);
 
 
       this.list = this.productsview.filter(option => option.parent == this.processinfo.parent);
@@ -248,7 +241,6 @@ export class InvoiceComponent implements OnInit {
       return this.supp.filter(option => option.namear.toLowerCase().includes(filterValue));
     }
     else if (this.filteringtype == 'customers') {
-      console.log(this.cuss.filter(option => option.namear.toLowerCase().includes(filterValue)));
       return this.cuss.filter(option => option.namear.toLowerCase().includes(filterValue));
     }
     else if (this.filteringtype == 'items') {
@@ -260,7 +252,8 @@ export class InvoiceComponent implements OnInit {
 
 
   additem(item) {
-    console.log(item);
+    console.log("item json  : "+item.store.id);
+    this.storeid=item.store.id;
     // console.log(this.inventories);
     console.log(this.invoice.type);
 
@@ -270,13 +263,13 @@ export class InvoiceComponent implements OnInit {
       if (this.inventory != null) {
 
         this.inventory.data.forEach(element => {
-          console.log(this.inventory.data);
+          console.log(element);
 
           if ((!((Number(element.avb) - Number(element.rsv) + Number(element.com)) < Number(item.count))) && element.id == item.id) {
-            console.log(item);
+            console.log("sales after check available stock:",item);
             this.invoiceitems.push(item);
             this.invoice.amount = this.invoice.amount + Number(item.totalprice);
-            this.product.store = item.store.id;
+            this.product.store =  this.storeid;
             this.product = {};
             this.processinfo.reminder += Number(item.totalprice);
             element.rsv = Number(element.rsv) + Number(item.count);
@@ -286,8 +279,8 @@ export class InvoiceComponent implements OnInit {
                 this.istouched = true;
               }
             });
-            if (this.istouched) {
-              this.touched.push(item.store.id);
+            if (!this.istouched) {
+              this.touched.push(this.storeid);
             }
 
 
@@ -305,15 +298,16 @@ export class InvoiceComponent implements OnInit {
 
     }
     else if (this.invoice.type == 'p') {
+      this.invitem.id=item.id;
       this.invitem.com =  Number(item.count);
       this.invoice.amount = this.invoice.amount + Number(item.totalprice);
-      this.product.store = item.store.id;
+      this.product.store = this.storeid;
       this.product = {};
-      this.touched.push(item.store.id);
-      console.log(this.inventories);
+      this.touched.push(this.storeid);
+      console.log("purchase add to inventories:",this.inventories);
       
-      this.inventories = this.inventoryObj.additemtolist(this.invitem, item.store.id, this.inventories);
-      console.log(this.inventories);
+      this.inventories = this.inventoryObj.additemtolist(this.invitem, this.storeid, this.inventories,true);
+      console.log("purchase after add to inventories:",this.inventories);
 
       this.invoiceitems.push(item);
 
@@ -529,6 +523,8 @@ export class InvoiceComponent implements OnInit {
     }
   }
   save() {
+    console.log("touched items :"+this.touched);
+    
     if (this.processinfo.status != "print" && this.selecteditem != null) {
       this.invoice.suppcusid = this.selecteditem.id;
       this.invoice.userid = this.user.id;
@@ -541,15 +537,15 @@ export class InvoiceComponent implements OnInit {
 
       this._hs.post('pursales', this.invoice).subscribe(res => {
         this.invoice.id = Number(res.text());
-
+        this.updateuserbalance();
+        this.updateInventory();
         this.insertchecks(this.invoice.id);
         this.saveToSadad(res.text());
         if (this.processinfo.reminder != 0) {
           this.updatecustomeraccount();
 
         }
-        this.updateuserbalance();
-        this.updateInventory();
+      
         this.processinfo.status = "print";
         this._ss.setSnackBar("تمت العملية بنجاح الرجاء طباعة الفاتورة");
 
