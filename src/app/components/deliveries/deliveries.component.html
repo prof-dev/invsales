@@ -1,6 +1,14 @@
 <mat-card>
-    <mat-card-header>
-        <!-- <mat-card-title>
+
+  <mat-card-header>
+    <mat-card-title>
+      <h1>
+        عمليات المخازن (تسليم / إستلام )
+
+      </h1>
+    </mat-card-title>
+
+    <!-- <mat-card-title>
             <div *ngIf="retOb.type=='s'">
                 <h1>مردودات المبيعات <img src="assets/icnSales.png" alt=""></h1>
             </div>
@@ -8,19 +16,75 @@
                 <h1>مردودات المشتروات <img src="assets/icnPurchase.png" alt=""></h1>
             </div>
         </mat-card-title> -->
-        <mat-card-subtitle>  عمليات المخازن (تسليم / إستلام )</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-form-field>
-            <!-- <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type" (click)="typeChanged()"> -->
-            <mat-select placeholder="اختر النوع">
+    <mat-card-subtitle> عمليات المخازن (تسليم / إستلام )</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            إخترالنوع
+          </th>
+          <th>
+            رقم العملية أو الفاتورة
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <mat-form-field style="width:98%">
+              <mat-select placeholder="اختر النوع" [(ngModel)]="delivery.type">
 
                 <mat-option *ngFor='let ch of types' value="ch.value">{{ch.viewValue}} </mat-option>
                 <!-- <mat-option value="p">مردودات المشتروات</mat-option>> -->
-            </mat-select>
-        </mat-form-field>
-        <br>
-        <!-- <div *ngIf="retOb.type==='p'">
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <input matInput required placeholder=" رقم المرجع " [(ngModel)]="delivery.ref" >
+
+            </mat-form-field>
+
+          </td>
+        
+        </tr>
+        <tr>
+          <td style="white-space: nowrap;">
+              <button mat-raised-button color="primary"  (click)="getItems()"  > إسترجاع الأصناف من المرجع </button>&nbsp;
+
+          </td>
+        
+        </tr>
+       
+      </tbody>
+    </table>
+    
+    <table>
+        <tr>
+          <th>الصنف</th>
+          <th>العدد</th>
+          <th>الكمية المسلمة / المستلمة</th>
+          <th>ملاحظات</th>
+
+        </tr>
+        <tr *ngFor="let row of items">
+          <td>{{row.name}}</td>
+          <td>{{row.count}}</td>
+          <td>{{row.delivered}}</td>
+          <td>{{row.note}}</td>
+
+        </tr>
+      </table>
+      <div id='printDiv'>
+        
+      </div>
+
+    <!-- <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type" (click)="typeChanged()"> -->
+
+    <br>
+    <!-- <div *ngIf="retOb.type==='p'">
             <table>
                 <tr>
                     <th>اسم المورد</th>
@@ -67,5 +131,5 @@
                 </tr>
             </table>
         </div> -->
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>

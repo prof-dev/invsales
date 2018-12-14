@@ -7,10 +7,49 @@ import { Choice } from '../sadad/sadad.component';
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
-
+  public delivery:any={};
+  public items:any[]=[];
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getItems(){
+    switch(this.delivery.type){
+      case 'p':{
+        break;
+      }
+      case 's':{
+        break;
+      }
+      case 'rs':{
+        break;
+      }
+      case 'rp':{
+        break;
+      }
+      case 'fp':{
+        break;
+      }
+      case 'tp':{
+        break;
+      }
+      default:break;
+    }
+
+  }
+
+  getPursalesItems(){
+
+  }
+  getPursalesRetItems(){
+    
+  }
+  getStoreExchange(){
+    
+  }
+  insertMovement(){
+
   }
 
   public types: Choice[] = [

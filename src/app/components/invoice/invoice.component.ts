@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
 import { fadeInItems, DateAdapter } from '@angular/material';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Item } from '../inventory/inventory.component';
-import { InventoryClass } from 'src/app/services/classes';
+import { InventoryClass, UtilityClass } from 'src/app/services/classes';
 
 @Component({
   selector: 'app-invoice',
@@ -16,6 +16,7 @@ import { InventoryClass } from 'src/app/services/classes';
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  public utility:UtilityClass;
   public sadad: any={};
   public inventoryObj: InventoryClass;
   public touched: number[] = [];
@@ -114,6 +115,7 @@ export class InvoiceComponent implements OnInit {
     private _router: Router) {
     this.inventoryObj = new InventoryClass(this._hs, this._ss);
     this._ar.params.subscribe(params => this.param = params['id']);
+    this.utility=new UtilityClass();
 
   }
 
@@ -715,38 +717,8 @@ export class InvoiceComponent implements OnInit {
   }
 
   numbertToWords(num) {
-    var number = parseInt(num);
-    if (number == 0) return ' ';
-
-    var words = "";
-    if (Math.floor(number / 1000000) > 0) {
-      words += this.numbertToWords(Math.floor(number / 1000000)) + ' مليون ';
-      number %= 1000000;
-    }
-    if (Math.floor(number / 1000) > 0) {
-      words += this.numbertToWords(Math.floor(number / 1000)) + ' ألف ';
-      number %= 1000;
-    }
-    if (Math.floor(number / 100) > 0) {
-      words += this.numbertToWords(Math.floor((number / 100))) + ' مائة ';
-      number %= 100;
-    }
-    if (number > 0) {
-      if (words != "") { words += "  " }
-
-      var unitmap = ['', 'واحد', 'اثنان', 'ثلاثة', 'اربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة', 'احدى عشر', 'اثنا عشر', 'ثلاثة عشر', 'اربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'];
-      var tensmap = ['', 'عشرة', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
-      if (number < 20) words += unitmap[number];
-      else {
-        console.log('number/10', Math.floor(number / 10));
-        console.log(number % 10);
-
-        if ((number / 10) > 0) words += unitmap[number % 10];
-        words += " و " + tensmap[Math.floor(number / 10)];
-
-      }
-    }
-    return words;
+    return this.utility.numbertToWords(num);
+    
   }
 }
 
