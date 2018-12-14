@@ -17,7 +17,10 @@ export class DeliveriesComponent implements OnInit {
     { value: 'p', viewValue: 'إستلام مشتريات' },
     { value: 's', viewValue: 'تسليم مبيعات' },
     { value: 'rs', viewValue: 'إستلام مردودات مبيعات' },
-    { value: 'rp', viewValue: 'تسليم مردودات مشتريات' }
+    { value: 'rp', viewValue: 'تسليم مردودات مشتريات' },
+    { value: 'fs', viewValue: 'إستلام  بضاعة من مخزن آخر' },
+    { value: 'ts', viewValue: 'تسليم  بضاعة إلى مخزن آخر' },
+
 
 
   ]
