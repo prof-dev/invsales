@@ -30,6 +30,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { ItemsComponent } from './components/items/items.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ItemsmoveComponent } from './components/itemsmove/itemsmove.component';
+import { DeliveriesComponent } from './components/deliveries/deliveries.component';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { ItemsmoveComponent } from './components/itemsmove/itemsmove.component';
     SigninComponent,
     LookupsComponent,
     InvoiceComponent,
-    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent, ItemsmoveComponent
+    ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent, ItemsmoveComponent, DeliveriesComponent
   ],
   imports: [
     BrowserModule,

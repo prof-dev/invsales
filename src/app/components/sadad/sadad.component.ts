@@ -249,7 +249,7 @@ export class SadadComponent implements OnInit {
   }
 }
 
-interface Choice {
+export interface Choice {
   value: string;
   viewValue: string;
 }

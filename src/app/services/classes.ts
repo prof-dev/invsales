@@ -30,7 +30,7 @@ export class InventoryClass {
         };
     }
 
-    public additemtolist(item, storeid, list: any[],op:boolean): any[] {
+    public additemtolist(item, storeid, list: any[],op:boolean): any[] {/// true adds //false substracts
         console.log("additemtolist storeid:", storeid);
         console.log("additemtolist item:", item);
         console.log("additemtolist list:", list);

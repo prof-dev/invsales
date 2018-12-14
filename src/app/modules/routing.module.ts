@@ -17,6 +17,7 @@ import { ReportsComponent } from '../components/reports/reports.component';
 import { ItemsComponent } from '../components/items/items.component';
 import { ProfileComponent } from '../components/profile/profile.component';
 import { ItemsmoveComponent } from '../components/itemsmove/itemsmove.component';
+import { DeliveriesComponent } from '../components/deliveries/deliveries.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'items', component: ItemsComponent },
   { path: 'itemsmove', component: ItemsmoveComponent },
   { path: 'invoice/:id', component: InvoiceComponent },
+  { path: 'deliveries', component: DeliveriesComponent }
 ];
 
 @NgModule({
