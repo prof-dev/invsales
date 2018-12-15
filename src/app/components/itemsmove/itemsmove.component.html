@@ -1,4 +1,3 @@
-<h1>لم تكتمل الشاشه بعد</h1>
 <mat-card>
   <mat-card-header>
     <mat-card-title> تحويل الأصناف بين المخازن</mat-card-title>
@@ -6,6 +5,9 @@
   </mat-card-header>
   <mat-card-content>
     <button mat-raised-button (click)="fetchOrder()" color="primary">عرض طلب سابق</button>
+    <button mat-raised-button (click)="newOrder()" color="primary">طلب جديد</button>
+    <img src="assets/icnLocked.png" alt="" *ngIf="storetostore.complete===1">
+    <img src="assets/icnUnlocked.png" alt="" *ngIf="storetostore.complete===0">
     <br><br>
     <mat-form-field>
       <input matInput type="text" name="orderid" placeholder="رقم الطلب السابق" [(ngModel)]="storetostore.id">
@@ -50,10 +52,10 @@
         <td>{{qtyintarget}}</td>
       </tr>
     </table>
-    <button mat-raised-button (click)="moveItems()" color="primary">إكمال النقل</button>
-    <button mat-raised-button (click)="addItem()" color="primary">اضف الى القائمه</button>
+    <button mat-raised-button (click)="moveItems()" color="primary" [disabled]="storetostore.complete===1">حفظ التعديل</button>
+    <button mat-raised-button (click)="addItem()" color="primary"  [disabled]="storetostore.complete===1">اضف الى القائمه</button>
     <button mat-raised-button (click)="print()" color="primary">طباعة</button>
-    <div class="printdiv hide" *ngIf="fromstore.id>0 && tostore.id>0">
+    <div class="printdiv hide" *ngIf="fromstore && tostore">
       <table>
         <tr>
           <th>المخزن المصدر</th>
@@ -73,11 +75,11 @@
           <th>التفاصيل</th>
           <th>الكميه</th>
         </tr>
-        <tr *ngFor="let item of data; let i= index">
+        <tr *ngFor="let item of storetostore.data; let i= index">
           <td>{{item.id}}</td>
           <td>{{item.namear}}</td>
           <td>{{item.qty}}</td>
-          <td><button mat-button (click)="deleteItem(i)"><img width="24" src="assets/icnDelete.png" alt=""></button>
+          <td><button mat-button (click)="deleteItem(i)" [disabled]="storetostore.complete===1"><img width="24" src="assets/icnDelete.png" alt=""></button>
           </td>
         </tr>
       </table>

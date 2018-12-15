@@ -15,13 +15,12 @@ export class ItemsmoveComponent implements OnInit {
   public qty: number = 0;
   public qtyinsource: number = 0;
   public qtyintarget: number = 0;
-  public data: any[] = [];
   public selectedItem: any = { id: 0 };
   public sourceitems: any[] = [];
   public stores: any[] = [];
   public user: any = { id: 0 };
 
-  public storetostore = { id: 0, fromstore: 0, tostore: 0, data: '', usersid: this.user.id, complete: 0 };
+  public storetostore = { id: 0, fromstore: 0, tostore: 0, data: [], usersid: this.user.id, complete: 0 };
   constructor(private _rt: Router, private _hs: HttpService, private _ss: ShareService, private _ut: UtilsService) { }
 
   ngOnInit() {
@@ -38,11 +37,28 @@ export class ItemsmoveComponent implements OnInit {
   fetchOrder() {
     this._ss.setAppIsBusy(true);
     this._hs.get('storetostore', 'filter=id,eq,' + this.storetostore.id).subscribe(res => {
-      this.storetostore = res.json().storetostore[0];
-      console.log('res: ', this.storetostore);
+      console.log('result of fecth: ', res.json());
+      if (res.json().storetostore.length == 0) {
+        this.newOrder();
+      } else {
+        this.storetostore = res.json().storetostore[0];
+        this.storetostore.data = JSON.parse(res.json().storetostore[0].data);
+        this.fromstore = this.stores.find(one => { return one.id == this.storetostore.fromstore; });
+        this.tostore = this.stores.find(one => { return one.id == this.storetostore.tostore; });
+        this.sourceSelected();
+        this.targetSelected();
+      }
       this._ss.setAppIsBusy(false);
     });
   }
+  newOrder() {
+    this.storetostore = { id: 0, fromstore: 0, tostore: 0, data: [], usersid: this.user.id, complete: 0 };
+    this.sourceitems = [];
+    this.qty = 0;
+    this.fromstore = null;
+    this.tostore = null;
+  }
+
   sourceSelected() {
     this.qtyinsource = 0;
     if (this.fromstore.id > 0) {
@@ -98,25 +114,21 @@ export class ItemsmoveComponent implements OnInit {
       this._ss.setSnackBar('لا يمكن نقل كميه أكبر من الموجود في المخزن');
       return;
     }
-    if (this.data.find(one => { return one.id == this.selectedItem.id })) {
+    if (this.storetostore.data.find(one => { return one.id == this.selectedItem.id })) {
       this._ss.setSnackBar('لقد اضفت هذا الصنف سابقاً');
       return;
     }
-    this.data.push({ id: this.selectedItem.id, namear: this.selectedItem.namear, qty: this.qty })
+    this.storetostore.data.push({ id: this.selectedItem.id, namear: this.selectedItem.namear, qty: this.qty })
   }
   deleteItem(idx) {
-    this.data.splice(idx, 1);
+    this.storetostore.data.splice(idx, 1);
   }
   moveItems() {
-    let mdata: any[] = JSON.parse(JSON.stringify(this.data));
-    mdata.forEach(one => {
-      delete one.namear;
-    });
     if (this.fromstore.id == this.tostore.id) {
       this._ss.setSnackBar('لا يمكن نقل الأصناف لنفس المخزن');
       return;
     }
-    if (mdata.length == 0) {
+    if (this.storetostore.data.length == 0) {
       this._ss.setSnackBar('لم تقم باضافه اي صنف');
       return;
     }
@@ -124,7 +136,7 @@ export class ItemsmoveComponent implements OnInit {
     mstoretostore.fromstore = this.fromstore.id;
     mstoretostore.tostore = this.tostore.id;
     mstoretostore.usersid = this.user.id;
-    mstoretostore.data = JSON.stringify(mdata);
+    mstoretostore.data = JSON.stringify(mstoretostore.data);
     console.log('mstoretostore: ', mstoretostore);
 
     this._ss.setAppIsBusy(true);
