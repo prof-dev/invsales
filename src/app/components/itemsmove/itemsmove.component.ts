@@ -41,7 +41,7 @@ public itemid:any;
     this.qtyinsource = 0;
     this._ss.setAppIsBusy(true);
     if (this.fromstore > 0) {
-      this._hs.get('inventory', 'filter[]=storeid,eq,' + this.fromstore).subscribe(res => {
+      this._hs.get('inventory', 'filter[]=id,eq,' + this.fromstore).subscribe(res => {
 
         this.fromstorejson = res.json().inventory[0];
         this.fromstorejson.data = JSON.parse(this.fromstorejson.data);
@@ -62,7 +62,7 @@ public itemid:any;
     this.qtyintarget = 0;
     this._ss.setAppIsBusy(true);
     if (this.tostore > 0) {
-      this._hs.get('inventory', 'filter[]=storeid,eq,' + this.tostore).subscribe(res => {
+      this._hs.get('inventory', 'filter[]=id,eq,' + this.tostore).subscribe(res => {
         this.tostorejson = res.json().inventory[0];
         console.log('tostorejson: ', this.tostorejson);
 

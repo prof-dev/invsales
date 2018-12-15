@@ -93,7 +93,7 @@ export class InvoiceComponent implements OnInit {
   public inventories: any[] = [];
 
   public inventory = {
-    storeid: 0,
+    id: 0,
     data: null
   }
   public invitems: Item[] = [];
@@ -260,7 +260,7 @@ export class InvoiceComponent implements OnInit {
     console.log(this.invoice.type);
 
     if (this.invoice.type == 's') {
-      this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
+      this.inventory = this.inventories.find(obj => obj.id == this.storeid);
 
       if (this.inventory != null) {
 
@@ -320,7 +320,7 @@ export class InvoiceComponent implements OnInit {
     this.invoice.amount = this.invoice.amount - Number(item.amount);
     this.invoiceitems.splice(i, 1);
     this.inventories.forEach(element => {
-      if (element.storeid == item.store.id) {
+      if (element.id == item.store.id) {
         element.data.forEach(el => {
           if (this.invoice.type == 's') {
             el.rsv = Number(el.rsv) + Number(item.count);
@@ -476,9 +476,9 @@ export class InvoiceComponent implements OnInit {
   updateInventory() {
     this.touched.forEach(outer => {
       this.inventories.forEach(inner => {
-        if (outer == inner.storeid) {
+        if (outer == inner.id) {
           inner.data = JSON.stringify(inner.data);
-          this._hs.put('inventory', 'storeid', inner).subscribe(res => {
+          this._hs.put('inventory', 'id', inner).subscribe(res => {
 
             this._ss.setSnackBar('inserted page is refreshed for you');
             this.getInventories();
@@ -569,7 +569,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   print() {
-    this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
+    this._hs.log(this.user.id, 'tbl1', 'c', 'المشتريات والمبيعات', 'so and so');
     if (this.invoice.type == 's') {
       this._ut.showReport('إذن  إستلام بضاعة');
 

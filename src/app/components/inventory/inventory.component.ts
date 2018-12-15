@@ -4,6 +4,7 @@ import { ShareService } from 'src/app/services/share.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { element } from '@angular/core/src/render3/instructions';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-inventory',
@@ -29,12 +30,9 @@ export class InventoryComponent implements OnInit {
     com: 0
   };
   public actionindex = 0;
-  // public inv:{
-  //   storeid:0,
-  //   data:[]
-  // }
+
   public inventroy = {
-    storeid: 0,
+    id: 0,
     data: null
   }
   public stores: any[] = [];
@@ -54,7 +52,7 @@ export class InventoryComponent implements OnInit {
   }
   public list: any[] = [];
 
-  constructor(private _hs: HttpService,
+  constructor(private _hs: HttpService, private _ut: UtilsService,
     private _ss: ShareService,
     private _router: Router) { }
 
@@ -135,7 +133,7 @@ export class InventoryComponent implements OnInit {
       });
   }
 
- getitemsbyclass() {
+  getitemsbyclass() {
     if (this.processinfo.parent != 0) {
       console.log(this.processinfo.parent);
       console.log(this.productsview);
@@ -153,7 +151,7 @@ export class InventoryComponent implements OnInit {
     console.log(item.id);
     this.storeexist = false;
     this.inventories.forEach(el => {
-      if (el.storeid == this.processinfo.store) {
+      if (el.id == this.processinfo.store) {
         console.log(el.data);
 
         this.storeexist = true;
@@ -182,7 +180,7 @@ export class InventoryComponent implements OnInit {
       console.log("not exisit");
       // this.new.push(this.processinfo.store);
 
-      this.inventroy.storeid = Number(this.processinfo.store);
+      this.inventroy.id = Number(this.processinfo.store);
       // [{ avb: number; id: number; rsv: number; com: number; }]
       console.log(this.inventroy);
       this.new.push(this.processinfo.store);
@@ -280,9 +278,9 @@ export class InventoryComponent implements OnInit {
   save() {
     this.touched.forEach(outer => {
       this.inventories.forEach(inner => {
-        if (outer == inner.storeid) {
+        if (outer == inner.id) {
           inner.data = JSON.stringify(inner.data);
-          this._hs.put('inventory', 'storeid', inner).subscribe(res => {
+          this._hs.put('inventory', 'id', inner).subscribe(res => {
 
             this._ss.setSnackBar('inserted page is refreshed for you');
             this.getInventories();
@@ -292,24 +290,28 @@ export class InventoryComponent implements OnInit {
     });
 
     this.deleted.forEach(outer => {
-      this._hs.delete('inventory',outer.storeid, outer).subscribe(res => {
+      this._hs.delete('inventory', outer.id, outer).subscribe(res => {
         this._ss.setSnackBar('inserted page is refreshed for you');
         this.getInventories();
       });
     });
 
-this.touched=[];
+    this.touched = [];
 
     this.touched = [];
 
 
   }
+  print() {
+    this._hs.log(this.user.id, 'tbl1', 'c', 'تحرير المخازن', 'so and so');
 
+    this._ut.showReport('كميات البضاعة بالمخزن');
+}
   remove(item, i, actionstore) {
     this.items.splice(i, 1);
     this.touched.push(actionstore);
     if (this.items.length == 0) {
-      this.deleted.push(this.inventories.find(obj => obj.storeid == actionstore));
+      this.deleted.push(this.inventories.find(obj => obj.id == actionstore));
       this.inventories.splice(this.actionindex, 1);
       console.log(this.deleted);
 

@@ -6,7 +6,7 @@ export class InventoryClass {
     public items: Item[] = [];
     public inventories: any[] = [];
     public inventroy = {
-        storeid: 0,
+        id: 0,
         data: null
     };
     storeexist: boolean;
@@ -44,7 +44,7 @@ export class InventoryClass {
 
         this.storeexist = false;
         this.inventories.forEach(el => {
-            if (el.storeid == storeid) {
+            if (el.id == storeid) {
                 console.log(el.data);
 
                 this.storeexist = true;
@@ -83,7 +83,7 @@ export class InventoryClass {
             console.log("not exisit");
             // this.new.push(this.processinfo.store);
 
-            this.inventroy.storeid = storeid;
+            this.inventroy.id = storeid;
             // [{ avb: number; id: number; rsv: number; com: number; }]
             console.log(this.inventroy);
             this.new.push(storeid);
