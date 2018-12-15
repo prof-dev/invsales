@@ -490,31 +490,36 @@ export class InvoiceComponent implements OnInit {
   }
 
   saveToSadad(invoiceid) {
-    if (this.selecteditem.id != null && this.payments.length > 0) {
+    if (this.selecteditem.id != null) {
       this.sadad.pursalesid = invoiceid;
       this.sadad.suppcusid = this.selecteditem.id;
-      this.sadad.data = JSON.stringify(this.payments);
-      this.sadad.amount=this.paid;
+      this.sadad.oldbalance = this.selecteditem.amount;
+
+      if(this.payments.length > 0){
+        this.sadad.data = JSON.stringify(this.payments);
+
+      }
+      else{
+        this.sadad.data="";
+      }
+      this.sadad.invamount=this.invoice.amount;
       if (this.invoice.type == 's') {
 
         this.selecteditem.amount = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
-        this.sadad.newbalance = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
+        this.sadad.newbalance =Number(this.selecteditem.amount);
         this.sadad.source='in';
       }
       else {
         this.selecteditem.amount = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
-        this.sadad.newbalance = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
+        this.sadad.newbalance =Number(this.selecteditem.amount);
         this.sadad.source='out';
 
       }
-      this.sadad.oldbalance = this.selecteditem.amount;
 
       this.sadad.userid = this.user.id;
-      this.sadad.total = this.paid;
       this._hs.post('sadad', this.sadad).subscribe(res => {
         this.sadad.id = res.text();
-        // this.updatesuppcussbalance();
-        // this.insertchecks();
+       
         this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
       });
 
@@ -539,10 +544,10 @@ export class InvoiceComponent implements OnInit {
 
       this._hs.post('pursales', this.invoice).subscribe(res => {
         this.invoice.id = Number(res.text());
-        this.updateuserbalance();
+        this.saveToSadad(res.text());
+       this.updateuserbalance();
         this.updateInventory();
         this.insertchecks(this.invoice.id);
-        this.saveToSadad(res.text());
         if (this.processinfo.reminder != 0) {
           this.updatecustomeraccount();
 
@@ -686,6 +691,7 @@ export class InvoiceComponent implements OnInit {
       this.payments.push(payment);
       this.payments.forEach(element => {
         this.paid = this.paid + Number(element.amount);
+        this.sadad.amount=this.paid;
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);
