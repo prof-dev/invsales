@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       id: 3,
       username: "أفرع",
       pwd: "123",
-      roles: 's;',
+      roles: 'b;',
       namear: 'عثمان محمد سعيد',
       photo: 'http://api.randomuser.me/portraits/men/13.jpg'
     },
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       id: 4,
       username: "مخازن",
       pwd: "123",
-      roles: 'b;',
+      roles: 's;',
       namear: 'سالم أبشر علي',
       photo: 'http://api.randomuser.me/portraits/men/20.jpg'
     },
