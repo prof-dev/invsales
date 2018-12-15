@@ -9,12 +9,12 @@
       </tr>
       <tr *ngFor="let row of inventories;let i = index;">
         <td>
-          {{getstorename(row.storeid)}}
+          {{getstorename(row.id)}}
 
         </td>
 
         <td>
-          <img src="assets/icnBranches.png" alt="" width="32" (click)="viewItems(row.data,row.storeid,'show',i)">
+          <img src="assets/icnBranches.png" alt="" width="32" (click)="viewItems(row.data,row.id,'show',i)">
         </td>
       </tr>
       <tr>
@@ -76,30 +76,38 @@
       <br>
       <button mat-raised-button (click)="additemtolist(item)" color="primary">حفظ</button>
     </div>
-    <div *ngIf="entrytype=='show'">
-      <h1>مخزن {{display}}</h1>
-      <table>
-        <tr>
-          <th>الصنف </th>
-          <th>المتاح</th>
-          <th>المحجوز</th>
-          <th>بضاعة قادمة</th>
-        </tr>
-        <tr *ngFor="let r of items;let i = index;">
 
-          <td>{{getproductname(r.id)}}</td>
-          <td>{{r.avb}}</td>
-          <td>{{r.rsv}}</td>
-          <td>{{r.com}}</td>
-          <td>
-            <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(r,i,actionstore)" class="btn-img" matTooltip="Edit user data">
-          </td>
-        </tr>
-       
-
-
-
-      </table>
+    <button mat-raised-button (click)="print()" color="primary">  طباعة التقرير</button>
+    <div class="printdiv">
+      <div *ngIf="entrytype=='show'">
+        <table>
+          <tr>
+        <h1>مخزن {{display}}</h1>
+            
+          </tr>
+          <tr>
+            <th>الصنف </th>
+            <th>المتاح</th>
+            <th>المحجوز</th>
+            <th>بضاعة قادمة</th>
+          </tr>
+          <tr *ngFor="let r of items;let i = index;">
+  
+            <td>{{getproductname(r.id)}}</td>
+            <td>{{r.avb}}</td>
+            <td>{{r.rsv}}</td>
+            <td>{{r.com}}</td>
+            <!-- <td>
+              <img src="assets/icnDelete.png" alt="" width="32" (click)="remove(r,i,actionstore)" class="btn-img" matTooltip="Edit user data">
+            </td> -->
+          </tr>
+         
+  
+  
+  
+        </table>
+      </div>
     </div>
+    
   </mat-card>
 </div>

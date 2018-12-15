@@ -93,7 +93,7 @@ export class InvoiceComponent implements OnInit {
   public inventories: any[] = [];
 
   public inventory = {
-    storeid: 0,
+    id: 0,
     data: null
   }
   public invitems: Item[] = [];
@@ -260,7 +260,7 @@ export class InvoiceComponent implements OnInit {
     console.log(this.invoice.type);
 
     if (this.invoice.type == 's') {
-      this.inventory = this.inventories.find(obj => obj.storeid == item.store.id);
+      this.inventory = this.inventories.find(obj => obj.id == this.storeid);
 
       if (this.inventory != null) {
 
@@ -320,7 +320,7 @@ export class InvoiceComponent implements OnInit {
     this.invoice.amount = this.invoice.amount - Number(item.amount);
     this.invoiceitems.splice(i, 1);
     this.inventories.forEach(element => {
-      if (element.storeid == item.store.id) {
+      if (element.id == item.store.id) {
         element.data.forEach(el => {
           if (this.invoice.type == 's') {
             el.rsv = Number(el.rsv) + Number(item.count);
@@ -476,9 +476,9 @@ export class InvoiceComponent implements OnInit {
   updateInventory() {
     this.touched.forEach(outer => {
       this.inventories.forEach(inner => {
-        if (outer == inner.storeid) {
+        if (outer == inner.id) {
           inner.data = JSON.stringify(inner.data);
-          this._hs.put('inventory', 'storeid', inner).subscribe(res => {
+          this._hs.put('inventory', 'id', inner).subscribe(res => {
 
             this._ss.setSnackBar('inserted page is refreshed for you');
             this.getInventories();
@@ -490,31 +490,36 @@ export class InvoiceComponent implements OnInit {
   }
 
   saveToSadad(invoiceid) {
-    if (this.selecteditem.id != null && this.payments.length > 0) {
+    if (this.selecteditem.id != null) {
       this.sadad.pursalesid = invoiceid;
       this.sadad.suppcusid = this.selecteditem.id;
-      this.sadad.data = JSON.stringify(this.payments);
-      this.sadad.amount=this.paid;
+      this.sadad.oldbalance = this.selecteditem.amount;
+
+      if(this.payments.length > 0){
+        this.sadad.data = JSON.stringify(this.payments);
+
+      }
+      else{
+        this.sadad.data="";
+      }
+      this.sadad.invamount=this.invoice.amount;
       if (this.invoice.type == 's') {
 
         this.selecteditem.amount = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
-        this.sadad.newbalance = Number(this.selecteditem.amount) - Number(this.processinfo.reminder);
+        this.sadad.newbalance =Number(this.selecteditem.amount);
         this.sadad.source='in';
       }
       else {
         this.selecteditem.amount = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
-        this.sadad.newbalance = Number(this.selecteditem.amount) + Number(this.processinfo.reminder);
+        this.sadad.newbalance =Number(this.selecteditem.amount);
         this.sadad.source='out';
 
       }
-      this.sadad.oldbalance = this.selecteditem.amount;
 
       this.sadad.userid = this.user.id;
-      this.sadad.total = this.paid;
       this._hs.post('sadad', this.sadad).subscribe(res => {
         this.sadad.id = res.text();
-        // this.updatesuppcussbalance();
-        // this.insertchecks();
+       
         this._ss.setSnackBar('تم حفظ الدفعية بنجاح');
       });
 
@@ -539,10 +544,10 @@ export class InvoiceComponent implements OnInit {
 
       this._hs.post('pursales', this.invoice).subscribe(res => {
         this.invoice.id = Number(res.text());
-        this.updateuserbalance();
+        this.saveToSadad(res.text());
+       this.updateuserbalance();
         this.updateInventory();
         this.insertchecks(this.invoice.id);
-        this.saveToSadad(res.text());
         if (this.processinfo.reminder != 0) {
           this.updatecustomeraccount();
 
@@ -564,7 +569,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   print() {
-    this._hs.log('user1', 'tbl1', 'c', 'screen x', 'so and so');
+    this._hs.log(this.user.id, 'tbl1', 'c', 'المشتريات والمبيعات', 'so and so');
     if (this.invoice.type == 's') {
       this._ut.showReport('إذن  إستلام بضاعة');
 
@@ -686,6 +691,7 @@ export class InvoiceComponent implements OnInit {
       this.payments.push(payment);
       this.payments.forEach(element => {
         this.paid = this.paid + Number(element.amount);
+        this.sadad.amount=this.paid;
         console.log(element.amount);
 
         console.log("المدفووووووووووع :", this.paid);
