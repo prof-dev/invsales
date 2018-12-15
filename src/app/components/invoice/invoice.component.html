@@ -91,7 +91,7 @@
       <input matInput required placeholder="سعر الوحدة" name="price" [(ngModel)]="product.price" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput required placeholder=" الكمية" name="price" [(ngModel)]="product.count" (blur)="sum(product.count,product.price)"
+      <input matInput required placeholder=" الكمية" name="price" [(ngModel)]="product.qty" (blur)="sum(product.qty,product.price)"
         required>
     </mat-form-field>
    
@@ -122,7 +122,7 @@
         <td>{{row.id}}</td>
         <td>{{row.namear}}</td>
         <td>{{row.price}}</td>
-        <td>{{row.count}}</td>
+        <td>{{row.qty}}</td>
         <td>{{row.totalprice}}</td>
         <td>{{getStoreName(row.store)}}</td>
         <td>
@@ -249,8 +249,8 @@
           </tr>
           <tr *ngFor="let row of invoiceitems">
             <td>{{row.namear}}</td>
-            <td>{{row.count}}</td>
-            <td>فقط {{numbertToWords(row.count)}} لا غير</td>
+            <td>{{row.qty}}</td>
+            <td>فقط {{numbertToWords(row.qty)}} لا غير</td>
             <td>{{getStoreName(row.store)}}</td>
             
           </tr>

@@ -77,7 +77,7 @@
           <td>{{row.qty}}</td>
           <td>
               <mat-form-field>
-                  <input matInput required placeholder=" تم تسليم " [(ngModel)]="row.delivered" >
+                  <input matInput required placeholder=" تم تسليم " [(ngModel)]="row.delivered" (blur)='verify(row)'>
     
                 </mat-form-field>
           </td>
