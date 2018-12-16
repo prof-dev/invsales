@@ -18,6 +18,7 @@ export class DeliveriesComponent implements OnInit {
   public suppcusname: string;
   public result: any;
   public suppcus: any;
+  public storelookups: any;
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
@@ -26,8 +27,17 @@ export class DeliveriesComponent implements OnInit {
 
   ngOnInit() {
     this.loadItems();
+    this.loadStores();
   }
-
+  loadStores() {
+    this._hs.get('lookups','filter[]=group,eq,stores').subscribe(res => {
+      this.storelookups= res.json().lookups;
+      this.storelookups=this.storelookups.filter(obj=> obj.parent!=0);
+      this.storelookups.forEach(element => {
+        element.data=JSON.parse(element.data);
+      });
+    });
+  }
 
   loadItems() {
 
@@ -47,16 +57,21 @@ export class DeliveriesComponent implements OnInit {
     console.log(this.delivery.ref);
 
     if (this.delivery.type == 'p' || this.delivery.type == 's') {
-      this._hs.get('pursales', 'filter[]=id,eq,' + this.delivery.ref+'&filter[]=type,eq'+this.delivery.type+'&satisfy=all').subscribe(res => {
+      this._hs.get('pursales', 'filter[]=id,eq,' + this.delivery.ref + '&filter[]=type,eq' + this.delivery.type + '&satisfy=all').subscribe(res => {
         console.log(res.json().pursales);
 
-        this.ref = res.json().pursales[0];  
+        this.ref = res.json().pursales[0];
         this.ref.data = JSON.parse(this.ref.data);
         console.log(this.ref);
         this.setsupcusname(this.ref.suppcusid);
-        this.prepareItems();
+        if (this.ref.complete != 0) {
+          this.prepareItems();
+          this.delivery.pursalesid=this.ref.id;
 
-
+        }
+        else if (this.ref != null) {
+          this._ss.setSnackBar('تم إغلاق هذا المرجع');
+        }
 
       });
 
@@ -65,9 +80,14 @@ export class DeliveriesComponent implements OnInit {
         this._hs.get('pursalesret', 'filter[]=id,eq,' + this.delivery.ref).subscribe(res => {
           this.ref = res.json().pursalesret[0];
           this.ref.data = JSON.parse(this.ref.data);
-          console.log(this.ref);
+          if (this.ref.complete != 0) {
+            this.prepareItems();
+            this.delivery.pursalesretid=this.ref.id;
 
-          this.prepareItems();
+          }
+          else if (this.ref != null) {
+            this._ss.setSnackBar('تم إغلاق هذا المرجع');
+          }
 
 
         });
@@ -77,8 +97,14 @@ export class DeliveriesComponent implements OnInit {
           this.ref = res.json().storetostore[0];
           this.ref.data = JSON.parse(this.ref.data);
           console.log(this.ref);
+          if (this.ref.complete != 0) {
+            this.prepareItems();
+            this.delivery.storetostoreid=this.ref.id;
 
-          this.prepareItems();
+          }
+          else if (this.ref != null) {
+            this._ss.setSnackBar('تم إغلاق هذا المرجع');
+          }
 
 
         });
@@ -141,15 +167,17 @@ export class DeliveriesComponent implements OnInit {
 
   }
   verify(row) {
-    if(row.delivered>row.qty){
+    if (row.delivered > row.qty) {
       this._ss.setSnackBar('لا يمكن تسليم كمية أكبر من كمية الصنف في الفاتورة');
     }
   }
 
-  // getAllItems(type):any{
+  changeAvbOnStock() {
+
+  }
 
 
-  // }
+
 
   public types: Choice[] = [
     { value: 'p', viewValue: 'إستلام مشتريات' },
