@@ -102,7 +102,7 @@ export class DeliveriesComponent implements OnInit {
         this._hs.get('pursalesret', 'filter[]=id,eq,' + this.delivery.ref).subscribe(res => {
           this.ref = res.json().pursalesret[0];
           this.ref.data = JSON.parse(this.ref.data);
-          if (this.ref.complete != 0) {
+          if (this.ref.complete == 0) {
             this.prepareItems();
             this.delivery.pursalesretid=this.ref.id;
 
@@ -119,7 +119,7 @@ export class DeliveriesComponent implements OnInit {
           this.ref = res.json().storetostore[0];
           this.ref.data = JSON.parse(this.ref.data);
           console.log(this.ref);
-          if (this.ref.complete != 0) {
+          if (this.ref.complete == 0) {
             this.prepareItems();
             this.delivery.storetostoreid=this.ref.id;
 
