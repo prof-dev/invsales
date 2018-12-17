@@ -1,0 +1,7 @@
+1- in the delivery screen make the title dynamic when fetching the ref.   (mo)
+2- storetostore data [{"id":15,"qty":"10"}] will be [{"id":15,"dlv":3, "qty":10}]  (mo)
+3- invoice delivery layout and titles ...ect. (mo)
+4- checks edit screen when sadad then no edits are allowed (mo)
+5- expenses screen must be able to enter old expenses too. amount must be positive only. add titles (mo)
+6- add screen of recieving balances of users and make them broke (abu)
+7- 
