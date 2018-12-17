@@ -37,7 +37,7 @@
       <br>
       <br>
   
-      <button mat-raised-button (click)="save(check)" color="primary">حفظ</button>
+      <button mat-raised-button (click)="save(check)" color="primary" [disabled]="check.status=='paid'">حفظ</button>
 
 </mat-card-content>
     

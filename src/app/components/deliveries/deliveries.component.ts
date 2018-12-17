@@ -140,7 +140,7 @@ export class DeliveriesComponent implements OnInit {
     let item = { qty: 0, id: 0, delivered: 0, note: "", name: "" };
     if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
       this.ref.data.forEach(element => {
-        item.qty = element.qty;
+        item.qty = Number(element.qty)-Number(element.dlv);
         item.id = element.id;
         item.delivered = 0;
         item.note = "";

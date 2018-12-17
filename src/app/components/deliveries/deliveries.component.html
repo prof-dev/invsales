@@ -65,7 +65,7 @@
         <tr>
           <td style="white-space: nowrap;">
             <button mat-raised-button color="primary" (click)="getItems()"> إسترجاع الأصناف من المرجع </button>&nbsp;
-            <button mat-raised-button color="primary" (click)="getItems()">   حفظ  </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="save()" [disabled]="ref.complete!=0">   حفظ  </button>&nbsp;
             <button mat-raised-button color="primary" (click)="print()">   طباعة  </button>&nbsp;
 
           </td>

@@ -171,7 +171,14 @@ export class ChecksComponent implements OnInit {
     console.log(this.moenyto);
     this.banktoupdate = this.banks.find(obj => obj.id == this.moenyto);
     console.log(this.banktoupdate);
-    this.banktoupdate.data.balance = Number(this.banktoupdate.data.balance) + Number(this.check.amount);
+    if(this.check.status=='in'){
+      this.banktoupdate.data.balance = Number(this.banktoupdate.data.balance) + Number(this.check.amount);
+
+    }
+    else{
+      this.banktoupdate.data.balance = Number(this.banktoupdate.data.balance) - Number(this.check.amount);
+
+    }
     this.banktoupdate.data = JSON.stringify(this.banktoupdate.data);
     this._hs.put('lookups', "id", this.banktoupdate).subscribe(res => {
       this._ss.setSnackBar('تمت تعديل رصيد البنك :' + this.banktoupdate.namear);
