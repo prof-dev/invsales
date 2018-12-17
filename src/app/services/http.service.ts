@@ -18,6 +18,7 @@ export class HttpService {
     } else {
       this.APISERVER = 'http://localhost/invsales/';
     }
+    this.APISERVER = 'http://localhost/invsales/';
     this.HOST = this.APISERVER + 'api.php/';
   }
   post(table, data) {

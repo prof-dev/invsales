@@ -60,19 +60,24 @@ export class ItemsmoveComponent implements OnInit {
   }
 
   sourceSelected() {
+    this.storetostore.data=[];
     this.qtyinsource = 0;
+    console.log('from store: ', this.fromstore);
+    
     if (this.fromstore.id > 0) {
       this._ss.setAppIsBusy(true);
-      this._hs.get('inventory', 'filter[]=id,eq,' + this.fromstore.id).subscribe(res => {
+      this._hs.get('inventory', 'filter=id,eq,' + this.fromstore.id).subscribe(res => {
+        console.log('res: ', res.json());
+        
         if (res.json().inventory.length == 1) {
           this.fromstore.data = JSON.parse(res.json().inventory[0].data);
+          console.log('source store with items: ', this.fromstore);
           this.fromstore.data.forEach(item => {
             this._hs.get('items', 'filter=id,eq,' + item.id).subscribe(itemres => {
               item.namear = itemres.json().items[0].namear;
             });
           });
           this.sourceitems = this.fromstore.data;
-          console.log('source store with items: ', this.fromstore);
         }
         this._ss.setAppIsBusy(false);
       });
@@ -80,6 +85,7 @@ export class ItemsmoveComponent implements OnInit {
 
   }
   targetSelected() {
+    this.storetostore.data=[];
     this.qtyintarget = 0;
     this._ss.setAppIsBusy(true);
     if (this.tostore.id > 0) {

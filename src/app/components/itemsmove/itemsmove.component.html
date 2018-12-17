@@ -35,7 +35,7 @@
       </tr>
       <tr>
         <td>
-          <mat-select placeholder="اختر الصنف" [(ngModel)]="itemid" name="itemid">
+          <mat-select placeholder="اختر الصنف"  name="itemid">
             <mat-option *ngFor="let item of sourceitems" [value]="item.id" (click)="itemSelected(item)">{{item.namear}}</mat-option>
           </mat-select>
         </td>
