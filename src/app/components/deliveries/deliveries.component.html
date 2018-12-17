@@ -65,6 +65,8 @@
         <tr>
           <td style="white-space: nowrap;">
             <button mat-raised-button color="primary" (click)="getItems()"> إسترجاع الأصناف من المرجع </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="getItems()">   حفظ  </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="print()">   طباعة  </button>&nbsp;
 
           </td>
 
@@ -72,38 +74,66 @@
 
       </tbody>
     </table>
-
     <table>
-      <tr>
-        <h3>إسم المستفيد : {{suppcusname}}</h3>
-      </tr>
-      <tr>
-        <th>الصنف</th>
-        <th>العدد</th>
-        <th>الكمية المسلمة / المستلمة</th>
-        <th>ملاحظات</th>
-
-      </tr>
-      <tr *ngFor="let row of items">
-        <td>{{row.name}}</td>
-        <td>{{row.qty}}</td>
-        <td>
-          <mat-form-field>
-            <input matInput required placeholder=" تم تسليم " [(ngModel)]="row.delivered" (blur)='verify(row)'>
-
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field style="width:98%">
-            <input matInput required placeholder="  ملاحظة " [(ngModel)]="row.note" style="width:98%">
-
-          </mat-form-field>
-        </td>
-
-      </tr>
-    </table>
-    <div id='printDiv'>
-
+        <tr>
+          <h3>إسم المستفيد : {{suppcusname}}</h3>
+        </tr>
+        <tr>
+            <h3>رقم  المرجع : {{ref.id}}</h3>
+          </tr>
+        <tr>
+          <th>الصنف</th>
+          <th>العدد</th>
+          <th>الكمية المسلمة / المستلمة</th>
+          <th>ملاحظات</th>
+  
+        </tr>
+        <tr *ngFor="let row of items">
+          <td>{{row.name}}</td>
+          <td>{{row.qty}}</td>
+          <td>
+            <mat-form-field>
+              <input matInput required placeholder=" تم تسليم " [(ngModel)]="row.delivered" (blur)='verify(row)'>
+  
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field style="width:98%">
+              <input matInput required placeholder="  ملاحظة " [(ngModel)]="row.note" style="width:98%">
+  
+            </mat-form-field>
+          </td>
+  
+        </tr>
+      </table>
+   
+    <div class='printdiv' hidden="true">
+        <table>
+            <tr>
+              <h3>إسم المستفيد : {{suppcusname}}</h3>
+            </tr>
+            <tr>
+                <h3>رقم  المرجع : {{ref.id}}</h3>
+              </tr>
+            <tr>
+              <th>الصنف</th>
+              <th>العدد</th>
+              <th>الكمية المسلمة / المستلمة</th>
+              <th>ملاحظات</th>
+      
+            </tr>
+            <tr *ngFor="let row of items">
+              <td>{{row.name}}</td>
+              <td>{{row.qty}}</td>
+              <td>
+               {{row.delivered}}
+              </td>
+              <td>
+                {{row.note}}
+              </td>
+      
+            </tr>
+          </table>
     </div>
 
   </mat-card-content>

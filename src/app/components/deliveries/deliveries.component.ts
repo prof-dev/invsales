@@ -44,17 +44,21 @@ export class DeliveriesComponent implements OnInit {
     });
   }
   loadStores() {
-    this._hs.get('lookups','filter[]=group,eq,stores').subscribe(res => {
-      this.storelookups= res.json().lookups;
-      console.log(this.storelookups);
-
-      this.storelookups=this.storelookups.filter(obj=> obj.parent!=0);
-      console.log(this.storelookups);
-      console.log('userinfo',this.user);
-      
-      this.storelookups=this.storelookups.filter(obj=> this.storelookups.find(st=>this.userstores.includes(obj.id)));
-      console.log(this.storelookups);
-    });
+    if(this.user.stores!=null){
+      this._hs.get('lookups','filter[]=group,eq,stores').subscribe(res => {
+     
+        this.storelookups= res.json().lookups;
+        console.log(this.storelookups);
+  
+        this.storelookups=this.storelookups.filter(obj=> obj.parent!=0);
+        console.log(this.storelookups);
+        console.log('userinfo',this.user);
+        
+        this.storelookups=this.storelookups.filter(obj=> this.storelookups.find(st=>this.userstores.includes(obj.id)));
+        console.log(this.storelookups);
+      });
+    }
+    
   }
 
   loadItems() {
@@ -82,12 +86,12 @@ export class DeliveriesComponent implements OnInit {
         this.ref.data = JSON.parse(this.ref.data);
         console.log(this.ref);
         this.setsupcusname(this.ref.suppcusid);
-        if (this.ref.complete != 0) {
+        if (this.ref.complete == 0) {
           this.prepareItems();
           this.delivery.pursalesid=this.ref.id;
 
         }
-        else if (this.ref != null) {
+        else if (this.ref != null && this.ref.complete != 0) {
           this._ss.setSnackBar('تم إغلاق هذا المرجع');
         }
 
@@ -185,7 +189,7 @@ export class DeliveriesComponent implements OnInit {
 
   }
   verify(row) {
-    if (row.delivered > row.qty) {
+    if (Number(row.delivered) > Number(row.qty)) {
       this._ss.setSnackBar('لا يمكن تسليم كمية أكبر من كمية الصنف في الفاتورة');
     }
   }
@@ -211,7 +215,11 @@ export class DeliveriesComponent implements OnInit {
 
   }
 
+  print() {
+    this._hs.log(this.user.id, 'tbl1', 'c', ' المخازن', 'so and so');
 
+    this._ut.showReport('الأصناف المسلمة / المستلمة');
+}
 
 
   public types: Choice[] = [
