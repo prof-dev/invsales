@@ -4,6 +4,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { ShareService } from 'src/app/services/share.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { InventoryClass } from 'src/app/services/classes';
 
 @Component({
   selector: 'app-deliveries',
@@ -11,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
+  public invetoryObj:InventoryClass;
   public itemsLookup: any[] = [];
   public delivery: any = {};
   public items: any[] = [];
@@ -19,23 +21,39 @@ export class DeliveriesComponent implements OnInit {
   public result: any;
   public suppcus: any;
   public storelookups: any;
+  public user: any;
+  public userstores:any[]=[];
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
+      this.invetoryObj=new InventoryClass(_hs,_ss);
 
   }
 
   ngOnInit() {
+    this._ss.User.subscribe(user => {
+      this.user = user;
+      this.userstores=this.user.stores;
+      console.log("userstore :",this.userstores);
+      
+      if (this.user.id == 0) {
+        this._router.navigateByUrl('/login');
+      }
     this.loadItems();
     this.loadStores();
+    });
   }
   loadStores() {
     this._hs.get('lookups','filter[]=group,eq,stores').subscribe(res => {
       this.storelookups= res.json().lookups;
+      console.log(this.storelookups);
+
       this.storelookups=this.storelookups.filter(obj=> obj.parent!=0);
-      this.storelookups.forEach(element => {
-        element.data=JSON.parse(element.data);
-      });
+      console.log(this.storelookups);
+      console.log('userinfo',this.user);
+      
+      this.storelookups=this.storelookups.filter(obj=> this.storelookups.find(st=>this.userstores.includes(obj.id)));
+      console.log(this.storelookups);
     });
   }
 
@@ -173,6 +191,23 @@ export class DeliveriesComponent implements OnInit {
   }
 
   changeAvbOnStock() {
+    this.items.forEach(element => {
+      this.invetoryObj.getStoreItemsQty(element.lookupsid).forEach(inner => {
+        if(Number(element.delivered)<Number(inner.qty)&&this.delivery.type=='out'){
+
+        }
+        else if(this.delivery.type=='out'){
+
+        }
+        else if(this.delivery.type=='in'){
+
+        }
+        else if(this.delivery.type=='in'){
+
+        }
+      });
+     
+    });
 
   }
 
