@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   public users = [
     {
       id: 1,
-      username: "إداره",
+      username: "admin",
       pwd: "123",
       roles: 'a;',
       namear: 'الرشد محمد التوم',
@@ -71,34 +71,13 @@ export class LoginComponent implements OnInit {
     this._router.navigateByUrl('/');
   }
   login() {
-    this.authlogin();
-    this.normallogin();
-  }
-
-  normallogin() {
     this._ss.setAppIsBusy(true);
-    this._hs.get('users', 'filter[]=locked,eq,0&filter[]=username,eq,' + this.user.username + '&filter[]=pwd,eq,' + this.user.pwd + '&satisfy=all')
+    this._hs._http.get(this._hs.APISERVER+'login.php?type=login&username=' + this.user.username + '&pwd=' + this.user.pwd )
       .subscribe(res => {
-        if (res.json().users.length != 0) {
+        console.log('user is: ', res.json());
+        if (res.json().id>0) {
           this._ss.setAppIsBusy(false);
-          var auser = res.json().users[0]
-          this._ss.setUser(auser);
-          this._router.navigateByUrl('/');
-
-        } else {
-          this._ss.setAppIsBusy(false);
-          this._ss.setSnackBar("معلومات الدخول غير صحصحه ربما خطأ في كلمه السر أو اسم المستخدم. أو ربما تم منعك من قبل مدير النظام")
-        }
-      });
-  }
-  authlogin() {
-    this._ss.setAppIsBusy(true);
-    this._hs.post('', { username: 'admin', password: 'admin' })
-      .subscribe(res => {
-        console.log('login res: ', res.text());
-        if (res.text().length != 0) {
-          this._ss.setAppIsBusy(false);
-          var auser = this.users[0]
+          var auser = res.json();
           this._ss.setUser(auser);
           this._router.navigateByUrl('/');
         } else {
