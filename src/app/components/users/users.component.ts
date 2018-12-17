@@ -51,8 +51,9 @@ export class UsersComponent implements OnInit {
     this.action = "editbranches";
     this.actionUserStores = JSON.parse(this.actionUser.stores);
     this.actionUserBranches = JSON.parse(this.actionUser.branches);
-    this._hs.get('lookups', 'filter[]=group,eq,branch').subscribe(res => {
+    this._hs.get('lookups', 'filter[]=group,eq,branches').subscribe(res => {
       this.branches = res.json().lookups;
+      this.branches=this.branches.filter(obj=>obj.parent!=0);
     });
   }
   setStores(user) {
@@ -62,8 +63,9 @@ export class UsersComponent implements OnInit {
     this.actionUserStores = JSON.parse(this.actionUser.stores);
     this.actionUserBranches = JSON.parse(this.actionUser.branches);
 
-    this._hs.get('lookups', 'filter[]=group,eq,store').subscribe(res => {
+    this._hs.get('lookups', 'filter[]=group,eq,stores').subscribe(res => {
       this.stores = res.json().lookups;
+      this.stores=this.stores.filter(obj=>obj.parent!=0);
       this._ss.setAppIsBusy(false);
     });
   }

@@ -267,14 +267,14 @@ export class InvoiceComponent implements OnInit {
         this.inventory.data.forEach(element => {
           console.log(element);
 
-          if ((!((Number(element.avb) - Number(element.rsv) + Number(element.com)) < Number(item.count))) && element.id == item.id) {
+          if ((!((Number(element.avb) - Number(element.rsv) + Number(element.com)) < Number(item.qty))) && element.id == item.id) {
             console.log("sales after check available stock:",item);
             this.invoiceitems.push(item);
             this.invoice.amount = this.invoice.amount + Number(item.totalprice);
             this.product.store =  this.storeid;
             this.product = {};
             this.processinfo.reminder += Number(item.totalprice);
-            element.rsv = Number(element.rsv) + Number(item.count);
+            element.rsv = Number(element.rsv) + Number(item.qty);
             this.istouched = false;
             this.touched.forEach(el => {
               if (el == item.store.id) {
@@ -301,7 +301,7 @@ export class InvoiceComponent implements OnInit {
     }
     else if (this.invoice.type == 'p') {
       this.invitem.id=item.id;
-      this.invitem.com =  Number(item.count);
+      this.invitem.com =  Number(item.qty);
       this.invoice.amount = this.invoice.amount + Number(item.totalprice);
       this.product.store = this.storeid;
       this.product = {};
@@ -323,10 +323,10 @@ export class InvoiceComponent implements OnInit {
       if (element.id == item.store.id) {
         element.data.forEach(el => {
           if (this.invoice.type == 's') {
-            el.rsv = Number(el.rsv) + Number(item.count);
+            el.rsv = Number(el.rsv) + Number(item.qty);
           }
           else {
-            el.com = Number(el.com) - Number(item.count);
+            el.com = Number(el.com) - Number(item.qty);
 
           }
         });

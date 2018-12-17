@@ -1,21 +1,7 @@
 .ar {
     text-align: right;
   }
-  th {
-    padding-left: 10px;
-    text-align: center;
-    border: 1px solid black;
-}
-  td {
-    padding-left: 10px;
-    text-align: right;
-    border: 1px solid black;
-}
 
-  .table{
-    /* border: 1px solid black; */
-    overflow-y:scroll;
-  }
  
      
   .container {

@@ -3,6 +3,7 @@ import { Item } from "../components/inventory/inventory.component";
 import { ShareService } from "./share.service";
 
 export class InventoryClass {
+
     public items: Item[] = [];
     public inventories: any[] = [];
     public inventroy = {
@@ -29,7 +30,22 @@ export class InventoryClass {
             com: 0
         };
     }
-
+    public getStoreItemsQty(storeid):any {
+        let store:any;
+        this._hs.get('inventory', 'filter[]=id,eq,' + storeid).subscribe(res => {
+            if (res.json().inventory.length == 1) {
+                store = res.json().inventory[0];
+                store.data = JSON.parse(res.json().inventory[0].data);
+                store.data.forEach(item => {
+                    this._hs.get('items', 'filter=id,eq,' + item.id).subscribe(itemres => {
+                        item.namear = itemres.json().items[0].namear;
+                    });
+                });
+                return store;
+            }
+            this._ss.setAppIsBusy(false);
+        });
+    }
     public additemtolist(item, storeid, list: any[], op: boolean): any[] {/// true adds //false substracts
         console.log("additemtolist storeid:", storeid);
         console.log("additemtolist item:", item);
@@ -113,10 +129,10 @@ export class InventoryClass {
 
 
 export class UtilityClass {
-    constructor(){
+    constructor() {
 
     }
-   public numbertToWords(num):string {
+    public numbertToWords(num): string {
         var number = parseInt(num);
         if (number == 0) return ' ';
 

@@ -23,6 +23,9 @@
       <thead>
         <tr>
           <th>
+            المخزن
+          </th>
+          <th>
             إخترالنوع
           </th>
           <th>
@@ -34,102 +37,104 @@
         <tr>
           <td>
             <mat-form-field style="width:98%">
+              <mat-select placeholder="اختر المخزن" [(ngModel)]="delivery.lookupsid">
+
+                <mat-option *ngFor='let ch of storelookups' [(value)]="ch.id">{{ch.namear}} </mat-option>
+                <!-- <mat-option value="p">مردودات المشتروات</mat-option>> -->
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field style="width:98%">
               <mat-select placeholder="اختر النوع" [(ngModel)]="delivery.type">
 
-                <mat-option *ngFor='let ch of types' value="ch.value">{{ch.viewValue}} </mat-option>
+                <mat-option *ngFor='let ch of types' [(value)]="ch.value">{{ch.viewValue}} </mat-option>
                 <!-- <mat-option value="p">مردودات المشتروات</mat-option>> -->
               </mat-select>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field>
-              <input matInput required placeholder=" رقم المرجع " [(ngModel)]="delivery.ref" >
+              <input matInput required placeholder=" رقم المرجع " [(ngModel)]="delivery.ref">
 
             </mat-form-field>
 
           </td>
-        
+
         </tr>
         <tr>
           <td style="white-space: nowrap;">
-              <button mat-raised-button color="primary"  (click)="getItems()"  > إسترجاع الأصناف من المرجع </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="getItems()"> إسترجاع الأصناف من المرجع </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="getItems()">   حفظ  </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="print()">   طباعة  </button>&nbsp;
 
           </td>
-        
+
         </tr>
-       
+
       </tbody>
     </table>
-    
     <table>
+        <tr>
+          <h3>إسم المستفيد : {{suppcusname}}</h3>
+        </tr>
+        <tr>
+            <h3>رقم  المرجع : {{ref.id}}</h3>
+          </tr>
         <tr>
           <th>الصنف</th>
           <th>العدد</th>
           <th>الكمية المسلمة / المستلمة</th>
           <th>ملاحظات</th>
-
+  
         </tr>
         <tr *ngFor="let row of items">
           <td>{{row.name}}</td>
-          <td>{{row.count}}</td>
-          <td>{{row.delivered}}</td>
-          <td>{{row.note}}</td>
-
+          <td>{{row.qty}}</td>
+          <td>
+            <mat-form-field>
+              <input matInput required placeholder=" تم تسليم " [(ngModel)]="row.delivered" (blur)='verify(row)'>
+  
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field style="width:98%">
+              <input matInput required placeholder="  ملاحظة " [(ngModel)]="row.note" style="width:98%">
+  
+            </mat-form-field>
+          </td>
+  
         </tr>
       </table>
-      <div id='printDiv'>
-        
-      </div>
+   
+    <div class='printdiv' hidden="true">
+        <table>
+            <tr>
+              <h3>إسم المستفيد : {{suppcusname}}</h3>
+            </tr>
+            <tr>
+                <h3>رقم  المرجع : {{ref.id}}</h3>
+              </tr>
+            <tr>
+              <th>الصنف</th>
+              <th>العدد</th>
+              <th>الكمية المسلمة / المستلمة</th>
+              <th>ملاحظات</th>
+      
+            </tr>
+            <tr *ngFor="let row of items">
+              <td>{{row.name}}</td>
+              <td>{{row.qty}}</td>
+              <td>
+               {{row.delivered}}
+              </td>
+              <td>
+                {{row.note}}
+              </td>
+      
+            </tr>
+          </table>
+    </div>
 
-    <!-- <mat-select placeholder="اختر النوع" [(ngModel)]="retOb.type" (click)="typeChanged()"> -->
-
-    <br>
-    <!-- <div *ngIf="retOb.type==='p'">
-            <table>
-                <tr>
-                    <th>اسم المورد</th>
-                    <td>{{retOb.suppcusname}}</td>
-                </tr>
-            </table>
-            <mat-form-field>
-                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم طلب الشراء">
-                <br>
-            </mat-form-field>
-        </div>
-        <div *ngIf="retOb.type==='s'" class="printdiv">
-            <table>
-                <tr>
-                    <th>اسم العميل</th>
-                    <td>{{retOb.suppcusname}}</td>
-                </tr>
-            </table>
-            <mat-form-field>
-                <input matInput type="text" [(ngModel)]="retOb.id" required placeholder="رقم الفاتوره">
-                <br>
-            </mat-form-field>
-        </div>
-        <a mat-raised-button (click)="fetch()" color="primary">احضار البيانات</a>&nbsp;
-        <a mat-raised-button (click)="delivered()" color="primary" [disabled]="retOb.row.locked==1 || user.roles.indexOf('s')<0">تم التسليم والاستلام</a>&nbsp;
-        <a mat-raised-button (click)="save()" color="primary" [disabled]="retOb.row.locked==1">حفظ التعديلات</a>&nbsp;
-        <a mat-raised-button (click)="delete()" color="primary" [disabled]="retOb.row.locked==1">حذف الطلب</a>&nbsp;
-        <a mat-raised-button (click)="print()" color="primary">طباعة الطلب</a>&nbsp;
-        <div class="printdiv">
-            <table>
-                <tr>
-                    <th>رقم النوع</th>
-                    <th>التفاصيل</th>
-                    <th>الكميه</th>
-                    <th>المردود</th>
-                </tr>
-                <tr *ngFor="let one of retOb.itemsarr">
-                    <td>{{one.id}}</td>
-                    <td>{{one.namear}}</td>
-                    <td>{{one.count}}</td>
-                    <td>
-                        <input type="text" required placeholder="" [(ngModel)]="one.return" [disabled]="retOb.row.locked==1">
-                    </td>
-                </tr>
-            </table>
-        </div> -->
   </mat-card-content>
 </mat-card>
