@@ -1,4 +1,5 @@
 <div class="container ar" dir="rtl">
+
   <br>
   <mat-card class="users-card">
     <mat-card-header>
@@ -18,30 +19,31 @@
           </tr>
           <tr *ngFor="let user of page">
             <td>{{user.username}}</td>
-            <td>{{user.namear}}</td>
+            <td>{{user.fullname}}</td>
             <td>
-              <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(user)" class="btn-img" matTooltip="Edit user data">
+              <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(user)" class="btn-img" matTooltip="تحديث بيانات  المستخدم">
             </td>
             <td>
-              <img src="assets/icnStore.png" alt="" width="32" (click)="setStores(user)" class="btn-img" matTooltip="Edit user Stores">
+              <img src="assets/icnStore.png" alt="" width="32" (click)="setStores(user)" class="btn-img" matTooltip="تحديث المخازن  للمستخدم">
             </td>
             <td>
-              <img src="assets/icnBranch.png" alt="" width="32" (click)="setBranches(user)" class="btn-img" matTooltip="Edit user Branches">
+              <img src="assets/icnBranch.png" alt="" width="32" (click)="setBranches(user)" class="btn-img" matTooltip="تحديث الأفرع للمستخدم">
             </td>
             <td *ngIf="user.locked==1">
-              <img src="assets/icnLocked.png" alt="" width="32" (click)="unlock(user)" class="btn-img" matTooltip="Unlock this user">
+              <img src="assets/icnLocked.png" alt="" width="32" (click)="unlock(user)" class="btn-img" matTooltip="فتح حساب المستخدم">
             </td>
             <td *ngIf="user.locked==0">
-              <img src="assets/icnUnlocked.png" alt="" width="32" (click)="lock(user)" class="btn-img" matTooltip="Lock this user">
+              <img src="assets/icnUnlocked.png" alt="" width="32" (click)="lock(user)" class="btn-img" matTooltip="اقفال حساب المستخدم">
             </td>
             <td>
-              <img src="assets/icnDelete.png" alt="" width="32" (click)="delete(user)" class="btn-img" matTooltip="Delete this user">
+              <img src="assets/icnDelete.png" alt="" width="32" (click)="delete(user)" class="btn-img" matTooltip="حذف المستخدم">
+            </td>
+            <td>
+              <img src="assets/icnSales.png" alt="" width="32" (click)="setBalance(user)" class="btn-img" matTooltip="تحديث رصيد المستخدم">
             </td>
           </tr>
         </table>
-        <mat-paginator [length]="users.length"
-              [pageSize]="5"
-              [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = setPage($event)">
+        <mat-paginator [length]="users.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = setPage($event)">
         </mat-paginator>
       </div>
     </mat-card-content>
@@ -119,7 +121,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field>
-          <input matInput placeholder="الاسم الكامل" name="namear" [(ngModel)]="actionUser.namear">
+          <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.fullname">
         </mat-form-field>
         <br>
         <mat-form-field>
@@ -152,6 +154,29 @@
         <hr>
         <br>
         <button mat-raised-button color="primary" (click)="saveUser()">حفظ</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="action=='editbalance'">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>تعديل ارصده المستخدمين</mat-card-title>
+        <mat-card-subtitle>تعديل رصيد المستخدم : {{actionUser.fullname}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="رصيد المستخدم"  name="balance" [(ngModel)]="actionUser.balance" readonly>
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <input matInput placeholder="اضف لرصيد المستخدم" type="number" name="addbalance" [(ngModel)]="addtobalance">
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <input matInput placeholder="استلم من رصيد المستخدم" type="number" name="minusbalance" [(ngModel)]="takefrombalance">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button (click)="doSetBalance()" color="primary">عدل رصيد المستخدم</button>
       </mat-card-content>
     </mat-card>
   </div>
