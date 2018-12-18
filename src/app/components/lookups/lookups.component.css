@@ -14,14 +14,15 @@
 }
 
 .container {
-    margin-top: 20px;
     display: flex;
   }
 
  
-.mat-card {
-    /* width: 40%; */
-    margin-right: 10%;
-   
+
+  .main{
+      width: 40%;
+      margin-left: 10px;
   }
-  
+  .details{
+      width: 50%;
+  }
