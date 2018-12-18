@@ -4,4 +4,4 @@
 4- checks edit screen when sadad then no edits are allowed (mo)
 5- expenses screen must be able to enter old expenses too. amount must be positive only. add titles (mo)
 6- add screen of recieving balances of users and make them broke (abu)
-7- 
+7- in the returns component (we can only return the delivered qty);
