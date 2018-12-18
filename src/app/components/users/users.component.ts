@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  public users: any[]=[];
-  public page: any[]=[];
+  public users: any[] = [];
+  public page: any[] = [];
   public loggedInUser: any = null;
   public actionUser: any;
   public actionUserStores: any;
@@ -20,6 +20,8 @@ export class UsersComponent implements OnInit {
   public action: string = "";
   public branches: any[] = [];
   public stores: any[] = [];
+  takefrombalance: number;
+  addtobalance: number;
   constructor(private _hs: HttpService, private _ss: ShareService, private _router: Router, private _ut: UtilsService) {
 
   }
@@ -29,22 +31,41 @@ export class UsersComponent implements OnInit {
     this._ss.User.subscribe(user => {
       this.loggedInUser = user;
     });
-    if (this.loggedInUser == null || this.loggedInUser.id == 0 || this.loggedInUser.roles.indexOf('t') < 0) {
-      this._router.navigateByUrl('/login');
-    }
+    // if (this.loggedInUser == null || this.loggedInUser.id == 0 || this.loggedInUser.roles.indexOf('t') < 0) {
+    //   this._router.navigateByUrl('/login');
+    // }
   }
-  setPage(ev){
-    this.page = this.users.slice(ev.pageIndex*ev.pageSize,(ev.pageIndex+1)*ev.pageSize);
+  setPage(ev) {
+    this.page = this.users.slice(ev.pageIndex * ev.pageSize, (ev.pageIndex + 1) * ev.pageSize);
   }
   refreshUsers() {
     this._ss.setAppIsBusy(true);
-    if (this.loggedInUser && this.loggedInUser.roles.indexOf('t') >= 0) {
+    if (true || this.loggedInUser && this.loggedInUser.roles.indexOf('t') >= 0) {
       this._hs.get('users').subscribe(res => {
         this.users = res.json().users;
-        this.page = this.users.slice(0,5);
+        this.page = this.users.slice(0, 5);
         this._ss.setAppIsBusy(false);
       });
     }
+  }
+  setBalance(user) {
+    this.addtobalance = 0;
+    this.takefrombalance = 0;
+    this.actionUser = user;
+    this.action = "editbalance";
+  }
+  doSetBalance() {
+    if (this.addtobalance<0){
+      this._ss.setSnackBar('لا يمكن اضافه رقم سالب للرصيد');
+      return;
+    }
+    if (this.takefrombalance<0){
+      this._ss.setSnackBar('لا يمكن اخذ رقم سالب من الرصيد');
+      return;
+    }
+    this.actionUser.balance=this.actionUser.balance-this.takefrombalance;
+    this.actionUser.balance=this.actionUser.balance+this.addtobalance;
+    this.saveUser();
   }
   setBranches(user) {
     this.actionUser = user;
@@ -53,7 +74,7 @@ export class UsersComponent implements OnInit {
     this.actionUserBranches = JSON.parse(this.actionUser.branches);
     this._hs.get('lookups', 'filter[]=group,eq,branches').subscribe(res => {
       this.branches = res.json().lookups;
-      this.branches=this.branches.filter(obj=>obj.parent!=0);
+      this.branches = this.branches.filter(obj => obj.parent != 0);
     });
   }
   setStores(user) {
@@ -65,23 +86,25 @@ export class UsersComponent implements OnInit {
 
     this._hs.get('lookups', 'filter[]=group,eq,stores').subscribe(res => {
       this.stores = res.json().lookups;
-      this.stores=this.stores.filter(obj=>obj.parent!=0);
+      this.stores = this.stores.filter(obj => obj.parent != 0);
       this._ss.setAppIsBusy(false);
     });
   }
   saveUser() {
     this._ss.setAppIsBusy(true);
-
     if (this.actionUser.id > 0) {
       this._hs.put('users', 'id', this.actionUser).subscribe(res => {
         if (res.json() == 1) {
-
+          this._ss.setSnackBar('تم تعديل بيانات المستتخدم');
         }
         this._ss.setAppIsBusy(false);
       });
     } else {
       delete this.actionUser.id;
       this._hs.post('users', this.actionUser).subscribe(res => {
+        if (res.json()>0) {
+          this._ss.setSnackBar('تم اضاقه المستتخدم');
+        }
         this._ss.setAppIsBusy(false);
       });
     }
@@ -127,7 +150,7 @@ export class UsersComponent implements OnInit {
         else
           this.setStores(this.actionUser)
       }
-    this._ss.setAppIsBusy(false);
+      this._ss.setAppIsBusy(false);
 
     });
 
@@ -155,7 +178,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  delete(user:any) {
+  delete(user: any) {
     this._ut.messageBox('confirm', 'تحذير حذف مستخدم', 'هل حقا تريد حذف المستخدم [' + user.namear + ']')
       .afterClosed()
       .subscribe(dialog => {
