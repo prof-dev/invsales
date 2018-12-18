@@ -1742,15 +1742,29 @@ header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json;charset=utf-8');
 session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']==='true'){
- $api = new PHP_CRUD_API(array(
- 	'dbengine'=>'MySQL',
- 	'hostname'=>'localhost',
- 	'username'=>'root',
- 	'password'=>'',
- 	'database'=>'invsales',
- 	'charset'=>'utf8mb4'
- ));
- $api->executeCommand();
+
+if (stripos($_SERVER['REQUEST_URI'],'localhost')==="false"){
+	$api = new PHP_CRUD_API(array(
+		'dbengine'=>'MySQL',
+		'hostname'=>'79.170.40.244',
+		'username'=>'cl23-invsales',
+		'password'=>'krWqg3-ff',
+		'database'=>'cl23-invsales',
+		'charset'=>'utf8mb4'
+	));
+	
+}else{
+	$api = new PHP_CRUD_API(array(
+		'dbengine'=>'MySQL',
+		'hostname'=>'localhost',
+		'username'=>'root',
+		'password'=>'',
+		'database'=>'invsales',
+		'charset'=>'utf8mb4'
+	));
+		
+}
+$api->executeCommand();
 	
 }else{
 	echo '{"id":0, "message":"Unauthorized access"}';

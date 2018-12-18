@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './modules/routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { SettingsComponent } from './components/settings/settings.component';
 import { MaterialModule } from './modules/material.module';
 import { TreeModule } from "angular-tree-component";
 import { HttpModule } from '@angular/http';
@@ -13,7 +12,6 @@ import { ShareService } from './services/share.service';
 import { SuppcusComponent } from './components/suppcus/suppcus.component';
 import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
-import { SigninComponent } from './components/signin/signin.component';
 import { LookupsComponent } from './components/lookups/lookups.component';
 import { FormsModule,FormControl, ReactiveFormsModule} from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,11 +35,9 @@ import { DeliveriesComponent } from './components/deliveries/deliveries.componen
   declarations: [
     AppComponent,
     LoginComponent,
-    SettingsComponent,
     SuppcusComponent,
     HomeComponent,
     UsersComponent,
-    SigninComponent,
     LookupsComponent,
     InvoiceComponent,
     ChecksComponent,DialogsComponent, ReturnsComponent, LogComponent, SadadComponent, InventoryComponent, SpendingsComponent, ReportsComponent,ItemsComponent, ProfileComponent, ItemsmoveComponent, DeliveriesComponent

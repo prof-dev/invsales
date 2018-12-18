@@ -4,7 +4,7 @@ import { DialogData, DialogsComponent } from '../components/dialogs/dialogs.comp
 import { MatSnackBar } from '@angular/material';
 import { ShareService } from './share.service';
 import { HttpService } from './http.service';
-
+import { environment } from "../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
@@ -124,7 +124,7 @@ export class ReportObject {
       ++this.ready;
     });
     this._hs.get(this.table).subscribe(res => {
-      this.items = res.json()[this.table].slice(0,2);
+      this.items = res.json()[this.table].slice(0, 2);
       ++this.ready;
       return this.items;
     });
@@ -300,5 +300,8 @@ export class ReturnsObject {
     this.ready = true;
     console.log('this.ready:', this.ready);
   }
-
+  log(...args) {
+    if (environment.production == false)
+      console.log(args);
+  }
 }
