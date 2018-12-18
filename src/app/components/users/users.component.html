@@ -7,7 +7,7 @@
       <mat-card-subtitle>شاشه اداريه عليا</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <button mat-raised-button color="primary" (click)="refreshUsers()">تحديث المستخدمين</button>
+      <button mat-raised-button color="primary" (click)="refreshUsers()" class="sd-btn">تحديث المستخدمين</button>
       <button mat-raised-button color="primary" (click)="addUser()">اضافة مستخدم جديد</button>
       <br>
       <br>
@@ -165,7 +165,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field>
-          <input matInput placeholder="رصيد المستخدم"  name="balance" [(ngModel)]="actionUser.balance" readonly>
+          <input matInput placeholder="رصيد المستخدم" name="balance" [(ngModel)]="actionUser.balance" readonly>
         </mat-form-field>
         <br>
         <mat-form-field>
@@ -175,6 +175,20 @@
         <mat-form-field>
           <input matInput placeholder="استلم من رصيد المستخدم" type="number" name="minusbalance" [(ngModel)]="takefrombalance">
         </mat-form-field>
+        <br>
+        <br><br>
+        <h3>الخزنه المصدر والهدف</h3>
+        <mat-form-field>
+          <mat-select [(ngModel)]="asafe" placeholder="اختر الخزينه">
+            <mat-option *ngFor="let safe of safes" [value]="safe" (click)="safeSelected()">{{safe.namear}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+        <div *ngIf="asafe!=null">
+          <mat-form-field>
+            <input matInput placeholder="رصيد الخزنه" name="savebalance" [(ngModel)]="asafe.data.balance" readonly>
+          </mat-form-field>
+        </div>
         <br>
         <button mat-raised-button (click)="doSetBalance()" color="primary">عدل رصيد المستخدم</button>
       </mat-card-content>

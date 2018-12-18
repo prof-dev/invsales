@@ -31,49 +31,49 @@
 </div>
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="mode.value">
-    <a [routerLink]="['']" (click)="goto('/')" class="sd-btn" (click)="sidenav.toggle()">الرئسيه</a><br>
-    <a [routerLink]="['profile']" (click)="goto('/profile')" class="sd-btn" (click)="sidenav.toggle()">إعداداتي الخاصه</a><br>
+      <img class="mnu-icn" src="assets/mnu/icnHome.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/')" class="sd-btn" >الرئسيه</a><br>
+      <img class="mnu-icn" src="assets/mnu/icnProfile.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/profile')" class="sd-btn" >إعداداتي الخاصه</a><br>
     <hr>
     <h4>شاشات اعدادات النظام</h4>
     <hr>
-    <a [routerLink]="['log']" (click)="goto('/log')" class="sd-btn" (click)="sidenav.toggle()">المراقبه</a><br>
-    <a [routerLink]="['lookups']" (click)="goto('/lookups')" class="sd-btn" (click)="sidenav.toggle()">ضبط النظام</a><br>
-    <a [routerLink]="['items']" (click)="goto('/items')" class="sd-btn" (click)="sidenav.toggle()"> إدارة الأصناف</a><br>
-    <a [routerLink]="['users']" (click)="goto('/users')" class="sd-btn" (click)="sidenav.toggle()">إدارة المستخدمين</a><br>
-    <a [routerLink]="['supcus']" (click)="goto('/supcus')" class="sd-btn" (click)="sidenav.toggle()">إدارة العملاء
+    <img class="mnu-icn" src="assets/mnu/icnAudit.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/log')" class="sd-btn" >المراقبه</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnSettings.png" width="20" alt=""><a  (click)="sidenav.toggle(); goto('/lookups')" class="sd-btn">ضبط النظام </a><br>
+    <img class="mnu-icn" src="assets/mnu/icnItems.png" width="20" alt=""><a  (click)="sidenav.toggle(); goto('/items')" class="sd-btn"> إدارة الأصناف</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnUsers.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/users')" class="sd-btn" >إدارة المستخدمين</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnClients.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/supcus')" class="sd-btn" >إدارة العملاء
       والموردين</a><br>
 
     <hr>
     <h4>شاشات الأفرع</h4>
     <hr>
-    <a [routerLink]="['invoice/0']" (click)="goto('/invoice')" class="sd-btn" (click)="sidenav.toggle()">طلبات الشراء
+    <img class="mnu-icn" src="assets/mnu/icnPrchase.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/invoice')" class="sd-btn" >طلبات الشراء
       والفواتير</a><br>
-    <a [routerLink]="['checks']" (click)="goto('/checks')" class="sd-btn" (click)="sidenav.toggle()">تحرير الشيكات</a><br>
-    <!-- <a [routerLink]="['sadad']" (click)="goto('/sadad')" class="sd-btn" (click)="sidenav.toggle()">السداد و الدفعيات </a><br> -->
+      <img class="mnu-icn" src="assets/mnu/icnChecks.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/checks')" class="sd-btn" >تحرير الشيكات</a><br>
+    <!-- <a [routerLink]="['sadad']" (click)="sidenav.toggle(); goto('/sadad')" class="sd-btn" >السداد و الدفعيات </a><br> -->
     
-    <a [routerLink]="['spending']" (click)="goto('/spending')" class="sd-btn" (click)="sidenav.toggle()">تحرير
+    <img class="mnu-icn" src="assets/mnu/icnExpenses.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/spending')" class="sd-btn" >تحرير
       المصروفات</a><br>
-    <a [routerLink]="['returns']" (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
+      <img class="mnu-icn" src="assets/mnu/icnReturns.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/returns')" class="sd-btn" >تحرير المردودات</a><br>
 
     <hr>
     <h4>شاشات المخازن</h4>
     <hr>
 
-    <a [routerLink]="['inventory']" (click)="goto('/inventory')" class="sd-btn" (click)="sidenav.toggle()">تحرير
+    <img class="mnu-icn" src="assets/mnu/icnStore.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/inventory')" class="sd-btn" >تحرير
       المخازن</a><br>
-    <a [routerLink]="['deliveries']" (click)="goto('/deliveries')" class="sd-btn" (click)="sidenav.toggle()"> التسليم والإستلام</a><br>
+      <img class="mnu-icn" src="assets/mnu/icnHandshake.png" width="20" alt=""><a (click)="sidenav.toggle(); goto('/deliveries')" class="sd-btn" >التسليم والإستلام</a><br>
 
-    <a [routerLink]="['returns']" (click)="goto('/returns')" class="sd-btn" (click)="sidenav.toggle()">تحرير المردودات</a><br>
-    <a [routerLink]="['itemsmove']" (click)="goto('/itemsmove')" class="sd-btn" (click)="sidenav.toggle()">نقل بين المخازن</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReturns.png" width="20" alt=""><a [routerLink]="['returns']" (click)="sidenav.toggle(); goto('/returns')" class="sd-btn" >تحرير المردودات</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnTransfer.png" width="20" alt=""> <a (click)="sidenav.toggle(); goto('/itemsmove')" class="sd-btn" >نقل بين المخازن</a><br>
     <hr>
     <h4>التقارير</h4>
     <hr>
-    <a [routerLink]="['reports/sadad']" class="sd-btn" (click)="sidenav.toggle()">كشف حساب العملاء</a><br>
-    <a [routerLink]="['reports/pursales']" class="sd-btn" (click)="sidenav.toggle()">المشتروات والمبيعات</a><br>
-    <a [routerLink]="['reports/suppcus']" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</a><br>
-    <a [routerLink]="['reports/pursalesret']" class="sd-btn" (click)="sidenav.toggle()">المردودات</a><br>
-    <a [routerLink]="['reports/users']" class="sd-btn" (click)="sidenav.toggle()">المستخدمون</a><br>
-    <a [routerLink]="['reports/spending']" class="sd-btn" (click)="sidenav.toggle()">المصروفات</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReport.png" width="20" alt=""><a [routerLink]="['reports/sadad']" class="sd-btn" (click)="sidenav.toggle()" >كشف حساب العملاء</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReport.png" width="20" alt=""><a [routerLink]="['reports/pursales']" class="sd-btn" (click)="sidenav.toggle()"  >المشتروات والمبيعات</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReport.png" width="20" alt=""><a [routerLink]="['reports/suppcus']" class="sd-btn" (click)="sidenav.toggle()">العملاء والموردين</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReport.png" width="20" alt=""><a [routerLink]="['reports/pursalesret']" class="sd-btn" (click)="sidenav.toggle()"  >المردودات</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReport.png" width="20" alt=""><a [routerLink]="['reports/users']" class="sd-btn" (click)="sidenav.toggle()"  >المستخدمون</a><br>
+    <img class="mnu-icn" src="assets/mnu/icnReport.png" width="20" alt=""><a [routerLink]="['reports/spending']" class="sd-btn" (click)="sidenav.toggle()"  >المصروفات</a><br>
   </mat-sidenav>
 
   <mat-sidenav-content>

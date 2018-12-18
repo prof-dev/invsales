@@ -2,7 +2,6 @@
   text-align: right;
 }
 
-
 .container {
   margin-top: 20px;
   display: flex;
@@ -12,7 +11,9 @@
   width: 500px;
   margin-right: 10px;
 }
-
+.sd-btn {
+  margin-left: 10px;
+}
 .btn-img {
   cursor: pointer;
 }

@@ -3,6 +3,7 @@ import { HttpService } from '../../services/http.service';
 import { ShareService } from '../../services/share.service';
 import { UtilsService } from "../../services/utils.service";
 import { Router } from '@angular/router';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -22,15 +23,24 @@ export class UsersComponent implements OnInit {
   public stores: any[] = [];
   takefrombalance: number;
   addtobalance: number;
+  public asafe: any={id:0, data:{balance:0}};
+  public safes: any[] = [];
   constructor(private _hs: HttpService, private _ss: ShareService, private _router: Router, private _ut: UtilsService) {
 
   }
-
+  safeSelected(){
+    this.asafe.data= JSON.parse(this.asafe.data);
+  }
   ngOnInit() {
-
     this._ss.User.subscribe(user => {
       this.loggedInUser = user;
     });
+    this._ss.setAppIsBusy(true);
+    this._hs.get('lookups', 'filter[]=group,eq,tresuries&filter[]=parent,gt,0&satisfy=all')
+      .subscribe(res => {
+        this.safes = res.json().lookups;
+        this._ss.setAppIsBusy(false);
+      });
     // if (this.loggedInUser == null || this.loggedInUser.id == 0 || this.loggedInUser.roles.indexOf('t') < 0) {
     //   this._router.navigateByUrl('/login');
     // }
@@ -55,16 +65,41 @@ export class UsersComponent implements OnInit {
     this.action = "editbalance";
   }
   doSetBalance() {
-    if (this.addtobalance<0){
+    let masafe=JSON.parse(JSON.stringify(this.asafe));
+    
+    if (this.addtobalance < 0) {
       this._ss.setSnackBar('لا يمكن اضافه رقم سالب للرصيد');
       return;
     }
-    if (this.takefrombalance<0){
+    if (this.takefrombalance < 0) {
       this._ss.setSnackBar('لا يمكن اخذ رقم سالب من الرصيد');
       return;
     }
-    this.actionUser.balance=this.actionUser.balance-this.takefrombalance;
-    this.actionUser.balance=this.actionUser.balance+this.addtobalance;
+    if ( Number(this.takefrombalance) ==0 && Number(this.addtobalance)==0) {
+      this._ss.setSnackBar('لم تقم بأضاقه رصيد او استلام من رصيد');
+      return;
+    }
+    
+    if (this.asafe.id == 0) {
+      this._ss.setSnackBar('لم تختر الخزينه بعد');
+      return;
+    }
+
+    this.actionUser.balance = this.actionUser.balance - this.takefrombalance;
+    this.actionUser.balance = this.actionUser.balance + this.addtobalance;
+
+    masafe.data.balance= Number(masafe.data.balance)+this.takefrombalance;
+    masafe.data.balance= Number(masafe.data.balance)-this.addtobalance;
+    
+    this.asafe.data.balance= Number(this.asafe.data.balance)+this.takefrombalance;
+    this.asafe.data.balance= Number(this.asafe.data.balance)-this.addtobalance;
+    
+    masafe.data = JSON.stringify(masafe.data);
+    this._ss.setAppIsBusy(true);
+    this._hs.put('lookups', 'id',masafe).subscribe(res=>{
+      this.takefrombalance=0;
+      this.addtobalance=0;
+    });
     this.saveUser();
   }
   setBranches(user) {
@@ -102,7 +137,7 @@ export class UsersComponent implements OnInit {
     } else {
       delete this.actionUser.id;
       this._hs.post('users', this.actionUser).subscribe(res => {
-        if (res.json()>0) {
+        if (res.json() > 0) {
           this._ss.setSnackBar('تم اضاقه المستتخدم');
         }
         this._ss.setAppIsBusy(false);
