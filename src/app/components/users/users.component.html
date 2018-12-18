@@ -19,7 +19,7 @@
           </tr>
           <tr *ngFor="let user of page">
             <td>{{user.username}}</td>
-            <td>{{user.fullname}}</td>
+            <td>{{user.namear}}</td>
             <td>
               <img src="assets/icnEdit.png" alt="" width="32" (click)="edit(user)" class="btn-img" matTooltip="تحديث بيانات  المستخدم">
             </td>
@@ -121,7 +121,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field>
-          <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.fullname">
+          <input matInput placeholder="الاسم الكامل" name="fullname" [(ngModel)]="actionUser.namear">
         </mat-form-field>
         <br>
         <mat-form-field>
@@ -161,7 +161,7 @@
     <mat-card>
       <mat-card-header>
         <mat-card-title>تعديل ارصده المستخدمين</mat-card-title>
-        <mat-card-subtitle>تعديل رصيد المستخدم : {{actionUser.fullname}}</mat-card-subtitle>
+        <mat-card-subtitle>تعديل رصيد المستخدم : {{actionUser.namear}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <mat-form-field>
