@@ -67,6 +67,7 @@ export class SadadComponent implements OnInit {
       this.sadad.data = JSON.stringify(this.payments);
       this.sadad.user = this.user.id;
       this.sadad.total = this.paid;
+     
       this._hs.post('sadad', this.sadad).subscribe(res => {
         this.sadad.id = res.text();
         this.updatesuppcussbalance(this.paid);
@@ -222,7 +223,8 @@ export class SadadComponent implements OnInit {
   ];
   public paymentmethods: Choice[] = [
     { value: 'check', viewValue: 'شيك' },
-    { value: 'cash', viewValue: 'كاش' }
+    { value: 'cash', viewValue: 'كاش' },
+    { value: 'direct', viewValue: 'تحويل مباشر' }
   ];
 
   public checkstatus: Choice[] = [

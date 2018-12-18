@@ -3,7 +3,7 @@
 		header('Content-Type: application/json;charset=utf-8');
 		session_start();
 		if (stripos($_SERVER['REQUEST_URI'],'localhost')==="false"){
-			$conn = new mysqli('79.170.40.244','cl23-invsales', 'krWqg3-ff','invsales');
+			$conn = new mysqli('79.170.40.244','cl23-invsales', 'krWqg3-ff','cl23-invsales');
 
 		}else{
 			$conn = new mysqli('localhost','root', '','invsales');

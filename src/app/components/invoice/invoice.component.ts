@@ -269,6 +269,7 @@ export class InvoiceComponent implements OnInit {
 
           if ((!((Number(element.avb) - Number(element.rsv) + Number(element.com)) < Number(item.qty))) && element.id == item.id) {
             console.log("sales after check available stock:",item);
+            item.dlv=0;
             this.invoiceitems.push(item);
             this.invoice.amount = this.invoice.amount + Number(item.totalprice);
             this.product.store =  this.storeid;
@@ -652,7 +653,8 @@ export class InvoiceComponent implements OnInit {
 
   public paymentmethods: Choice[] = [
     { value: 'check', viewValue: 'شيك' },
-    { value: 'cash', viewValue: 'كاش' }
+    { value: 'cash', viewValue: 'كاش' },
+    { value: 'direct', viewValue: 'تحويل مباشر' }
   ]
 
   public checkstatus: Choice[] = [

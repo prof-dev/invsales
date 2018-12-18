@@ -93,7 +93,7 @@ authlogin(){
   this._ss.setAppIsBusy(true);
   this._hs._http.get(this._hs.APISERVER+'login.php?type=login&username=' + this.user.username + '&pwd=' + this.user.pwd )
     .subscribe(res => {
-      console.log('user is: ', res.json());
+      console.log('user is: ', res);
       if (res.json().id>0) {
         this._ss.setAppIsBusy(false);
         var auser = res.json();
