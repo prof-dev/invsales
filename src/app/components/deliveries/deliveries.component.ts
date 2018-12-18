@@ -5,7 +5,6 @@ import { ShareService } from 'src/app/services/share.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryClass } from 'src/app/services/classes';
-import { EMLINK } from 'constants';
 
 @Component({
   selector: 'app-deliveries',
