@@ -7,18 +7,21 @@
 }
 
 .comp-container {
-  margin-top: 100px;
+  margin-top: 65px;
 }
 
 mat-sidenav {
-  width: 200px;
+  width: 250px;
   height: 200%;
+  margin-right: 20px;
   padding-top: 100px;
+  padding-right: 10px;
 }
 
 mat-sidenav-content {
-  min-height: 700px;
+  min-height: 900px;
   padding-top: 100px;
+  padding-right: 10px;
 }
 
 .sd-btn {
@@ -28,8 +31,11 @@ mat-sidenav-content {
 
 a{
   cursor: pointer;
+  text-decoration-line: none;
 }
-
+.mnu-icn{
+  margin-left:5px;
+}
 .mytoolbar {
   position: fixed;
   top: 0;
