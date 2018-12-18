@@ -17,7 +17,7 @@ export class SpendingsComponent implements OnInit {
     lookupsid:"",
     data:"",
     amount:0.00,
-    userid:0
+    usersid:0
 
   };
   public data={ 
@@ -68,7 +68,7 @@ export class SpendingsComponent implements OnInit {
       lookupsid:"",
       data:"",
       amount:0.00,
-      userid:0
+      usersid:0
   
     };
      this.data={ 
@@ -79,7 +79,7 @@ export class SpendingsComponent implements OnInit {
   }
 
   save(){
-    this.spending.userid=this.user.id;
+    this.spending.usersid=this.user.id;
     this.spending.data=JSON.stringify(this.data);
     this._hs.post('spending', this.spending).subscribe(res => {
       if(this.canselect){

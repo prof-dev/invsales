@@ -36,7 +36,7 @@ export class InvoiceComponent implements OnInit {
     shipno: "",
     amount: 0,
     suppcusid: 0,
-    userid: 0
+    usersid: 0
   }
   @ViewChild('date')
   public date: any;
@@ -71,7 +71,7 @@ export class InvoiceComponent implements OnInit {
     lastholder: "",
     amount: 4,
     source: "",
-    userid: 0,
+    usersid: 0,
     comment: "",
     pursalesid: 0
   };
@@ -440,7 +440,7 @@ export class InvoiceComponent implements OnInit {
       lastholder: "",
       amount: 4,
       source: "",
-      userid: 0,
+      usersid: 0,
       comment: "",
       pursalesid: 0
     };
@@ -451,7 +451,7 @@ export class InvoiceComponent implements OnInit {
       shipno: "",
       amount: 0,
       suppcusid: 0,
-      userid: 0
+      usersid: 0
 
 
     }
@@ -516,7 +516,7 @@ export class InvoiceComponent implements OnInit {
 
       }
 
-      this.sadad.userid = this.user.id;
+      this.sadad.usersid = this.user.id;
       this._hs.post('sadad', this.sadad).subscribe(res => {
         this.sadad.id = res.text();
        
@@ -534,7 +534,7 @@ export class InvoiceComponent implements OnInit {
     
     if (this.processinfo.status != "print" && this.selecteditem != null) {
       this.invoice.suppcusid = this.selecteditem.id;
-      this.invoice.userid = this.user.id;
+      this.invoice.usersid = this.user.id;
       this.invoicedata = {
 
         items: this.invoiceitems
@@ -613,7 +613,7 @@ export class InvoiceComponent implements OnInit {
     this.payments.forEach(element => {
       if (element.paymentmethod == "check") {
         if (element.bankname != "" && element.checkNo != "" && element.amount != 0 && element.date != "") {
-          this.check.userid = this.user.id;
+          this.check.usersid = this.user.id;
           this.check.pursalesid = invoiceid;
           this.check.bankname = element.bankname;
           this.check.checkowner = element.checkowner;

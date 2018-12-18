@@ -33,7 +33,7 @@ export class ChecksComponent implements OnInit {
     lastholder: "",
     amount: 4,
     source: "",
-    userid: 0,
+    usersid: 0,
     comment: "",
     pursalesid:""
   };
@@ -135,7 +135,7 @@ export class ChecksComponent implements OnInit {
   }
 
   save(check) {
-    check.userid = this.user.id;
+    check.usersid = this.user.id;
 
     if (check.id != 0) {
       this._hs.put('checks', "id", check).subscribe(res => {

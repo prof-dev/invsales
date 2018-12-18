@@ -18,7 +18,8 @@ export class LoginComponent implements OnInit {
       pwd: "123",
       roles: 'a;t;v;u;b;s;',
       namear: 'الرشد محمد التوم',
-      photo: 'http://api.randomuser.me/portraits/men/2.jpg'
+      photo: 'http://api.randomuser.me/portraits/men/2.jpg',
+      stores:[61,74]
     },
     {
       id: 2,

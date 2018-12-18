@@ -252,7 +252,7 @@ export class SuppcusComponent implements OnInit {
             }
             this.sadad.oldbalance=this.supcus.amount;
             
-            this.sadad.userid = this.user.id;
+            this.sadad.usersid = this.user.id;
             this.sadad.amount = this.paid;
             this._hs.post('sadad', this.sadad).subscribe(res => {
                 this.sadad.id = res.text();
