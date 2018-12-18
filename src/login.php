@@ -20,6 +20,8 @@
 			  if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']==='true'){
 				echo $_SESSION['user'];
 			}else{
+				/////////// UTF8
+				mysqli_set_charset($conn,'utf8');
 				if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 				} else {
