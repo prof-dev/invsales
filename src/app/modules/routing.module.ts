@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from "../components/login/login.component";
-import { SettingsComponent } from "../components/settings/settings.component";
 import { SuppcusComponent } from "../components/suppcus/suppcus.component";
 import { HomeComponent } from "../components/home/home.component";
 import { UsersComponent } from "../components/users/users.component";
@@ -22,7 +21,6 @@ import { DeliveriesComponent } from '../components/deliveries/deliveries.compone
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'settings', component: SettingsComponent },
   { path: 'supcus', component: SuppcusComponent },
   { path: 'users', component: UsersComponent },
   { path: 'lookups', component: LookupsComponent },

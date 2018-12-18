@@ -72,21 +72,23 @@ export class LoginComponent implements OnInit {
     this._router.navigateByUrl('/');
   }
   login() {
-    this._ss.setAppIsBusy(true);
-    this._hs.get('users','satisfy=all&filter[]=username,eq,' + this.user.username + '&filter[]=pwd,eq,' + this.user.pwd )
-      .subscribe(res => {
-        if (res.json().users[0].id>0) {
-          this._ss.setAppIsBusy(false);
-          var auser = res.json().users[0];
-          this._ss.setUser(auser);
-          this._router.navigateByUrl('/');
-        } else {
-          this._ss.setAppIsBusy(false);
-          this._ss.setSnackBar("معلومات الدخول غير صحصحه ربما خطأ في كلمه السر أو اسم المستخدم. أو ربما تم منعك من قبل مدير النظام")
-        }
-      });
+  this.authlogin();
   }
-
+normallogin(){
+  this._ss.setAppIsBusy(true);
+  this._hs.get('users','satisfy=all&filter[]=username,eq,' + this.user.username + '&filter[]=pwd,eq,' + this.user.pwd )
+    .subscribe(res => {
+      if (res.json().users[0].id>0) {
+        this._ss.setAppIsBusy(false);
+        var auser = res.json().users[0];
+        this._ss.setUser(auser);
+        this._router.navigateByUrl('/');
+      } else {
+        this._ss.setAppIsBusy(false);
+        this._ss.setSnackBar("معلومات الدخول غير صحصحه ربما خطأ في كلمه السر أو اسم المستخدم. أو ربما تم منعك من قبل مدير النظام")
+      }
+    });
+}
 authlogin(){
   this._ss.setAppIsBusy(true);
   this._hs._http.get(this._hs.APISERVER+'login.php?type=login&username=' + this.user.username + '&pwd=' + this.user.pwd )
