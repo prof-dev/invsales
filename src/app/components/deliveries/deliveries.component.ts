@@ -5,6 +5,7 @@ import { ShareService } from 'src/app/services/share.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryClass } from 'src/app/services/classes';
+import { EMLINK } from 'constants';
 
 @Component({
   selector: 'app-deliveries',
@@ -12,7 +13,7 @@ import { InventoryClass } from 'src/app/services/classes';
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
-  public invetoryObj:InventoryClass;
+  public invetoryObj: InventoryClass;
   public itemsLookup: any[] = [];
   public delivery: any = {};
   public items: any[] = [];
@@ -22,43 +23,43 @@ export class DeliveriesComponent implements OnInit {
   public suppcus: any;
   public storelookups: any;
   public user: any;
-  public userstores:any[]=[];
+  public userstores: any[] = [];
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
-      this.invetoryObj=new InventoryClass(_hs,_ss);
+    this.invetoryObj = new InventoryClass(_hs, _ss);
 
   }
 
   ngOnInit() {
     this._ss.User.subscribe(user => {
       this.user = user;
-      this.userstores=this.user.stores;
-      console.log("userstore :",this.userstores);
-      
+      this.userstores = this.user.stores;
+      console.log("userstore :", this.userstores);
+
       if (this.user.id == 0) {
         this._router.navigateByUrl('/login');
       }
-    this.loadItems();
-    this.loadStores();
+      this.loadItems();
+      this.loadStores();
     });
   }
   loadStores() {
-    if(this.user.stores!=null){
-      this._hs.get('lookups','filter[]=group,eq,stores').subscribe(res => {
-     
-        this.storelookups= res.json().lookups;
+    if (this.user.stores != null) {
+      this._hs.get('lookups', 'filter[]=group,eq,stores').subscribe(res => {
+
+        this.storelookups = res.json().lookups;
         console.log(this.storelookups);
-  
-        this.storelookups=this.storelookups.filter(obj=> obj.parent!=0);
+
+        this.storelookups = this.storelookups.filter(obj => obj.parent != 0);
         console.log(this.storelookups);
-        console.log('userinfo',this.user);
-        
-        this.storelookups=this.storelookups.filter(obj=> this.storelookups.find(st=>this.userstores.includes(obj.id)));
+        console.log('userinfo', this.user);
+
+        this.storelookups = this.storelookups.filter(obj => this.storelookups.find(st => this.userstores.includes(obj.id)));
         console.log(this.storelookups);
       });
     }
-    
+
   }
 
   loadItems() {
@@ -88,7 +89,7 @@ export class DeliveriesComponent implements OnInit {
         this.setsupcusname(this.ref.suppcusid);
         if (this.ref.complete == 0) {
           this.prepareItems();
-          this.delivery.pursalesid=this.ref.id;
+          this.delivery.pursalesid = this.ref.id;
 
         }
         else if (this.ref != null && this.ref.complete != 0) {
@@ -104,7 +105,7 @@ export class DeliveriesComponent implements OnInit {
           this.ref.data = JSON.parse(this.ref.data);
           if (this.ref.complete == 0) {
             this.prepareItems();
-            this.delivery.pursalesretid=this.ref.id;
+            this.delivery.pursalesretid = this.ref.id;
 
           }
           else if (this.ref != null) {
@@ -121,7 +122,7 @@ export class DeliveriesComponent implements OnInit {
           console.log(this.ref);
           if (this.ref.complete == 0) {
             this.prepareItems();
-            this.delivery.storetostoreid=this.ref.id;
+            this.delivery.storetostoreid = this.ref.id;
 
           }
           else if (this.ref != null) {
@@ -135,12 +136,20 @@ export class DeliveriesComponent implements OnInit {
 
 
   }
+  save() {
+    if (this.verify()) {
+      this.updateDLV();
+    }
+    else{
+      this._ss.setSnackBar('لا يمكن تسليم كمية أكبر من كمية المطلوب في الفاتورة');
+    }
 
+  }
   prepareItems() {
     let item = { qty: 0, id: 0, delivered: 0, note: "", name: "" };
     if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
       this.ref.data.forEach(element => {
-        item.qty = Number(element.qty)-Number(element.dlv);
+        item.qty = Number(element.qty) - Number(element.dlv);
         item.id = element.id;
         item.delivered = 0;
         item.note = "";
@@ -188,29 +197,95 @@ export class DeliveriesComponent implements OnInit {
 
 
   }
-  verify(row) {
-    if (Number(row.delivered) > Number(row.qty)) {
-      this._ss.setSnackBar('لا يمكن تسليم كمية أكبر من كمية الصنف في الفاتورة');
+  verify(): boolean {
+    let result = true;
+    this.items.forEach(element => {
+      if (Number(element.delivered) > Number(element.qty)) {
+        this._ss.setSnackBar('لا يمكن تسليم كمية أكبر من كمية المطلوب في الفاتورة');
+        result = false;
+      }
+
+    });
+    return result;
+
+  }
+
+  updateDLV() {
+    if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
+      this.ref.data.forEach(element => {
+        this.items.forEach(inner => {
+          element.dlv = Number(element.dlv) + Number(inner.delivered);
+        });
+      });
     }
+    else {
+      this.ref.data.items.forEach(element => {
+        this.items.forEach(inner => {
+          element.dlv = Number(element.dlv) + Number(inner.delivered);
+
+        });
+      });
+
+    }
+    this.updateInvoice();
+  }
+  updateInvoice() {
+    this.ref.complete = this.closeRef();
+
+    if (this.delivery.type == 'p' || this.delivery.type == 's') {
+      this._hs.put('pursales', 'id', this.ref).subscribe(res => {
+      });
+
+    } else
+      if (this.delivery.type == 'rp' || this.delivery.type == 'rs') {
+        this._hs.put('pursalesret', 'id', this.ref).subscribe(res => {
+        });
+      }
+      else if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
+        this._hs.put('storetostore', 'id', this.ref).subscribe(res => {
+        });
+      }
+
+
+  }
+
+  closeRef(): number {
+    let close: number = 1;
+    if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
+      this.ref.data.forEach(element => {
+        if (Number(element.dlv) < Number(element.qty)) {
+          close = 0;
+        }
+      });
+    }
+    else {
+      this.ref.data.items.forEach(element => {
+        if (Number(element.dlv) < Number(element.qty)) {
+          close = 0;
+        }
+      });
+
+    }
+    return close;
   }
 
   changeAvbOnStock() {
     this.items.forEach(element => {
       this.invetoryObj.getStoreItemsQty(element.lookupsid).forEach(inner => {
-        if(Number(element.delivered)<Number(inner.qty)&&this.delivery.type=='out'){
+        if (Number(element.delivered) < Number(inner.qty) && this.delivery.type == 'out') {
 
         }
-        else if(this.delivery.type=='out'){
+        else if (this.delivery.type == 'out') {
 
         }
-        else if(this.delivery.type=='in'){
+        else if (this.delivery.type == 'in') {
 
         }
-        else if(this.delivery.type=='in'){
+        else if (this.delivery.type == 'in') {
 
         }
       });
-     
+
     });
 
   }
@@ -219,7 +294,7 @@ export class DeliveriesComponent implements OnInit {
     this._hs.log(this.user.id, 'tbl1', 'c', ' المخازن', 'so and so');
 
     this._ut.showReport('الأصناف المسلمة / المستلمة');
-}
+  }
 
 
   public types: Choice[] = [
