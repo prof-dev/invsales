@@ -23,6 +23,7 @@ export class DeliveriesComponent implements OnInit {
   public storelookups: any;
   public user: any;
   public userstores: any[] = [];
+  public invItems: any[] = [];
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
@@ -86,14 +87,10 @@ export class DeliveriesComponent implements OnInit {
         this.ref.data = JSON.parse(this.ref.data);
         console.log(this.ref);
         this.setsupcusname(this.ref.suppcusid);
-        if (this.ref.complete == 0) {
-          this.prepareItems();
-          this.delivery.pursalesid = this.ref.id;
+        this.prepareItems();
+        this.delivery.pursalesid = this.ref.id;
 
-        }
-        else if (this.ref != null && this.ref.complete != 0) {
-          this._ss.setSnackBar('تم إغلاق هذا المرجع');
-        }
+
 
       });
 
@@ -102,15 +99,9 @@ export class DeliveriesComponent implements OnInit {
         this._hs.get('pursalesret', 'filter[]=id,eq,' + this.delivery.ref).subscribe(res => {
           this.ref = res.json().pursalesret[0];
           this.ref.data = JSON.parse(this.ref.data);
-          if (this.ref.complete == 0) {
-            this.prepareItems();
-            this.delivery.pursalesretid = this.ref.id;
 
-          }
-          else if (this.ref != null) {
-            this._ss.setSnackBar('تم إغلاق هذا المرجع');
-          }
-
+          this.prepareItems();
+          this.delivery.pursalesretid = this.ref.id;
 
         });
       }
@@ -119,14 +110,8 @@ export class DeliveriesComponent implements OnInit {
           this.ref = res.json().storetostore[0];
           this.ref.data = JSON.parse(this.ref.data);
           console.log(this.ref);
-          if (this.ref.complete == 0) {
-            this.prepareItems();
-            this.delivery.storetostoreid = this.ref.id;
-
-          }
-          else if (this.ref != null) {
-            this._ss.setSnackBar('تم إغلاق هذا المرجع');
-          }
+          this.prepareItems();
+          this.delivery.storetostoreid = this.ref.id;
 
 
         });
@@ -139,49 +124,51 @@ export class DeliveriesComponent implements OnInit {
     if (this.verify()) {
       this.updateDLV();
     }
-    else{
+    else {
       this._ss.setSnackBar('لا يمكن تسليم كمية أكبر من كمية المطلوب في الفاتورة');
     }
 
   }
   prepareItems() {
-    let item = { qty: 0, id: 0, delivered: 0, note: "", name: "" };
     if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
-      this.ref.data.forEach(element => {
+      this.invItems = this.ref.data;
+      this.invItems.forEach(element => {
+        let item = { qty: 0, id: 0, delivered: 0, note: "", name: "", tqty: 0 };
+
         item.qty = Number(element.qty) - Number(element.dlv);
         item.id = element.id;
         item.delivered = 0;
         item.note = "";
-        item.name = this.itemsLookup.find(obj => obj.id === element.id).namear;
+        item.name = this.itemsLookup.find(obj => obj.id == element.id).namear;
+        item.tqty = element.qty;
         this.items.push(item);
       });
 
     }
     else {
-      this.ref.data.items.forEach(element => {
+      this.invItems = this.ref.data.items;
+      this.invItems.forEach(element => {
+        let item = { qty: 0, id: 0, delivered: 0, note: "", name: "", tqty: 0 };
 
+        console.log(element);
+        item.tqty = element.qty;
+        item.qty = Number(element.qty) - Number(element.dlv);
         item.id = element.id;
         item.delivered = 0;
         item.note = "";
-        item.name = this.itemsLookup.find(obj => obj.id === element.id).namear;
-        if (element.qty != null) {
-          item.qty = element.qty;
-
-        }
-        else {
-          item.qty = element.count;
-
-        }
-
+        item.name = this.itemsLookup.find(obj => obj.id == element.id).namear;
         this.items.push(item);
       });
     }
+    console.log("this.items :", this.items);
+
 
 
   }
   reset() {
     this.items = [];
     this.ref = {};
+    this.invItems = [];
 
   }
   setsupcusname(id) {
@@ -210,26 +197,44 @@ export class DeliveriesComponent implements OnInit {
   }
 
   updateDLV() {
-    if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
-      this.ref.data.forEach(element => {
-        this.items.forEach(inner => {
-          element.dlv = Number(element.dlv) + Number(inner.delivered);
-        });
-      });
-    }
-    else {
-      this.ref.data.items.forEach(element => {
-        this.items.forEach(inner => {
-          element.dlv = Number(element.dlv) + Number(inner.delivered);
+    // if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
+    //   this.ref.data.forEach(element => {
+    //     this.items.forEach(inner => {
+    //       element.dlv = Number(element.dlv) + Number(inner.delivered);
+    //     });
+    //   });
+    // }
+    // else {
+    //   this.ref.data.items.forEach(element => {
+    //     this.items.forEach(inner => {
+    //       element.dlv = Number(element.dlv) + Number(inner.delivered);
 
-        });
-      });
+    //     });
+    //   });
 
-    }
+    // }
     this.updateInvoice();
   }
   updateInvoice() {
+
+    this.items.forEach(element => {
+      this.invItems.forEach(inv => {
+        if (element.id == inv.id) {
+          inv.dlv = Number(inv.dlv) + Number(element.delivered);
+
+        }
+      });
+
+    });
+
     this.ref.complete = this.closeRef();
+
+    if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
+      this.ref.data = this.invItems;
+    } else {
+      this.ref.data.items = this.invItems;
+    }
+    this.ref.data = JSON.stringify(this.ref.data);
 
     if (this.delivery.type == 'p' || this.delivery.type == 's') {
       this._hs.put('pursales', 'id', this.ref).subscribe(res => {
@@ -251,16 +256,16 @@ export class DeliveriesComponent implements OnInit {
   closeRef(): number {
     let close: number = 1;
     if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
-      this.ref.data.forEach(element => {
+      this.invItems.forEach(element => {
         if (Number(element.dlv) < Number(element.qty)) {
-          close = 0;
+         close=0;
         }
       });
     }
     else {
-      this.ref.data.items.forEach(element => {
+      this.invItems.forEach(element => {
         if (Number(element.dlv) < Number(element.qty)) {
-          close = 0;
+         close=0;
         }
       });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ShareService } from 'src/app/services/share.service';
 import { HttpService } from 'src/app/services/http.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./spendings.component.css']
 })
 export class SpendingsComponent implements OnInit {
+  @ViewChild('date')
+  public date: any;
   public user: any;
   public spendingtype: any[] = [];
   public treasuries: any[] = [];

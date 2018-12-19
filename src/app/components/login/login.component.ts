@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
     this._router.navigateByUrl('/');
   }
   login() {
-  this.authlogin();
+  this.normallogin();
   }
 normallogin(){
   this._ss.setAppIsBusy(true);

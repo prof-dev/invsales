@@ -132,20 +132,22 @@ export class SuppcusComponent implements OnInit {
     }
     save(form) {
         this.supcus.data.location = this.location;
-        if (form.id != 0 && form.phone != "" && form.whatsapp != "" && form.namear != "") {
-            form.data = JSON.stringify(form.data);
-            console.log(form.data);
-            this._hs.put('suppcus', "id", form).subscribe(res => {
+        console.log(this.supcus);
+        
+        if (this.supcus.id !=0 && this.supcus.phone != "" && this.supcus.whatsapp != "" && this.supcus.namear != "") {
+            this.supcus.data = JSON.stringify(this.supcus.data);
+            console.log(this.supcus.data);
+            this._hs.put('suppcus', "id", this.supcus).subscribe(res => {
                 this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
 
             });
 
         }
         else
-            if (form.namear != "") {
-                form.data = JSON.stringify(form.data);
-                console.log(form.data);
-                this._hs.post('suppcus', form).subscribe(res => {
+            if (this.supcus.namear != "") {
+                this.supcus.data = JSON.stringify(this.supcus.data);
+                console.log(this.supcus.data);
+                this._hs.post('suppcus', this.supcus).subscribe(res => {
                     this._ss.setSnackBar('تم حفظ  ' + this.formtype + ' بنجاح');
 
                 });
@@ -234,6 +236,7 @@ export class SuppcusComponent implements OnInit {
         else {
             this._ss.setSnackBar("الرجاء ملء بيانات الدفع");
         }
+
 
 
     }

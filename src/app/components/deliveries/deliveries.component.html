@@ -2,21 +2,22 @@
 
   <mat-card-header>
     <mat-card-title>
-      <h1>
-        عمليات المخازن (تسليم / إستلام )
 
-      </h1>
+      <div *ngIf="delivery.type==null || delivery.type==''">
+        <h1>
+          عمليات المخازن (تسليم / إستلام )
+
+        </h1>
+      </div>
+
+      <div *ngIf="delivery.type=='s'">
+        <h1>تسليم بضاعة لعميل <img src="assets/icnSales.png" alt=""></h1>
+      </div>
+      <div *ngIf="delivery.type=='p'">
+        <h1>إستلام واردات </h1>
+      </div>
     </mat-card-title>
-
-    <!-- <mat-card-title>
-            <div *ngIf="retOb.type=='s'">
-                <h1>مردودات المبيعات <img src="assets/icnSales.png" alt=""></h1>
-            </div>
-            <div *ngIf="retOb.type=='p'">
-                <h1>مردودات المشتروات <img src="assets/icnPurchase.png" alt=""></h1>
-            </div>
-        </mat-card-title> -->
-    <mat-card-subtitle> عمليات المخازن (تسليم / إستلام )</mat-card-subtitle>
+    <!-- <mat-card-subtitle> عمليات المخازن (تسليم / إستلام )</mat-card-subtitle> -->
   </mat-card-header>
   <mat-card-content>
     <table>
@@ -65,8 +66,8 @@
         <tr>
           <td style="white-space: nowrap;">
             <button mat-raised-button color="primary" (click)="getItems()"> إسترجاع الأصناف من المرجع </button>&nbsp;
-            <button mat-raised-button color="primary" (click)="save()" [disabled]="ref.complete!=0">   حفظ  </button>&nbsp;
-            <button mat-raised-button color="primary" (click)="print()">   طباعة  </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="save()" [disabled]="ref.complete!=0"> حفظ </button>&nbsp;
+            <button mat-raised-button color="primary" (click)="print()"> طباعة </button>&nbsp;
 
           </td>
 
@@ -75,65 +76,66 @@
       </tbody>
     </table>
     <table>
+      <tr>
+        <h3>إسم المستفيد : {{suppcusname}}</h3>
+      </tr>
+      <tr>
+        <h3>رقم المرجع : {{ref.id}}</h3>
+      </tr>
+      <tr>
+        <th>الصنف</th>
+        <th>الكمية بالمرجع</th>
+        <th>المطلوب تسليمه</th>
+        <th>الكمية المسلمة / المستلمة</th>
+        <th>ملاحظات</th>
+
+      </tr>
+      <tr *ngFor="let row of items">
+        <td>{{row.name}}</td>
+        <td>{{row.tqty}}</td>
+        <td>{{row.qty}}</td>
+        <td>
+          
+            <input  [(ngModel)]="row.delivered">
+
+        
+        </td>
+        <td>
+     
+            <input [(ngModel)]="row.note" style="width:98%">
+
+        </td>
+
+      </tr>
+    </table>
+
+    <div class='printdiv' hidden="true">
+      <table>
         <tr>
           <h3>إسم المستفيد : {{suppcusname}}</h3>
         </tr>
         <tr>
-            <h3>رقم  المرجع : {{ref.id}}</h3>
-          </tr>
+          <h3>رقم المرجع : {{ref.id}}</h3>
+        </tr>
         <tr>
           <th>الصنف</th>
           <th>العدد</th>
           <th>الكمية المسلمة / المستلمة</th>
           <th>ملاحظات</th>
-  
+
         </tr>
         <tr *ngFor="let row of items">
           <td>{{row.name}}</td>
           <td>{{row.qty}}</td>
           <td>
-            <mat-form-field>
-              <input matInput required placeholder=" تم تسليم " [(ngModel)]="row.delivered" >
-  
-            </mat-form-field>
+            {{row.delivered}}
           </td>
           <td>
-            <mat-form-field style="width:98%">
-              <input matInput required placeholder="  ملاحظة " [(ngModel)]="row.note" style="width:98%">
-  
-            </mat-form-field>
+            {{row.note}}
           </td>
-  
+
         </tr>
       </table>
-   
-    <div class='printdiv' hidden="true">
-        <table>
-            <tr>
-              <h3>إسم المستفيد : {{suppcusname}}</h3>
-            </tr>
-            <tr>
-                <h3>رقم  المرجع : {{ref.id}}</h3>
-              </tr>
-            <tr>
-              <th>الصنف</th>
-              <th>العدد</th>
-              <th>الكمية المسلمة / المستلمة</th>
-              <th>ملاحظات</th>
-      
-            </tr>
-            <tr *ngFor="let row of items">
-              <td>{{row.name}}</td>
-              <td>{{row.qty}}</td>
-              <td>
-               {{row.delivered}}
-              </td>
-              <td>
-                {{row.note}}
-              </td>
-      
-            </tr>
-          </table>
     </div>
 
   </mat-card-content>

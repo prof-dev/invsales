@@ -6,29 +6,35 @@
       </mat-option>
     </mat-autocomplete> -->
 
-      <mat-select placeholder="بند الصرف " [(ngModel)]="spending.lookupsid" >
-          <mat-option>None</mat-option>
-          <mat-option *ngFor="let item of spendingtype" [value]="item.id">{{item.namear}}</mat-option>
-        </mat-select>
-    
+    <mat-select placeholder="بند الصرف " [(ngModel)]="spending.lookupsid">
+      <mat-option>None</mat-option>
+      <mat-option *ngFor="let item of spendingtype" [value]="item.id">{{item.namear}}</mat-option>
+    </mat-select>
+
   </mat-form-field>
   <mat-form-field>
-      <input matInput required placeholder="المبلغ " name="paid" [(ngModel)]="spending.amount" required >
+    <input matInput required placeholder="المبلغ " name="paid" [(ngModel)]="spending.amount" required>
   </mat-form-field>
   <mat-form-field>
-    <textarea  matInput required placeholder="التعليق " name="paid" [(ngModel)]="data.desc" required ></textarea>
-      
+    <textarea matInput required placeholder="التعليق " name="paid" [(ngModel)]="data.desc" required></textarea>
+
   </mat-form-field>
-  
-  <mat-form-field *ngIf="canselect">
-      <mat-select placeholder="إختيار الخزينة " [(ngModel)]="data.tresury" >
-          <mat-option>None</mat-option>
-          <mat-option *ngFor="let item of treasuries" [value]="item.id">{{item.namear}}</mat-option>
-        </mat-select>
-    
+  <mat-form-field>
+    <input matInput [matDatepicker]="date" placeholder=" تاريخ الصرف" [(ngModel)]="spending.date"/>
+    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+    <mat-datepicker #date></mat-datepicker>
+  </mat-form-field>
+ 
+
+    <mat-form-field *ngIf="canselect">
+      <mat-select placeholder="إختيار الخزينة " [(ngModel)]="data.tresury">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let item of treasuries" [value]="item.id">{{item.namear}}</mat-option>
+      </mat-select>
+
     </mat-form-field>
     <br>
     <button mat-raised-button color="accent" (click)="save()">حفظ</button>
-    
+
 
 </mat-card>
