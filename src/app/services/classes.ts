@@ -32,19 +32,21 @@ export class InventoryClass {
     }
     public getStoreItemsQty(storeid):any {
         let store:any;
+        
         this._hs.get('inventory', 'filter[]=id,eq,' + storeid).subscribe(res => {
             if (res.json().inventory.length == 1) {
                 store = res.json().inventory[0];
-                store.data = JSON.parse(res.json().inventory[0].data);
-                store.data.forEach(item => {
-                    this._hs.get('items', 'filter=id,eq,' + item.id).subscribe(itemres => {
-                        item.namear = itemres.json().items[0].namear;
-                    });
-                });
+                store.data = JSON.parse(store.data);
+                // store.data.forEach(item => {
+                //     this._hs.get('items', 'filter=id,eq,' + item.id).subscribe(itemres => {
+                //         item.namear = itemres.json().items[0].namear;
+                //     });
+                // });
                 return store;
             }
             this._ss.setAppIsBusy(false);
         });
+        return store;
     }
     public additemtolist(item, storeid, list: any[], op: boolean): any[] {/// true adds //false substracts
         console.log("additemtolist storeid:", storeid);

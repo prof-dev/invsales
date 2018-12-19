@@ -24,6 +24,7 @@ export class DeliveriesComponent implements OnInit {
   public user: any;
   public userstores: any[] = [];
   public invItems: any[] = [];
+  public inventory: any = {};
   constructor(private _hs: HttpService,
     private _ss: ShareService, private _ut: UtilsService, private _ar: ActivatedRoute,
     private _router: Router) {
@@ -78,6 +79,16 @@ export class DeliveriesComponent implements OnInit {
     console.log('here');
     console.log(this.delivery.type);
     console.log(this.delivery.ref);
+    //this.invetoryObj.getStoreItemsQty(this.delivery.lookupsid
+    this._hs.get('inventory', 'filter[]=id,eq,' + this.delivery.lookupsid).subscribe(
+      res => {
+        this.inventory = res.json().inventory[0];
+        this.inventory.data = JSON.parse(this.inventory.data);
+      }
+    );
+    console.log(this.inventory);
+
+
 
     if (this.delivery.type == 'p' || this.delivery.type == 's') {
       this._hs.get('pursales', 'filter[]=id,eq,' + this.delivery.ref + '&filter[]=type,eq' + this.delivery.type + '&satisfy=all').subscribe(res => {
@@ -197,27 +208,42 @@ export class DeliveriesComponent implements OnInit {
   }
 
   updateDLV() {
-    // if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
-    //   this.ref.data.forEach(element => {
-    //     this.items.forEach(inner => {
-    //       element.dlv = Number(element.dlv) + Number(inner.delivered);
-    //     });
-    //   });
-    // }
-    // else {
-    //   this.ref.data.items.forEach(element => {
-    //     this.items.forEach(inner => {
-    //       element.dlv = Number(element.dlv) + Number(inner.delivered);
 
-    //     });
-    //   });
-
-    // }
     this.updateInvoice();
   }
+
+ 
   updateInvoice() {
 
     this.items.forEach(element => {
+    
+      this.delivery.notes = element.note;
+      this.delivery.qty = element.delivered;
+      this.delivery.invoiceqty = element.tqty;
+      this.delivery.itemsid = element.id;
+      this.inventory.data.forEach(store => {
+        if( this.delivery.itemsid==store.id){
+          this.delivery.storeavb=store.avb;
+        }
+      });
+
+      console.log("inventory :"+JSON.stringify(this.delivery));
+      
+
+      if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
+        this.ref.storetostoreid = this.ref.id;
+      } else if (this.delivery.type == 'rp' || this.delivery.type == 'rs') {
+        this.ref.pursalesid = this.ref.id;
+      } else if (this.delivery.type == 'p' || this.delivery.type == 's') {
+        this.ref.pursalesretid = this.ref.id;
+
+      }
+      if (this.delivery.qty > 0) {
+        this._hs.post('itemmov', this.delivery).subscribe(res => {
+          this._ss.setSnackBar('تم حفظ حركة المخزن للعنصر' + element.name);
+        })
+      }
+
       this.invItems.forEach(inv => {
         if (element.id == inv.id) {
           inv.dlv = Number(inv.dlv) + Number(element.delivered);
@@ -228,6 +254,9 @@ export class DeliveriesComponent implements OnInit {
     });
 
     this.ref.complete = this.closeRef();
+    if (this.ref.complete == 1) {
+      this._ss.setSnackBar("تم تسليم جميع العناصر وقفل المرجع ");
+    }
 
     if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
       this.ref.data = this.invItems;
@@ -249,6 +278,7 @@ export class DeliveriesComponent implements OnInit {
         this._hs.put('storetostore', 'id', this.ref).subscribe(res => {
         });
       }
+    this._ss.setSnackBar("تم تعديل بيانات تسليم العناصر للمرجع");
 
 
   }
@@ -258,14 +288,14 @@ export class DeliveriesComponent implements OnInit {
     if (this.delivery.type == 'fs' || this.delivery.type == 'ts') {
       this.invItems.forEach(element => {
         if (Number(element.dlv) < Number(element.qty)) {
-         close=0;
+          close = 0;
         }
       });
     }
     else {
       this.invItems.forEach(element => {
         if (Number(element.dlv) < Number(element.qty)) {
-         close=0;
+          close = 0;
         }
       });
 
